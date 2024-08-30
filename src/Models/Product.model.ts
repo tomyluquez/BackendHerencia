@@ -63,6 +63,7 @@ Product.init(
   {
     sequelize,
     tableName: "products",
+    modelName: "Product",
   }
 );
 
