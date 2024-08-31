@@ -45,6 +45,7 @@ Variant.init(
   {
     sequelize,
     tableName: "Variants",
+    modelName: "Variant",
   }
 );
 

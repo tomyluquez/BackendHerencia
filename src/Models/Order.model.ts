@@ -43,6 +43,7 @@ Order.init(
     OrderNumber: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      unique: true,
     },
     DateCreated: {
       type: DataTypes.DATE,
@@ -82,6 +83,7 @@ Order.init(
   {
     sequelize,
     tableName: "Orders",
+    modelName: "Order",
   }
 );
 

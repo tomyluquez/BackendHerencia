@@ -32,6 +32,7 @@ Category.init(
   {
     sequelize,
     tableName: "Categories",
+    modelName: "Category",
   }
 );
 

@@ -38,6 +38,7 @@ PaymentMethod.init(
   {
     sequelize,
     tableName: "PaymentMethods",
+    modelName: "PaymentMethod",
   }
 );
 

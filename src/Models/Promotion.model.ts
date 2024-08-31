@@ -31,6 +31,7 @@ Promotion.init(
     Code: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     IsActive: {
       type: DataTypes.BOOLEAN,
@@ -40,11 +41,16 @@ Promotion.init(
     Discount: {
       type: DataTypes.FLOAT,
       allowNull: false,
+      validate: {
+        min: 0,
+        max: 100,
+      },
     },
   },
   {
     sequelize,
     tableName: "Promotions",
+    modelName: "Promotion",
   }
 );
 

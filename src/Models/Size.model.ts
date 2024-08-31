@@ -31,6 +31,7 @@ Size.init(
   {
     sequelize,
     tableName: "Sizes",
+    modelName: "Size",
   }
 );
 

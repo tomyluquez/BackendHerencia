@@ -70,6 +70,7 @@ OrderItems.init(
   {
     sequelize,
     tableName: "OrderItems",
+    modelName: "OrderItems",
   }
 );
 

@@ -38,6 +38,7 @@ Config.init(
   {
     sequelize,
     tableName: "Config",
+    modelName: "Config",
   }
 );
 

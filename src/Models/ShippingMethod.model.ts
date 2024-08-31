@@ -38,6 +38,7 @@ ShippingMethod.init(
   {
     sequelize,
     tableName: "ShippingMethods",
+    modelName: "ShippingMethod",
   }
 );
 

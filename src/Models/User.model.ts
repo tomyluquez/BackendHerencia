@@ -8,13 +8,13 @@ interface UserAttributes {
   Email: string;
   Password: string;
   DateCreated: Date;
-  Phone: number;
-  Adress: string;
+  Phone?: number;
+  Addres?: string;
 }
 
 // Define atributos opcionales para la creación de nuevos usuarios
 interface UserCreationAttributes
-  extends Optional<UserAttributes, "UserId" | "Phone" | "Adress"> {}
+  extends Optional<UserAttributes, "UserId" | "Phone" | "Addres"> {}
 
 // Crea la clase User que extiende de Model
 class User
@@ -26,8 +26,8 @@ class User
   public Email!: string;
   public Password!: string;
   public DateCreated!: Date;
-  public Phone!: number;
-  public Adress!: string;
+  public Phone?: number;
+  public Addres?: string;
 }
 
 // Inicializa el modelo
@@ -58,18 +58,17 @@ User.init(
     },
     Phone: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: null,
+      allowNull: true,
     },
-    Adress: {
+    Addres: {
       type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: null,
+      allowNull: true,
     },
   },
   {
     sequelize,
-    tableName: "users",
+    tableName: "Users",
+    modelName: "User",
   }
 );
 

@@ -52,6 +52,7 @@ Cart.init(
   {
     sequelize,
     tableName: "Carts",
+    modelName: "Cart",
   }
 );
 

@@ -1,14 +1,14 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../db/connectionDB.sequalize";
 
 interface ProductAttributes {
   ProductId: number;
   Name: string;
   CategoryId: number;
-  price: number;
-  discount: number;
+  Price: number;
+  Discount: number;
   UrlPhoto: string;
-  isActive: boolean;
+  IsActive: boolean;
 }
 
 interface ProductCreationAttributes
@@ -21,10 +21,10 @@ class Product
   public ProductId!: number;
   public Name!: string;
   public CategoryId!: number;
-  public price!: number;
-  public discount!: number;
+  public Price!: number;
+  public Discount!: number;
   public UrlPhoto!: string;
-  public isActive!: boolean;
+  public IsActive!: boolean;
 }
 
 Product.init(
@@ -42,27 +42,27 @@ Product.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    price: {
+    Price: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    discount: {
+    Discount: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
     UrlPhoto: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       defaultValue: null,
     },
-    isActive: {
+    IsActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: "products",
+    tableName: "Products",
     modelName: "Product",
   }
 );

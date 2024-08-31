@@ -70,6 +70,7 @@ CartItems.init(
   {
     sequelize,
     tableName: "CartItems",
+    modelName: "CartItems",
   }
 );
 
