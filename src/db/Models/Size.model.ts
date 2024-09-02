@@ -1,24 +1,24 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../db/connectionDB.sequalize";
 
 interface SizeAttributes {
-  SizeId: number;
+  Id: number;
   Name: string;
 }
 
-interface SizeCreationAttributes extends Optional<SizeAttributes, "SizeId"> {}
+interface SizeCreationAttributes extends Optional<SizeAttributes, "Id"> {}
 
 class Size
   extends Model<SizeAttributes, SizeCreationAttributes>
   implements SizeAttributes
 {
-  public SizeId!: number;
+  public Id!: number;
   public Name!: string;
 }
 
 Size.init(
   {
-    SizeId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -32,6 +32,7 @@ Size.init(
     sequelize,
     tableName: "Sizes",
     modelName: "Size",
+    timestamps: false,
   }
 );
 

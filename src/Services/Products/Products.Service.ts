@@ -1,17 +1,18 @@
+import { ProductResponse } from "../../Models/Products/Product.response.model";
 import {
-  ProductResponse,
-  ProductVM,
-} from "../../Models/Products/Product.response.model";
-import {
-  getAllActivesProductsRepository,
   getAllProductsRepository,
+  getPromocionalProductsRepository,
 } from "../../Repositories/Products/Products.Repository";
 
-export const getAllProductsService = async (): Promise<ProductResponse> => {
-  return await getAllProductsRepository();
+export const getAllProductsService = async (
+  name: string,
+  categories: string[],
+  IsActive?: boolean
+): Promise<any> => {
+  return await getAllProductsRepository(name, categories, IsActive);
 };
 
-export const getAllActivesProductsService =
+export const getPromocionalProductsService =
   async (): Promise<ProductResponse> => {
-    return await getAllActivesProductsRepository();
+    return await getPromocionalProductsRepository();
   };

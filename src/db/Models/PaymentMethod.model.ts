@@ -1,27 +1,27 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../db/connectionDB.sequalize";
 
 interface PaymentMethodAttributes {
-  PaymentMethodId: number;
+  Id: number;
   Name: string;
   value: string;
 }
 
 interface PaymentMethodCreationAttributes
-  extends Optional<PaymentMethodAttributes, "PaymentMethodId"> {}
+  extends Optional<PaymentMethodAttributes, "Id"> {}
 
 class PaymentMethod
   extends Model<PaymentMethodAttributes, PaymentMethodCreationAttributes>
   implements PaymentMethodAttributes
 {
-  public PaymentMethodId!: number;
+  public Id!: number;
   public Name!: string;
   public value!: string;
 }
 
 PaymentMethod.init(
   {
-    PaymentMethodId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -39,6 +39,7 @@ PaymentMethod.init(
     sequelize,
     tableName: "PaymentMethods",
     modelName: "PaymentMethod",
+    timestamps: false,
   }
 );
 

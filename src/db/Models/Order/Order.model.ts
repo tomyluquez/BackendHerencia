@@ -1,41 +1,47 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../connectionDB.sequalize";
+import Promotion from "../Promotion.model";
+import PaymentMethod from "../PaymentMethod.model";
+import ShippingMethod from "../ShippingMethod.model";
+import OrderStatus from "./OrderStatus.model";
+import User from "../User.model";
 
 interface OrderAttributes {
-  OrderId: number;
+  Id: number;
   OrderNumber: number;
   DateCreated: Date;
-  Status: string;
+  DateUpdated: Date;
   IsActive: boolean;
-  UserId: number;
   Total: number;
-  PromotionId: number;
-  PaymentMethodId: number;
-  ShippingMethodId: number;
 }
 
-interface OrderCreationAttributes
-  extends Optional<OrderAttributes, "OrderId"> {}
+interface OrderCreationAttributes extends Optional<OrderAttributes, "Id"> {}
 
 class Order
   extends Model<OrderAttributes, OrderCreationAttributes>
   implements OrderAttributes
 {
-  public OrderId!: number;
+  public Id!: number;
   public OrderNumber!: number;
   public DateCreated!: Date;
-  public Status!: string;
+  public DateUpdated!: Date;
   public IsActive!: boolean;
-  public UserId!: number;
   public Total!: number;
+  public UserId!: number;
+  public User!: User;
+  public OrderStatusId!: string;
+  public OrderStatus!: OrderStatus;
   public PromotionId!: number;
+  public Promotion?: Promotion;
   public PaymentMethodId!: number;
+  public PaymentMethod?: PaymentMethod;
   public ShippingMethodId!: number;
+  public ShippingMethod?: ShippingMethod;
 }
 
 Order.init(
   {
-    OrderId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -45,45 +51,31 @@ Order.init(
       allowNull: false,
       unique: true,
     },
-    DateCreated: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    Status: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     IsActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     },
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
     Total: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    PromotionId: {
-      type: DataTypes.INTEGER,
+    DateCreated: {
+      type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
-    PaymentMethodId: {
-      type: DataTypes.INTEGER,
+    DateUpdated: {
+      type: DataTypes.DATE,
       allowNull: false,
-    },
-    ShippingMethodId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
     tableName: "Orders",
     modelName: "Order",
+    timestamps: false,
   }
 );
 

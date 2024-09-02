@@ -1,25 +1,25 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../connectionDB.sequalize";
 
 interface OrderStatusAttributes {
-  OrderStatusId: number;
+  Id: number;
   Name: string;
 }
 
 interface OrderStatusCreationAttributes
-  extends Optional<OrderStatusAttributes, "OrderStatusId"> {}
+  extends Optional<OrderStatusAttributes, "Id"> {}
 
 class OrderStatus
   extends Model<OrderStatusAttributes, OrderStatusCreationAttributes>
   implements OrderStatusAttributes
 {
-  public OrderStatusId!: number;
+  public Id!: number;
   public Name!: string;
 }
 
 OrderStatus.init(
   {
-    OrderStatusId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -33,6 +33,7 @@ OrderStatus.init(
     sequelize,
     tableName: "OrderStatus",
     modelName: "OrderStatus",
+    timestamps: false,
   }
 );
 

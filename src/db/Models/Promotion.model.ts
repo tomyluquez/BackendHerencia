@@ -1,29 +1,33 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../db/connectionDB.sequalize";
 
 interface PromotionAttributes {
-  PromotionId: number;
+  Id: number;
   Code: string;
   IsActive: boolean;
   Discount: number;
+  DateCreated: Date;
+  DateUpdated: Date;
 }
 
 interface PromotionCreationAttributes
-  extends Optional<PromotionAttributes, "PromotionId"> {}
+  extends Optional<PromotionAttributes, "Id"> {}
 
 class Promotion
   extends Model<PromotionAttributes, PromotionCreationAttributes>
   implements PromotionAttributes
 {
-  public PromotionId!: number;
+  public Id!: number;
   public Code!: string;
   public IsActive!: boolean;
   public Discount!: number;
+  public DateCreated!: Date;
+  public DateUpdated!: Date;
 }
 
 Promotion.init(
   {
-    PromotionId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -46,11 +50,22 @@ Promotion.init(
         max: 100,
       },
     },
+    DateCreated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    DateUpdated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
   },
   {
     sequelize,
     tableName: "Promotions",
     modelName: "Promotion",
+    timestamps: false,
   }
 );
 

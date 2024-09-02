@@ -1,11 +1,11 @@
 import { Router } from "express";
 import {
-  getAllActivesProducts,
   getAllProducts,
+  getPromocionalProducts,
 } from "../../Controllers/Products/Products.Controller";
 
 const router: Router = Router();
 
-router.get("/", getAllProducts).get("/actives", getAllActivesProducts);
+router.get("/", getAllProducts).get("/promocional", getPromocionalProducts);
 
 export { router as RouterProducts };

@@ -1,10 +1,10 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../connectionDB.sequalize";
+import Order from "./Order.model";
+import Variant from "../Variant.model";
 
-interface CartItemsAttributes {
-  CartItemsId: number;
-  CartId: number;
-  VariantId: number;
+interface OrderItemsAttributes {
+  Id: number;
   Quantity: number;
   UnitPrice: number;
   TotalPrice: number;
@@ -12,37 +12,31 @@ interface CartItemsAttributes {
   DateUpdated: Date;
 }
 
-interface CartItemsCreationAttributes
-  extends Optional<CartItemsAttributes, "CartItemsId"> {}
+interface OrderItemsCreationAttributes
+  extends Optional<OrderItemsAttributes, "Id"> {}
 
-class CartItems
-  extends Model<CartItemsAttributes, CartItemsCreationAttributes>
-  implements CartItemsAttributes
+class OrderItems
+  extends Model<OrderItemsAttributes, OrderItemsCreationAttributes>
+  implements OrderItemsAttributes
 {
-  public CartItemsId!: number;
-  public CartId!: number;
-  public VariantId!: number;
+  public Id!: number;
   public Quantity!: number;
   public UnitPrice!: number;
   public TotalPrice!: number;
   public DateCreated!: Date;
   public DateUpdated!: Date;
+  public VariantId!: number;
+  public Variant?: Variant;
+  public OrderId!: number;
+  public Order?: Order;
 }
 
-CartItems.init(
+OrderItems.init(
   {
-    CartItemsId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-    },
-    CartId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    VariantId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
     },
     Quantity: {
       type: DataTypes.INTEGER,
@@ -69,9 +63,10 @@ CartItems.init(
   },
   {
     sequelize,
-    tableName: "CartItems",
-    modelName: "CartItems",
+    tableName: "OrderItems",
+    modelName: "OrderItems",
+    timestamps: false,
   }
 );
 
-export default CartItems;
+export default OrderItems;

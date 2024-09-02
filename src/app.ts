@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import sequelize from "./db/connectionDB.sequalize";
 import { RouterProducts } from "./Routes/Products/Products.routes";
+import { syncDatabase } from "./db/syncdb";
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -21,8 +22,9 @@ app.use(express.json());
 
 app.use("/api/v1/products", RouterProducts);
 
-app.use("/", (req, res) =>
-  res.status(200).send('Para consumir la api utiliza la ruta "/api"')
-);
+app.use("/", (req, res) => res.status(404).send("La ruta no fue encontrada"));
 
-app.listen(PORT, () => console.log("servidor corriendo en el puerto " + PORT));
+app.listen(PORT, () => {
+  console.log("servidor corriendo en el puerto " + PORT);
+  syncDatabase();
+});

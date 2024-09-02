@@ -1,27 +1,27 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../db/connectionDB.sequalize";
 
 interface ShippingMethodAttributes {
-  ShippingMethodId: number;
+  Id: number;
   Name: string;
   value: string;
 }
 
 interface ShippingMethodCreationAttributes
-  extends Optional<ShippingMethodAttributes, "ShippingMethodId"> {}
+  extends Optional<ShippingMethodAttributes, "Id"> {}
 
 class ShippingMethod
   extends Model<ShippingMethodAttributes, ShippingMethodCreationAttributes>
   implements ShippingMethodAttributes
 {
-  public ShippingMethodId!: number;
+  public Id!: number;
   public Name!: string;
   public value!: string;
 }
 
 ShippingMethod.init(
   {
-    ShippingMethodId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -39,6 +39,7 @@ ShippingMethod.init(
     sequelize,
     tableName: "ShippingMethods",
     modelName: "ShippingMethod",
+    timestamps: false,
   }
 );
 

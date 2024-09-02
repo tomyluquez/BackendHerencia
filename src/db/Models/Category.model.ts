@@ -1,25 +1,29 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../connectionDB.sequalize";
+import Product from "./Product.model";
 
 interface CategoryAttributes {
-  CategoryId: number;
+  Id: number;
   Name: string;
+  UrlPhoto: string;
 }
 
 interface CategoryCreationAttributes
-  extends Optional<CategoryAttributes, "CategoryId"> {}
+  extends Optional<CategoryAttributes, "Id"> {}
 
 class Category
   extends Model<CategoryAttributes, CategoryCreationAttributes>
   implements CategoryAttributes
 {
-  public CategoryId!: number;
+  public Id!: number;
   public Name!: string;
+  public UrlPhoto!: string;
+  public Products?: Product[];
 }
 
 Category.init(
   {
-    CategoryId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -28,11 +32,17 @@ Category.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    UrlPhoto: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
     sequelize,
     tableName: "Categories",
     modelName: "Category",
+    timestamps: false,
   }
 );
 

@@ -1,27 +1,26 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../db/connectionDB.sequalize";
 
 interface ConfigAttributes {
-  ConfigId: number;
+  Id: number;
   Name: string;
   value: string;
 }
 
-interface ConfigCreationAttributes
-  extends Optional<ConfigAttributes, "ConfigId"> {}
+interface ConfigCreationAttributes extends Optional<ConfigAttributes, "Id"> {}
 
 class Config
   extends Model<ConfigAttributes, ConfigCreationAttributes>
   implements ConfigAttributes
 {
-  public ConfigId!: number;
+  public Id!: number;
   public Name!: string;
   public value!: string;
 }
 
 Config.init(
   {
-    ConfigId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -39,6 +38,7 @@ Config.init(
     sequelize,
     tableName: "Config",
     modelName: "Config",
+    timestamps: false,
   }
 );
 

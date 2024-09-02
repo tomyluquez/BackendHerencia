@@ -1,37 +1,39 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../db/connectionDB.sequalize";
+import sequelize from "../../connectionDB.sequalize";
+import User from "./../User.model";
 
 interface CartAttributes {
-  CartId: number;
-  UserId: number;
+  Id: number;
+  IsFinish: boolean;
   DateCreated: Date;
   DateUpdated: Date;
-  IsFinish: boolean;
 }
 
-interface CartCreationAttributes extends Optional<CartAttributes, "CartId"> {}
+interface CartCreationAttributes extends Optional<CartAttributes, "Id"> {}
 
 class Cart
   extends Model<CartAttributes, CartCreationAttributes>
   implements CartAttributes
 {
-  public CartId!: number;
-  public UserId!: number;
+  public Id!: number;
+  public IsFinish!: boolean;
   public DateCreated!: Date;
   public DateUpdated!: Date;
-  public IsFinish!: boolean;
+  public UserId!: number;
+  public User?: User;
 }
 
 Cart.init(
   {
-    CartId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    UserId: {
-      type: DataTypes.INTEGER,
+    IsFinish: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: false,
     },
     DateCreated: {
       type: DataTypes.DATE,
@@ -43,16 +45,12 @@ Cart.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    IsFinish: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    },
   },
   {
     sequelize,
     tableName: "Carts",
     modelName: "Cart",
+    timestamps: false,
   }
 );
 

@@ -1,4 +1,4 @@
-import { ErrorsResponse } from "../Errors.response.model";
+import { ErrorsResponse } from "../../Models/Errors/Errors.response.model";
 
 export class ProductResponse extends ErrorsResponse {
   Items: ProductVM[];
@@ -18,4 +18,5 @@ export interface ProductVM {
   Category: string;
   Price: number;
   UrlPhoto?: string;
+  IsActive: boolean;
 }

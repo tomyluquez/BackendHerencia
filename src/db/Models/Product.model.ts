@@ -1,45 +1,48 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../../db/connectionDB.sequalize";
+import sequelize from "../connectionDB.sequalize";
+import Category from "./Category.model";
 
 interface ProductAttributes {
-  ProductId: number;
+  Id: number;
   Name: string;
-  CategoryId: number;
   Price: number;
   Discount: number;
   UrlPhoto: string;
   IsActive: boolean;
+  IsPromocional: boolean;
+  DateCreated: Date;
+  DateUpdated: Date;
 }
 
 interface ProductCreationAttributes
-  extends Optional<ProductAttributes, "ProductId" | "UrlPhoto"> {}
+  extends Optional<ProductAttributes, "Id" | "UrlPhoto"> {}
 
 class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
   implements ProductAttributes
 {
-  public ProductId!: number;
+  public Id!: number;
   public Name!: string;
-  public CategoryId!: number;
   public Price!: number;
   public Discount!: number;
   public UrlPhoto!: string;
   public IsActive!: boolean;
+  public IsPromocional!: boolean;
+  public CategoryId!: number;
+  public Category?: Category;
+  public DateCreated!: Date;
+  public DateUpdated!: Date;
 }
 
 Product.init(
   {
-    ProductId: {
+    Id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
     Name: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    CategoryId: {
-      type: DataTypes.INTEGER,
       allowNull: false,
     },
     Price: {
@@ -58,12 +61,29 @@ Product.init(
     IsActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: true,
+    },
+    IsPromocional: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    DateCreated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    DateUpdated: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   },
   {
     sequelize,
     tableName: "Products",
     modelName: "Product",
+    timestamps: false,
   }
 );
 
