@@ -2,9 +2,9 @@ import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../../connectionDB.sequalize";
 import Promotion from "../Promotion.model";
 import PaymentMethod from "../PaymentMethod.model";
-import ShippingMethod from "../ShippingMethod.model";
 import OrderStatus from "./OrderStatus.model";
 import User from "../User.model";
+import ShippingMethod from "../Shipping/ShippingMethod.model";
 
 interface OrderAttributes {
   Id: number;

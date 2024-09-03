@@ -4,6 +4,7 @@ import cors from "cors";
 import sequelize from "./db/connectionDB.sequalize";
 import { RouterProducts } from "./Routes/Products/Products.routes";
 import { syncDatabase } from "./db/syncdb";
+import { RouterCategories } from "./Routes/Categories/Category.routes";
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -21,6 +22,7 @@ sequelize
 app.use(express.json());
 
 app.use("/api/v1/products", RouterProducts);
+app.use("/api/v1/categories", RouterCategories);
 
 app.use("/", (req, res) => res.status(404).send("La ruta no fue encontrada"));
 

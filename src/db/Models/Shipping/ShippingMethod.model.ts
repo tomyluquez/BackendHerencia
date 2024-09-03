@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../../db/connectionDB.sequalize";
+import sequelize from "../../connectionDB.sequalize";
 
 interface ShippingMethodAttributes {
   Id: number;

@@ -1,11 +1,12 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../connectionDB.sequalize";
-import Product from "./Product.model";
+import Product from "./Products/Product.model";
 
 interface CategoryAttributes {
   Id: number;
   Name: string;
   UrlPhoto: string;
+  IsActive: boolean;
 }
 
 interface CategoryCreationAttributes
@@ -19,6 +20,7 @@ class Category
   public Name!: string;
   public UrlPhoto!: string;
   public Products?: Product[];
+  public IsActive!: boolean;
 }
 
 Category.init(
@@ -31,6 +33,11 @@ Category.init(
     Name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    IsActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
     UrlPhoto: {
       type: DataTypes.STRING,

@@ -1,9 +1,10 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../../db/connectionDB.sequalize";
+import sequelize from "./../connectionDB.sequalize";
 
 interface SizeAttributes {
   Id: number;
   Name: string;
+  IsActive: boolean;
 }
 
 interface SizeCreationAttributes extends Optional<SizeAttributes, "Id"> {}
@@ -14,6 +15,7 @@ class Size
 {
   public Id!: number;
   public Name!: string;
+  public IsActive!: boolean;
 }
 
 Size.init(
@@ -26,6 +28,11 @@ Size.init(
     Name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    IsActive: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
   },
   {

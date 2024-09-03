@@ -6,6 +6,6 @@ import {
 
 const router: Router = Router();
 
-router.get("/", getAllProducts).get("/promocional", getPromocionalProducts);
+router.get("/", getAllProducts).get("/promotional", getPromocionalProducts);
 
 export { router as RouterProducts };

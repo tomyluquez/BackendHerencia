@@ -1,6 +1,6 @@
 import "dotenv/config";
 import sequelize from "../db/connectionDB.sequalize";
-import Product from "./Models/Product.model";
+import Product from "./Models/Products/Product.model";
 import Category from "./Models/Category.model";
 import "./assosiations";
 

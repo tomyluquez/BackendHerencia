@@ -1,14 +1,19 @@
 import { Op } from "sequelize";
-import { mapProductDBToVM } from "../../Helpers/Maps/MapProductDBToVM";
-import { ProductResponse } from "../../Models/Products/Product.response.model";
-import Product from "../../db/Models/Product.model";
+import { mapProductDBToVM } from "../../Helpers/Maps/Products/MapProductDBToVM";
+import { ProductVM } from "../../Models/Products/ProductVM";
+import Product from "../../db/Models/Products/Product.model";
 import Category from "../../db/Models/Category.model";
+import Variant from "../../db/Models/Variant.model";
+import ProductImages from "../../db/Models/Products/ProductsImages.model";
+import Size from "../../db/Models/Size.model";
+import { PromotionalProductsVM } from "../../Models/Products/PromotionalProductsVM.model";
+import { mapPromotionalDBToVM } from "../../Helpers/Maps/Products/MapPromotionalDBToVm";
 
 export const getAllProductsRepository = async (
   name: string,
   categories: string[],
-  IsPromocional?: boolean
-): Promise<any> => {
+  IsActive?: boolean
+): Promise<ProductVM> => {
   const filters: any = {};
 
   if (name) {
@@ -23,30 +28,53 @@ export const getAllProductsRepository = async (
     };
   }
 
-  if (IsPromocional !== undefined) {
-    filters.IsPromocional = IsPromocional; // Filtrado por estado exacto
+  if (IsActive !== undefined) {
+    filters.IsActive = IsActive; // Filtrado por estado exacto
   }
   console.log(filters);
   // Consulta a la base de datos con filtros
   const productsDB = await Product.findAll({
-    where: filters,
-    include: [{ model: Category, as: "Category", attributes: ["Name"] }],
+    where: filters, // Tus filtros para los productos
+    include: [
+      {
+        model: Category,
+        as: "Category",
+        attributes: ["Name"],
+      },
+      {
+        model: Variant,
+        as: "Variants",
+        attributes: ["Stock"],
+        include: [
+          {
+            model: Size,
+            as: "Size",
+            attributes: ["Name"],
+          },
+        ],
+      },
+      {
+        model: ProductImages,
+        as: "Images",
+      },
+    ],
   });
-  const products = new ProductResponse();
+  const products = new ProductVM();
 
   if (productsDB.length > 0) {
     products.Items = productsDB.map(mapProductDBToVM);
     return products;
   } else {
-    products.AddError("No se encontraron productos");
+    products.AddWarning("No se encontraron productos");
   }
 
   return products;
 };
 
 export const getPromocionalProductsRepository =
-  async (): Promise<ProductResponse> => {
+  async (): Promise<PromotionalProductsVM> => {
     const filters: any = { IsActive: true, IsPromocional: true };
+    const products = new PromotionalProductsVM();
 
     const productsDB = await Product.findAll({
       where: filters,
@@ -58,12 +86,11 @@ export const getPromocionalProductsRepository =
         },
       ],
     });
-    const products = new ProductResponse();
 
     if (productsDB.length > 0) {
-      products.Items = productsDB.map(mapProductDBToVM);
+      products.Items = productsDB.map(mapPromotionalDBToVM);
     } else {
-      products.AddError("No se encontraron productos");
+      products.AddWarning("No se encontraron productos");
     }
 
     return products;

@@ -1,4 +1,5 @@
-import { ProductResponse } from "../../Models/Products/Product.response.model";
+import { ProductVM } from "../../Models/Products/ProductVM";
+import { PromotionalProductsVM } from "../../Models/Products/PromotionalProductsVM.model";
 import {
   getAllProductsRepository,
   getPromocionalProductsRepository,
@@ -8,11 +9,11 @@ export const getAllProductsService = async (
   name: string,
   categories: string[],
   IsActive?: boolean
-): Promise<any> => {
+): Promise<ProductVM> => {
   return await getAllProductsRepository(name, categories, IsActive);
 };
 
 export const getPromocionalProductsService =
-  async (): Promise<ProductResponse> => {
+  async (): Promise<PromotionalProductsVM> => {
     return await getPromocionalProductsRepository();
   };

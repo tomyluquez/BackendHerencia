@@ -1,21 +1,24 @@
 import { DataTypes, Model, Optional } from "sequelize";
-import sequelize from "../connectionDB.sequalize";
-import Category from "./Category.model";
+import sequelize from "../../connectionDB.sequalize";
+import Category from "../Category.model";
+import Size from "../Size.model";
+import ProductImages from "./ProductsImages.model";
+import Variant from "../Variant.model";
 
 interface ProductAttributes {
   Id: number;
   Name: string;
   Price: number;
+  Cost: number;
   Discount: number;
-  UrlPhoto: string;
+  Description: string;
   IsActive: boolean;
   IsPromocional: boolean;
   DateCreated: Date;
   DateUpdated: Date;
 }
 
-interface ProductCreationAttributes
-  extends Optional<ProductAttributes, "Id" | "UrlPhoto"> {}
+interface ProductCreationAttributes extends Optional<ProductAttributes, "Id"> {}
 
 class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
@@ -24,14 +27,17 @@ class Product
   public Id!: number;
   public Name!: string;
   public Price!: number;
+  public Cost!: number;
   public Discount!: number;
-  public UrlPhoto!: string;
+  public Description!: string;
   public IsActive!: boolean;
   public IsPromocional!: boolean;
   public CategoryId!: number;
   public Category?: Category;
   public DateCreated!: Date;
   public DateUpdated!: Date;
+  public Variants?: Variant[];
+  public Images?: string[];
 }
 
 Product.init(
@@ -49,12 +55,16 @@ Product.init(
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    Discount: {
+    Cost: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    UrlPhoto: {
-      type: DataTypes.STRING,
+    Discount: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    Description: {
+      type: DataTypes.TEXT,
       allowNull: true,
       defaultValue: null,
     },

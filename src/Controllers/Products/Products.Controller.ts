@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
-import { ProductResponse } from "../../Models/Products/Product.response.model";
+import { ProductVM } from "../../Models/Products/ProductVM";
 import {
   getAllProductsService,
   getPromocionalProductsService,
 } from "../../Services/Products/Products.Service";
+import { PromotionalProductsVM } from "../../Models/Products/PromotionalProductsVM.model";
 
 export const getAllProducts = async (
   req: Request,
   res: Response
-): Promise<any> => {
+): Promise<ProductVM> => {
   const { name, status } = req.query;
   const categories =
     typeof req.query.categories === "string" ? req.query.categories : "";
@@ -17,26 +18,33 @@ export const getAllProducts = async (
     status === undefined || status === "" ? undefined : status === "active";
 
   try {
-    const products: ProductResponse = await getAllProductsService(
+    const response = await getAllProductsService(
       name as string,
       categoriesArray,
       IsActive
     );
-    res.status(200).send(products);
+    res.status(200).send(response);
+    return response;
   } catch (error) {
-    const products = new ProductResponse();
-    products.AddError("Error al cargar los productos");
-    res.status(500).send(products);
+    const response = new ProductVM();
+    response.AddError("Error al cargar los productos");
+    res.status(500).send(response);
+    return response;
   }
 };
 
-export const getPromocionalProducts = async (req: Request, res: Response) => {
+export const getPromocionalProducts = async (
+  req: Request,
+  res: Response
+): Promise<PromotionalProductsVM> => {
+  let response = new PromotionalProductsVM();
   try {
-    const products: ProductResponse = await getPromocionalProductsService();
-    res.status(200).send(products);
+    response = await getPromocionalProductsService();
+    res.status(200).send(response);
   } catch (error) {
-    const products = new ProductResponse();
-    products.AddError("Error al cargar los productos");
-    res.status(500).send(products);
+    response.AddError("Error al cargar los productos");
+    res.status(500).send(response);
   }
+
+  return response;
 };

@@ -1,13 +1,11 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../../db/connectionDB.sequalize";
 import Size from "./Size.model";
-import Product from "./Product.model";
+import Product from "./Products/Product.model";
 
 interface VariantAttributes {
   Id: number;
   Stock: number;
-  DateCreated: Date;
-  DateUpdated: Date;
 }
 
 interface VariantCreationAttributes extends Optional<VariantAttributes, "Id"> {}
@@ -18,8 +16,6 @@ class Variant
 {
   public Id!: number;
   public Stock!: number;
-  public DateCreated!: Date;
-  public DateUpdated!: Date;
   public ProductId!: number;
   public Product!: Product;
   public SizeId!: number;
@@ -37,16 +33,6 @@ Variant.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-    },
-    DateCreated: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    DateUpdated: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
     },
   },
   {
