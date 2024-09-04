@@ -1,0 +1,11 @@
+### Get all products, se puede filtrar por Name, Category y Status a traves de query params
+GET http://localhost:3002/api/v1/products?name=&category=&status=
+Accept: application/json
+
+### Obtener todos los productos promocionales
+GET http://localhost:3002/api/v1/products/promotional
+Accept: application/json
+
+### Obtener listado de todos los productos activos para la pantalla de productos.
+GET http://localhost:3002/api/v1/products/pagedList?name=&categories=reme&sizes=2
+Accept: application/json

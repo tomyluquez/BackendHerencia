@@ -16,49 +16,49 @@ import Shipping from "./Models/Shipping/Shipping.model";
 
 // Asociación de uno a muchos
 Product.belongsTo(Category, {
-  foreignKey: "CategoryId",
-  as: "Category",
+    foreignKey: "CategoryId",
+    as: "Category"
 });
 
 ProductImages.belongsTo(Product, {
-  foreignKey: "ProductId",
-  as: "Product",
+    foreignKey: "ProductId",
+    as: "Product"
 });
 
 Cart.belongsTo(User, {
-  foreignKey: "UserId",
-  as: "User",
+    foreignKey: "UserId",
+    as: "User"
 });
 
 CartItems.belongsTo(Cart, {
-  foreignKey: "CartId",
-  as: "Cart",
+    foreignKey: "CartId",
+    as: "Cart"
 });
 
 CartItems.belongsTo(Variant, {
-  foreignKey: "VariantId",
-  as: "Variant",
+    foreignKey: "VariantId",
+    as: "Variant"
 });
 
 Order.belongsTo(User, {
-  foreignKey: "UserId",
-  as: "User",
+    foreignKey: "UserId",
+    as: "User"
 });
 Order.belongsTo(Promotion, {
-  foreignKey: "PromotionId",
-  as: "Promotion",
+    foreignKey: "PromotionId",
+    as: "Promotion"
 });
 Order.belongsTo(PaymentMethod, {
-  foreignKey: "PaymentMethodId",
-  as: "PaymentMethod",
+    foreignKey: "PaymentMethodId",
+    as: "PaymentMethod"
 });
 Order.belongsTo(ShippingMethod, {
-  foreignKey: "ShippingMethodId",
-  as: "ShippingMethod",
+    foreignKey: "ShippingMethodId",
+    as: "ShippingMethod"
 });
 Order.belongsTo(OrderStatus, {
-  foreignKey: "OrderStatusId",
-  as: "OrderStatus",
+    foreignKey: "OrderStatusId",
+    as: "OrderStatus"
 });
 
 Variant.belongsTo(Product, { foreignKey: "ProductId", as: "Product" });
@@ -66,31 +66,34 @@ Variant.belongsTo(Product, { foreignKey: "ProductId", as: "Product" });
 Variant.belongsTo(Size, { foreignKey: "SizeId", as: "Size" });
 
 OrderItems.belongsTo(Order, {
-  foreignKey: "OrderId",
-  as: "Order",
+    foreignKey: "OrderId",
+    as: "Order"
 });
 OrderItems.belongsTo(Variant, {
-  foreignKey: "VariantId",
-  as: "Variant",
+    foreignKey: "VariantId",
+    as: "Variant"
 });
 
 Shipping.belongsTo(Order, {
-  foreignKey: "OrderId",
-  as: "Order",
+    foreignKey: "OrderId",
+    as: "Order"
 });
 
 // Asociación de muchos a uno
-Category.hasMany(Product);
+Category.hasMany(Product, {
+    foreignKey: "CategoryId",
+    as: "Products"
+});
 User.hasMany(Cart);
 Cart.hasMany(CartItems);
 Variant.hasMany(CartItems);
 Product.hasMany(Variant, {
-  foreignKey: "ProductId",
-  as: "Variants",
+    foreignKey: "ProductId",
+    as: "Variants"
 });
 Product.hasMany(ProductImages, {
-  foreignKey: "ProductId",
-  as: "Images",
+    foreignKey: "ProductId",
+    as: "Images"
 });
 Size.hasMany(Variant);
 User.hasMany(Order);

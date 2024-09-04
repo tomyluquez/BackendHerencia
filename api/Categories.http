@@ -1,0 +1,30 @@
+### Obtener todas las categorias, se puede filtrar por estado a traves de query params
+GET http://localhost:3002/api/v1/categories?status=
+Accept: application/json
+
+### Obtener una categoria por Id a traves de query params
+GET http://localhost:3002/api/v1/categories/category?id=7
+Accept: application/json
+
+### Cambiar de estado una categoria, hay que pasarle el id y el status en el body
+PUT http://localhost:3002/api/v1/categories/category
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "id": 4,
+    "status": "inactive"
+}
+
+### Guardar o editar categoria, si se le pasa el id es porque es para editar, sino crea una nueva.
+POST http://localhost:3002/api/v1/categories/category
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "Id": 2,
+    "Image": "sadsdasd",
+    "Name" : "pantalon"
+}
