@@ -1,24 +1,33 @@
 import Category from "../../db/Models/Category.model";
 import Product from "../../db/Models/Products/Product.model";
-import { Errors } from "../../Helpers/Errors/Messages";
+import { GetAllCategoriesSearchDTO } from "../../DTO/Categories/GetAllCategoriesSearchDTO";
+import { Errors } from "../../Text/Errors.Messages";
 import { mapCategoryDBToVM } from "../../Helpers/Maps/MapCategoryDBToVm";
 import { ICategoryVM } from "../../Interfaces/Category/ICategoryVM";
 import { CategoryListVM } from "../../Models/Category/CategoryListVM";
 import { CategoryVM } from "../../Models/Category/CategoryVM";
 import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
+import { Success } from "../../Text/Succes.Messages";
 
-export const getActivesCategoriesRepository = async (IsActive?: boolean): Promise<CategoryListVM> => {
+export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchDTO): Promise<CategoryListVM> => {
     const categories = new CategoryListVM();
-    const filters: any = {};
+    const offset = (search.Page - 1) * search.Limit;
+    let filters: any = {};
 
-    if (IsActive !== undefined) {
-        filters.IsActive = IsActive;
+    if (search.IsActive !== undefined) {
+        filters.where = { IsActive: search.IsActive };
     }
+
+    console.log(search, filters);
+
     const categoriesDB = await Category.findAll({
-        where: filters
+        where: filters,
+        offset,
+        limit: search.Limit
     });
     if (categoriesDB.length > 0) {
         categories.Items = categoriesDB.map(mapCategoryDBToVM);
+        categories.TotalItems = await Category.count({ where: filters });
     } else {
         categories.setWarning("No se encontraron categorías");
     }
@@ -63,10 +72,10 @@ export const changeStatusRepsitory = async (Id: number, IsActive: boolean) => {
 
         // Verificamos si se actualizó alguna fila
         if (affectedRows === 0) {
-            throw new Error("No se encontró la categoría o no se pudo actualizar.");
+            throw new Error(Errors.Category);
         }
 
-        response.setSuccess("La categoría se actualizo correctamente.");
+        response.setSuccess(Success.UpdateCategory);
     } catch (error: any) {
         response.setError(error.message);
     }
@@ -88,6 +97,6 @@ export const saveCategoryRepository = async (category: ICategoryVM): Promise<Res
             return response;
         }
     }
-    response.setSuccess("La categoría se actualizo correctamente.");
+    response.setSuccess(Success.SaveCategory);
     return response;
 };

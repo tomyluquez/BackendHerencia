@@ -1,11 +1,27 @@
-### Get all products, se puede filtrar por Name, Category y Status a traves de query params
-GET http://localhost:3002/api/v1/products?name=&category=&status=
+### Get all products, se puede filtrar por Name, Category y Status a traves de query params, se tiene que pasar paginación (todos opcionales)
+GET http://localhost:3002/api/v1/products?name=&categories=&status=&page=&limit=
 Accept: application/json
 
-### Obtener todos los productos promocionales
+### Obtener todos los productos promocionales, sin filtros ni paginación
 GET http://localhost:3002/api/v1/products/promotional
 Accept: application/json
 
-### Obtener listado de todos los productos activos para la pantalla de productos.
-GET http://localhost:3002/api/v1/products/pagedList?name=&categories=reme&sizes=2
+### Obtener listado de todos los productos activos, se puede filtrar por nombre, categorias o talles. Se tiene que enviar paginación
+GET http://localhost:3002/api/v1/products/pagedList?name=&categories=&sizes=&page=&limit=
 Accept: application/json
+
+### Obtener producto por id, pasar el id por query params
+GET http://localhost:3002/api/v1/products/product?id=3
+Accept: application/json
+
+
+### Cambiar de estado un producto, hay que pasarle el id y el status en el body
+PUT http://localhost:3002/api/v1/products/product
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "id": 3,
+    "status": "active"
+}

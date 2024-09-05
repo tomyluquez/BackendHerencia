@@ -1,7 +1,7 @@
-export interface ProductPagedListSearchDTO {
+export interface GetAllProductsSearchDTO {
     Name: string;
     Categories: string[];
-    Sizes: number[];
+    IsActive?: boolean | undefined;
     Page: number;
     Limit: number;
 }

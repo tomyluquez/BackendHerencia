@@ -1,5 +1,5 @@
-### Obtener todas las categorias, se puede filtrar por estado a traves de query params
-GET http://localhost:3002/api/v1/categories?status=
+### Obtener todas las categorias, se puede filtrar por estado a traves de query params. se puede enviar paginación
+GET http://localhost:3002/api/v1/categories?status=&page=&limit=
 Accept: application/json
 
 ### Obtener una categoria por Id a traves de query params
@@ -13,7 +13,7 @@ Authorization: token xxx
 Content-Type: application/json
 
 {
-    "id": 4,
+    "id": 7,
     "status": "inactive"
 }
 

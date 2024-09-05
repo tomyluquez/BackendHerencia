@@ -1,21 +1,24 @@
 import { Request, Response } from "express";
-import {
-    changeStatusService,
-    getActivesCategoriesService,
-    getCategoryByIdService,
-    saveCategoryService
-} from "../../Services/Categories/Categories.Service";
+import { changeStatusService, getAllCategoriesService, getCategoryByIdService, saveCategoryService } from "../../Services/Categories/Categories.Service";
 import { CategoryListVM } from "../../Models/Category/CategoryListVM";
 import { CategoryVM } from "../../Models/Category/CategoryVM";
 import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
-import { Errors } from "../../Helpers/Errors/Messages";
+import { Errors } from "../../Text/Errors.Messages";
+import { GetAllCategoriesSearchDTO } from "../../DTO/Categories/GetAllCategoriesSearchDTO";
+import { convertedStatusFilter } from "../../Helpers/Filters/ConvertedFilters";
 
-export const getActivesCategories = async (req: Request, res: Response): Promise<CategoryListVM> => {
-    const { status } = req.query;
+export const getAllCategories = async (req: Request, res: Response): Promise<CategoryListVM> => {
+    const { status, page, limit } = req.query;
+    const IsActive = convertedStatusFilter(status as string);
 
-    const IsActive = status === undefined || status === "" ? undefined : status === "active";
+    const search: GetAllCategoriesSearchDTO = {
+        IsActive,
+        Page: page ? Number(page) : 1,
+        Limit: limit ? Number(limit) : 10000
+    };
+
     try {
-        const response = await getActivesCategoriesService(IsActive); // Obtener la respuesta directamente del servicio
+        const response = await getAllCategoriesService(search); // Obtener la respuesta directamente del servicio
         res.status(200).send(response);
         return response;
     } catch (error) {
@@ -30,7 +33,7 @@ export const getCategoryById = async (req: Request, res: Response): Promise<Cate
     try {
         const { id } = req.query;
         if (!id) {
-            throw new Error("El id es requerido");
+            throw new Error(Errors.IdRequired);
         }
         const response = await getCategoryByIdService(+id);
         res.status(200).send(response);
@@ -49,13 +52,13 @@ export const changeStatuts = async (req: Request, res: Response): Promise<Respon
         let IsActive;
 
         if (!status || (status !== "active" && status !== "inactive")) {
-            throw new Error("El status es requerido");
+            throw new Error(Errors.StatusRequired);
         } else {
             IsActive = status === "active" ? true : false;
         }
 
         if (!id) {
-            throw new Error("El id es requerido");
+            throw new Error(Errors.IdRequired);
         }
 
         const response = await changeStatusService(+id, IsActive);
