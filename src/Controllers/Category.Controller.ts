@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { changeStatusService, getAllCategoriesService, getCategoryByIdService, saveCategoryService } from "../../Services/Categories/Categories.Service";
-import { CategoryListVM } from "../../Models/Category/CategoryListVM";
-import { CategoryVM } from "../../Models/Category/CategoryVM";
-import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
-import { Errors } from "../../Text/Errors.Messages";
-import { GetAllCategoriesSearchDTO } from "../../DTO/Categories/GetAllCategoriesSearchDTO";
-import { convertedStatusFilter } from "../../Helpers/Filters/ConvertedFilters";
+import { changeStatusService, getAllCategoriesService, getCategoryByIdService, saveCategoryService } from "../Services/Categories.Service";
+import { CategoryListVM } from "../Models/Category/CategoryListVM";
+import { CategoryVM } from "../Models/Category/CategoryVM";
+import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
+import { Errors } from "../Text/Errors.Messages";
+import { GetAllCategoriesSearchDTO } from "../DTO/Categories/GetAllCategoriesSearchDTO";
+import { convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
 
 export const getAllCategories = async (req: Request, res: Response): Promise<CategoryListVM> => {
     const { status, page, limit } = req.query;
@@ -73,7 +73,6 @@ export const changeStatuts = async (req: Request, res: Response): Promise<Respon
 };
 
 export const saveCategory = async (req: Request, res: Response): Promise<ResponseMessages> => {
-    console.log(req.body);
     try {
         const response = await saveCategoryService(req.body);
         res.status(200).send(response);

@@ -1,18 +1,20 @@
 import { Op } from "sequelize";
-import { ProductVM } from "../../Models/Products/ProductVM";
-import Product from "../../db/Models/Products/Product.model";
-import Category from "../../db/Models/Category.model";
-import Variant from "../../db/Models/Variant.model";
-import ProductImages from "../../db/Models/Products/ProductsImages.model";
-import Size from "../../db/Models/Size.model";
-import { PromotionalProductsVM } from "../../Models/Products/PromotionalProductsVM.model";
-import { ProductPagedListSearchDTO } from "../../DTO/Products/ProductPagedListSearchDTO";
-import { ProductPagedListVM } from "../../Models/Products/ProductPagedListVM";
-import { Errors } from "../../Text/Errors.Messages";
-import { mapProductDBToProductPagedListVM, mapProductDBToVM, mapPromotionalDBToVM } from "../../Helpers/Maps/MapProductsDBToVM";
-import { GetAllProductsSearchDTO } from "../../DTO/Products/GetAllProductsSearchDTO";
-import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
-import { Success } from "../../Text/Succes.Messages";
+import { ProductVM } from "../Models/Products/ProductVM";
+import Product from "../db/Models/Products/Product.model";
+import Category from "../db/Models/Category.model";
+import Variant from "../db/Models/Variant.model";
+import ProductImages from "../db/Models/Products/ProductsImages.model";
+import Size from "../db/Models/Size.model";
+import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.model";
+import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearchDTO";
+import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
+import { Errors } from "../Text/Errors.Messages";
+import { mapProductDBToProductPagedListVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProductsDBToVM";
+import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
+import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
+import { Success } from "../Text/Succes.Messages";
+import { IProductVM } from "../Interfaces/Products/IProductVM";
+import sequelize from "../db/connectionDB.sequalize";
 
 export const getAllProductsRepository = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     const offset = (search.Page - 1) * search.Limit;
@@ -65,7 +67,7 @@ export const getAllProductsRepository = async (search: GetAllProductsSearchDTO):
 };
 
 export const getPromocionalProductsRepository = async (): Promise<PromotionalProductsVM> => {
-    const filters: any = { IsActive: true, IsPromocional: true };
+    const filters: any = { IsActive: true, IsPromotional: true };
     const products = new PromotionalProductsVM();
 
     const productsDB = await Product.findAll({
@@ -271,5 +273,108 @@ export const changeStatusRepsitory = async (Id: number, IsActive: boolean) => {
     } catch (error: any) {
         response.setError(error.message);
     }
+    return response;
+};
+
+export const getProductIdByNameRepository = async (Name: string): Promise<number> => {
+    const productDB = await Product.findOne({ where: { Name } });
+    if (productDB) {
+        return productDB.Id!;
+    } else {
+        return 0;
+    }
+};
+
+export const saveProductRepository = async (product: IProductVM): Promise<ResponseMessages> => {
+    const transaction = await sequelize.transaction();
+    const response = new ResponseMessages();
+    const productToDb = MapProductVMToProductDB(product);
+    if (product.Id) {
+        const [affectedRows] = await Product.update(
+            {
+                ...productToDb,
+                DateUpdated: new Date()
+            },
+            { where: { Id: product.Id }, transaction }
+        );
+        const existingVariants = await Variant.findAll({
+            where: { ProductId: product.Id },
+            transaction
+        });
+
+        if (productToDb.Variants && productToDb.Variants.length > 0) {
+            const variantsToCreate = [];
+            const variantsToUpdate = [];
+            const existingVariantIds = new Set(existingVariants.map((v) => v.Id));
+            const incomingVariantIds = new Set();
+
+            for (const variant of productToDb.Variants) {
+                if (variant.Id && existingVariantIds.has(variant.Id)) {
+                    // Es una variante existente, actualizarla
+                    variantsToUpdate.push(variant);
+                    incomingVariantIds.add(variant.Id);
+                } else {
+                    // Es una variante nueva, crearla
+                    variantsToCreate.push({
+                        ProductId: productToDb.Id!,
+                        SizeId: variant.SizeId!,
+                        Stock: variant.Stock!
+                    });
+                }
+            }
+
+            if (variantsToUpdate.length > 0) {
+                for (const variant of variantsToUpdate) {
+                    await Variant.update(
+                        {
+                            SizeId: variant.SizeId,
+                            Stock: variant.Stock
+                        },
+                        { where: { Id: variant.Id }, transaction }
+                    );
+                }
+            }
+
+            // Crear nuevas variantes
+            if (variantsToCreate.length > 0) {
+                await Variant.bulkCreate(variantsToCreate, { transaction });
+            }
+
+            // Eliminar variantes que ya no están en la lista de entrada
+            const variantsToDelete = existingVariants.filter((v) => !incomingVariantIds.has(v.Id));
+
+            if (variantsToDelete.length > 0) {
+                const variantIdsToDelete = variantsToDelete.map((v) => v.Id);
+                await Variant.destroy({
+                    where: { Id: variantIdsToDelete },
+                    transaction
+                });
+            }
+
+            await transaction.commit(); // Confirmar la transacción
+        }
+
+        if (affectedRows === 0) {
+            response.setError(Errors.ProductSave);
+            return response;
+        }
+    } else {
+        const newproduct = await Product.create(productToDb, { transaction });
+        if (productToDb.Variants && productToDb.Variants.length > 0) {
+            const variantsToCreate = productToDb.Variants.map((variant) => ({
+                SizeId: variant.SizeId!,
+                Stock: variant.Stock!,
+                ProductId: newproduct.Id!
+            }));
+
+            await Variant.bulkCreate(variantsToCreate, { transaction });
+        }
+        await transaction.commit();
+        if (!newproduct) {
+            response.setError(Errors.ProductSave);
+            return response;
+        }
+    }
+    response.setSuccess(Success.SaveProduct);
     return response;
 };

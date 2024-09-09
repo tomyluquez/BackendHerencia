@@ -1,12 +1,12 @@
-import Category from "../../db/Models/Category.model";
-import { GetAllCategoriesSearchDTO } from "../../DTO/Categories/GetAllCategoriesSearchDTO";
-import { Errors } from "../../Text/Errors.Messages";
-import { validateHasProductsInCategory, validateIfExistsCategoryWhitName } from "../../Helpers/Validators/CategoryValidatos";
-import { ICategoryVM } from "../../Interfaces/Category/ICategoryVM";
-import { CategoryListVM } from "../../Models/Category/CategoryListVM";
-import { CategoryVM } from "../../Models/Category/CategoryVM";
-import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
-import { changeStatusRepsitory, getAllCategoriesRepository, getCategoryByIdRepository, saveCategoryRepository } from "../../Repositories/Categories/Categories.Repository";
+import Category from "../db/Models/Category.model";
+import { GetAllCategoriesSearchDTO } from "../DTO/Categories/GetAllCategoriesSearchDTO";
+import { Errors } from "../Text/Errors.Messages";
+import { validateHasProductsInCategory, validateIfExistsCategoryWhitName } from "../Helpers/Validators/CategoryValidatos";
+import { ICategoryVM } from "../Interfaces/Category/ICategoryVM";
+import { CategoryListVM } from "../Models/Category/CategoryListVM";
+import { CategoryVM } from "../Models/Category/CategoryVM";
+import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
+import { changeStatusRepsitory, getAllCategoriesRepository, getCategoryByIdRepository, saveCategoryRepository } from "../Repositories/Categories.Repository";
 
 export const getAllCategoriesService = async (search: GetAllCategoriesSearchDTO): Promise<CategoryListVM> => {
     return await getAllCategoriesRepository(search);

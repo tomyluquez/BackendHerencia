@@ -3,7 +3,7 @@ GET http://localhost:3002/api/v1/categories?status=&page=&limit=
 Accept: application/json
 
 ### Obtener una categoria por Id a traves de query params
-GET http://localhost:3002/api/v1/categories/category?id=7
+GET http://localhost:3002/api/v1/categories/category
 Accept: application/json
 
 ### Cambiar de estado una categoria, hay que pasarle el id y el status en el body
@@ -24,7 +24,6 @@ Authorization: token xxx
 Content-Type: application/json
 
 {
-    "Id": 2,
     "Image": "sadsdasd",
-    "Name" : "pantalon"
+    "Name" : "Bodyssssss"
 }

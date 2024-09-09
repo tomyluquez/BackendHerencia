@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import { ProductVM } from "../../Models/Products/ProductVM";
-import { changeStatusService, getAllProductsService, getProductByIdService, getProductsPagedListsService, getPromocionalProductsService } from "../../Services/Products/Products.Service";
-import { PromotionalProductsVM } from "../../Models/Products/PromotionalProductsVM.model";
-import { Errors } from "../../Text/Errors.Messages";
-import { ProductPagedListVM } from "../../Models/Products/ProductPagedListVM";
-import { ProductPagedListSearchDTO } from "../../DTO/Products/ProductPagedListSearchDTO";
-import { convertedFilters, convertedStatusFilter } from "../../Helpers/Filters/ConvertedFilters";
-import { GetAllProductsSearchDTO } from "../../DTO/Products/GetAllProductsSearchDTO";
-import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
+import { ProductVM } from "../Models/Products/ProductVM";
+import { changeStatusService, getAllProductsService, getProductByIdService, getProductsPagedListsService, getPromocionalProductsService, saveProductService } from "../Services/Products.Service";
+import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.model";
+import { Errors } from "../Text/Errors.Messages";
+import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
+import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearchDTO";
+import { convertedFilters, convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
+import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
+import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
+import { MapBodyToProductDB } from "../Helpers/Maps/MapProductsDBToVM";
 
 export const getAllProducts = async (req: Request, res: Response): Promise<ProductVM> => {
     const { name, status, page, limit } = req.query;
@@ -110,6 +111,21 @@ export const changeStatuts = async (req: Request, res: Response): Promise<Respon
     } catch (error: any) {
         const response = new ResponseMessages();
         response.setError(error.message || Errors.ProductChangeState);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
+export const saveProduct = async (req: Request, res: Response): Promise<ResponseMessages> => {
+    const product = req.body;
+
+    try {
+        const response = await saveProductService(product);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        const response = new ProductVM();
+        response.setError(error.message || Errors.Products);
         res.status(500).send(response);
         return response;
     }

@@ -1,4 +1,6 @@
 export interface IProductVariants {
-  Stock: number;
-  Name: string;
+    Id?: number;
+    Stock: number;
+    Name: string;
+    SizeId?: number;
 }

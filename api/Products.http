@@ -1,5 +1,5 @@
 ### Get all products, se puede filtrar por Name, Category y Status a traves de query params, se tiene que pasar paginación (todos opcionales)
-GET http://localhost:3002/api/v1/products?name=&categories=&status=&page=&limit=
+GET http://localhost:3002/api/v1/products?name=&categories=&status=&page=&limit=2
 Accept: application/json
 
 ### Obtener todos los productos promocionales, sin filtros ni paginación
@@ -7,7 +7,7 @@ GET http://localhost:3002/api/v1/products/promotional
 Accept: application/json
 
 ### Obtener listado de todos los productos activos, se puede filtrar por nombre, categorias o talles. Se tiene que enviar paginación
-GET http://localhost:3002/api/v1/products/pagedList?name=&categories=&sizes=&page=&limit=
+GET http://localhost:3002/api/v1/products/pagedList?name=&categories=pantalon&sizes=&page=&limit=
 Accept: application/json
 
 ### Obtener producto por id, pasar el id por query params
@@ -24,4 +24,18 @@ Content-Type: application/json
 {
     "id": 3,
     "status": "active"
+}
+
+### Crear producto
+POST http://localhost:3002/api/v1/products
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "Name": "Remera manga corta",
+    "Price": 2000,
+    "Cost": 1000,
+    "Description": "Remera manga corta de algodon",
+    "CategoryId": 2
 }

@@ -1,13 +1,13 @@
-import Category from "../../db/Models/Category.model";
-import Product from "../../db/Models/Products/Product.model";
-import { GetAllCategoriesSearchDTO } from "../../DTO/Categories/GetAllCategoriesSearchDTO";
-import { Errors } from "../../Text/Errors.Messages";
-import { mapCategoryDBToVM } from "../../Helpers/Maps/MapCategoryDBToVm";
-import { ICategoryVM } from "../../Interfaces/Category/ICategoryVM";
-import { CategoryListVM } from "../../Models/Category/CategoryListVM";
-import { CategoryVM } from "../../Models/Category/CategoryVM";
-import { ResponseMessages } from "../../Models/Errors/ResponseMessages.model";
-import { Success } from "../../Text/Succes.Messages";
+import Category from "../db/Models/Category.model";
+import Product from "../db/Models/Products/Product.model";
+import { GetAllCategoriesSearchDTO } from "../DTO/Categories/GetAllCategoriesSearchDTO";
+import { Errors } from "../Text/Errors.Messages";
+import { mapCategoryDBToVM } from "../Helpers/Maps/MapCategoryDBToVm";
+import { ICategoryVM } from "../Interfaces/Category/ICategoryVM";
+import { CategoryListVM } from "../Models/Category/CategoryListVM";
+import { CategoryVM } from "../Models/Category/CategoryVM";
+import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
+import { Success } from "../Text/Succes.Messages";
 
 export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchDTO): Promise<CategoryListVM> => {
     const categories = new CategoryListVM();
@@ -17,8 +17,6 @@ export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchD
     if (search.IsActive !== undefined) {
         filters.where = { IsActive: search.IsActive };
     }
-
-    console.log(search, filters);
 
     const categoriesDB = await Category.findAll({
         where: filters,
