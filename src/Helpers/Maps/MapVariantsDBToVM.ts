@@ -4,8 +4,11 @@ import { IProductVariants } from "../../Interfaces/Products/IProductsVariants";
 
 export const mapVariantsProductDBToVM = (VariantDB: Variant): IProductVariants => {
     return {
+        Id: VariantDB.Id,
         Stock: VariantDB.Stock,
-        Name: VariantDB.Size?.Name!
+        Name: VariantDB.Size?.Name!,
+        SizeId: VariantDB.SizeId,
+        Product: VariantDB.Product
     };
 };
 

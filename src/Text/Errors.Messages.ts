@@ -17,5 +17,18 @@ export enum Errors {
     ProductVariants = "Error al cargar el stock, por favor intente nuevamente.",
 
     IdRequired = "El id es requerido.",
-    StatusRequired = "El status es requerido."
+    StatusRequired = "El status es requerido.",
+    QuantityRequired = "La cantidad es requerida.",
+
+    UpdateStock = "Error al actualizar el stock, por favor intente nuevamente",
+
+    Cart = "Error al cargar el carrito, por favor intente nuevamente.",
+    CartUserNotFound = "El usuario no tiene carritos activos",
+    CartEmpty = "El carrito esta vacio",
+    CartItems = "Error al obtener los productos del carrito, por favor intente nuevamente.",
+    CartItem = "Error al guardar el producto, por favor intente nuevamente.",
+
+    HasNotStock = "No hay stock suficiente",
+
+    Variant = "Error al cargar el stock"
 }

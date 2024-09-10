@@ -6,6 +6,7 @@ import { RouterProducts } from "./Routes/Products.routes";
 import { syncDatabase } from "./db/syncdb";
 import { RouterCategories } from "./Routes/Category.routes";
 import { RouterVariants } from "./Routes/Variant.routes";
+import { RouterCart } from "./Routes/Cart.routes";
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/api/v1/products", RouterProducts);
 app.use("/api/v1/categories", RouterCategories);
 app.use("/api/v1/variants", RouterVariants);
+app.use("/api/v1/cart", RouterCart);
 
 app.use("/", (req, res) => res.status(404).send("La ruta no fue encontrada"));
 

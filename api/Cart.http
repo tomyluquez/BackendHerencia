@@ -1,0 +1,14 @@
+### obtener los items del carrito de cada usuario, hay que pasar el userId por query params
+GET http://localhost:3002/api/v1/cart/cartItems?userId=1
+
+### Agregar producto al carrito, hay que pasar el variantId, quantity y cartId por body
+POST http://localhost:3002/api/v1/cart/cartItem
+Accept: application/json
+Authorization: token xx
+Content-Type: application/json
+
+{
+    "variantId" : 2,
+    "cartId": 1,
+    "quantity": 1
+}

@@ -86,7 +86,10 @@ Category.hasMany(Product, {
 });
 User.hasMany(Cart);
 Cart.hasMany(CartItems);
-Variant.hasMany(CartItems);
+Variant.hasMany(CartItems, {
+    foreignKey: "VariantId",
+    as: "CartItems"
+});
 Product.hasMany(Variant, {
     foreignKey: "ProductId",
     as: "Variants"
