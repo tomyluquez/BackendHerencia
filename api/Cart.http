@@ -10,5 +10,27 @@ Content-Type: application/json
 {
     "variantId" : 2,
     "cartId": 1,
-    "quantity": 1
+    "quantity": 2
+}
+
+### eliminar item del carrrito, hay que pasarle el id del item a travaes del body
+DELETE http://localhost:3002/api/v1/cart/cartItem
+Accept: application/json
+Authorization: token xx
+Content-Type: application/json
+
+{
+    "itemId": 4
+}
+
+### sumar o restar cantidades de un item en el carrito, pasar el itemId, quantity y action
+POST http://localhost:3002/api/v1/cart/cartItems
+Accept: application/json
+Authorization: token xx
+Content-Type: application/json
+
+{
+    "itemId" : 9,   
+    "quantity": 1,
+    "action": "substract"
 }

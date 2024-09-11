@@ -7,5 +7,7 @@ export enum Success {
 
     UpdateStock = "El stock se actualizó correctamente.",
 
-    AddCartItem = "El producto se ha agregado correctamente."
+    AddCartItem = "El producto se ha agregado correctamente.",
+    RemoveCartItem = "El producto se ha quitado correctamente.",
+    UpdateQuantityCartItem = "La cantidad del producto se actualizó correctamente."
 }

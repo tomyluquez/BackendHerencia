@@ -1,5 +1,6 @@
 import CartItems from "../../db/Models/Cart/CartItems.model";
 import { AddItemCartDTO } from "../../DTO/Cart/AddItemCartDTO";
+import { UpdateQuantityItemCartDTO } from "../../DTO/Cart/UpdateQuantityItemCartDTO";
 import { ICartItemsVM } from "../../Interfaces/Cart/ICartItemsVM";
 
 export const mapCartItemsDBToVM = (cartItemDB: CartItems): ICartItemsVM => {
@@ -17,5 +18,13 @@ export const mapItemCartBodyToDTO = (variantId: number, cartId: number, quantity
         VariantId: variantId,
         CartId: cartId,
         Quantity: quantity
+    };
+};
+
+export const mapUpdateQuantityItemCartBodyToDTO = (itemId: number, quantity: number, action: "add" | "substract"): UpdateQuantityItemCartDTO => {
+    return {
+        Quantity: +quantity,
+        ItemId: +itemId,
+        Action: action
     };
 };
