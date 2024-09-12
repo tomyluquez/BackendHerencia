@@ -1,0 +1,2 @@
+### Obtener la informacion del checkout
+GET http://localhost:3002/api/v1/checkout?cartId=1

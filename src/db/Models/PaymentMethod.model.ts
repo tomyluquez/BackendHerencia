@@ -2,45 +2,42 @@ import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../../db/connectionDB.sequalize";
 
 interface PaymentMethodAttributes {
-  Id: number;
-  Name: string;
-  value: string;
+    Id: number;
+    Name: string;
+    Discount: number;
 }
 
-interface PaymentMethodCreationAttributes
-  extends Optional<PaymentMethodAttributes, "Id"> {}
+interface PaymentMethodCreationAttributes extends Optional<PaymentMethodAttributes, "Id" | "Discount"> {}
 
-class PaymentMethod
-  extends Model<PaymentMethodAttributes, PaymentMethodCreationAttributes>
-  implements PaymentMethodAttributes
-{
-  public Id!: number;
-  public Name!: string;
-  public value!: string;
+class PaymentMethod extends Model<PaymentMethodAttributes, PaymentMethodCreationAttributes> implements PaymentMethodAttributes {
+    public Id!: number;
+    public Name!: string;
+    public Discount!: number;
 }
 
 PaymentMethod.init(
-  {
-    Id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+    {
+        Id: {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+        },
+        Name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        Discount: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: 0
+        }
     },
-    Name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    value: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    tableName: "PaymentMethods",
-    modelName: "PaymentMethod",
-    timestamps: false,
-  }
+    {
+        sequelize,
+        tableName: "PaymentMethods",
+        modelName: "PaymentMethod",
+        timestamps: false
+    }
 );
 
 export default PaymentMethod;

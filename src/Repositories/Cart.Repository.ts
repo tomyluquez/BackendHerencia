@@ -123,7 +123,9 @@ export const updateQuantityCartItemRepository = async (bodyParams: UpdateQuantit
             ? item!.Quantity + bodyParams.Quantity // Sumar cantidad
             : item!.Quantity - bodyParams.Quantity; // Restar cantidad
 
-    const [affectedRows] = await CartItems.update({ Quantity: newQuantity }, { where: { Id: item!.Id } });
+    const newTotalPrice = (item!.TotalPrice = item!.UnitPrice * newQuantity);
+
+    const [affectedRows] = await CartItems.update({ Quantity: newQuantity, TotalPrice: newTotalPrice }, { where: { Id: item!.Id } });
 
     if (!affectedRows) {
         response.setError(Errors.CartItem);

@@ -1,0 +1,23 @@
+### Obtener la informacion del negocio, se puede pasar el status por queryParams para diferenciar de activos y no activos
+GET http://localhost:3002/api/v1/config/companyInfo?status=
+
+### Obtener el menu
+GET http://localhost:3002/api/v1/config/menuInfo
+
+### Obtener las configuraciones
+
+GET http://localhost:3002/api/v1/config/configInfo
+
+### Crear o actualizar una informacion de la compania. Hay que pasarle, el id si exsite, el name, el value, el icon y el isactive
+POST http://localhost:3002/api/v1/config/companyInfo
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "Id": 4,
+    "Name" : "TikTok",
+    "Value": "urlTikTok",
+    "Icon": "Icon",
+    "IsActive": "inactive"
+}

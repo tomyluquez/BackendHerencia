@@ -8,6 +8,8 @@ import { CategoryListVM } from "../Models/Category/CategoryListVM";
 import { CategoryVM } from "../Models/Category/CategoryVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Success } from "../Text/Succes.Messages";
+import { col, fn, Op } from "sequelize";
+import sequelize from "../db/connectionDB.sequalize";
 
 export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchDTO): Promise<CategoryListVM> => {
     const categories = new CategoryListVM();
@@ -52,7 +54,11 @@ export const getCategoryByIdRepository = async (id: number, includeProducts = fa
 };
 
 export const getCategoryIdByNameRepository = async (Name: string): Promise<number> => {
-    const categoryDB = await Category.findOne({ where: { Name } });
+    const categoryDB = await Category.findOne({
+        where: {
+            [Op.and]: [sequelize.where(sequelize.fn("LOWER", sequelize.col("Name")), Name)]
+        }
+    });
     if (categoryDB) {
         return categoryDB.Id!;
     } else {

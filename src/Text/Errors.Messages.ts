@@ -33,5 +33,17 @@ export enum Errors {
     HasNotStock = "No hay stock suficiente",
     NotSubstract = "No se puede restar menos de 0",
 
-    Variant = "Error al cargar el stock"
+    Variant = "Error al cargar el stock",
+
+    CheckoutInfo = "Error al cargar la informacion de la compra, por favor intente nuevamente.",
+
+    CompanyInfo = "Error al cargar la informacion de la empresa, por favor intente nuevamente.",
+    CompanyInfoNotFound = "La informacion de la empresa no existe.",
+    CompanySave = "Error al guardar la informacion de la empresa, por favor intente nuevamente.",
+
+    Menu = "Error al cargar el menu, por favor intente nuevamente.",
+    MenuNotFound = "El menu no existe.",
+
+    Config = "Error al cargar la configuracion, por favor intente nuevamente.",
+    ConfigNotFound = "La configuracion no existe."
 }
