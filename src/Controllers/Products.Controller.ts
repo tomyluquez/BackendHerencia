@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import { ProductVM } from "../Models/Products/ProductVM";
-import { changeStatusService, getAllProductsService, getProductByIdService, getProductsPagedListsService, getPromocionalProductsService, saveProductService } from "../Services/Products.Service";
+import {
+    changeStatusService,
+    getAllProductsService,
+    getPriceListProductsService,
+    getProductByIdService,
+    getProductsPagedListsService,
+    getPromocionalProductsService,
+    saveProductService,
+    updatePriceProductService
+} from "../Services/Products.Service";
 import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.model";
 import { Errors } from "../Text/Errors.Messages";
 import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
@@ -8,20 +17,17 @@ import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearc
 import { convertedFilters, convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
 import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
-import { MapBodyToProductDB } from "../Helpers/Maps/MapProductsDBToVM";
+import { MapBodyToProductDB, mapGetAllProductsQueryToDTO, mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProductsDBToVM";
+import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
+import { mapPaginationQueryToDTO } from "../Helpers/Maps/Maps";
+import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
 
 export const getAllProducts = async (req: Request, res: Response): Promise<ProductVM> => {
     const { name, status, page, limit } = req.query;
     const categories = convertedFilters(req.query.categories);
     const IsActive = convertedStatusFilter(status as string);
 
-    const search: GetAllProductsSearchDTO = {
-        Name: name as string,
-        Categories: categories,
-        IsActive,
-        Page: page ? Number(page) : 1,
-        Limit: limit ? Number(limit) : 10000
-    };
+    const search: GetAllProductsSearchDTO = mapGetAllProductsQueryToDTO(name as string, IsActive, categories, page as string, limit as string);
 
     try {
         const response = await getAllProductsService(search);
@@ -49,17 +55,10 @@ export const getPromocionalProducts = async (req: Request, res: Response): Promi
 };
 
 export const getProductsPagedLists = async (req: Request, res: Response): Promise<ProductPagedListVM> => {
-    const { name, page, limit } = req.query;
     const categories = convertedFilters(req.query.categories);
     const sizes = convertedFilters(req.query.sizes);
 
-    const search: ProductPagedListSearchDTO = {
-        Name: name as string,
-        Categories: categories,
-        Sizes: sizes.map((s) => Number(s)),
-        Page: page ? Number(page) : 1,
-        Limit: limit ? Number(limit) : 10000
-    };
+    const search: ProductPagedListSearchDTO = mapProductPagedListQueryToDTO(req.query, categories, sizes);
     try {
         const response = await getProductsPagedListsService(search);
         res.status(200).send(response);
@@ -126,6 +125,34 @@ export const saveProduct = async (req: Request, res: Response): Promise<Response
     } catch (error: any) {
         const response = new ProductVM();
         response.setError(error.message || Errors.Products);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
+export const getPriceListProducts = async (req: Request, res: Response): Promise<PriceListProductsVM> => {
+    const search = mapPriceListProductsSearchQueryToDTO(req.query);
+    try {
+        const response = await getPriceListProductsService(search);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        const response = new PriceListProductsVM();
+        response.setError(Errors.PriceListProducts);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
+export const updatePriceProduct = async (req: Request, res: Response): Promise<ResponseMessages> => {
+    const toUpdate = mapUpdatePriceProductBodyToDTO(req.body);
+    try {
+        const response = await updatePriceProductService(toUpdate);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        const response = new PriceListProductsVM();
+        response.setError(Errors.PriceListProducts);
         res.status(500).send(response);
         return response;
     }

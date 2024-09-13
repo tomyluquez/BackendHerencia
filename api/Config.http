@@ -1,13 +1,6 @@
 ### Obtener la informacion del negocio, se puede pasar el status por queryParams para diferenciar de activos y no activos
 GET http://localhost:3002/api/v1/config/companyInfo?status=
 
-### Obtener el menu
-GET http://localhost:3002/api/v1/config/menuInfo
-
-### Obtener las configuraciones
-
-GET http://localhost:3002/api/v1/config/configInfo
-
 ### Crear o actualizar una informacion de la compania. Hay que pasarle, el id si exsite, el name, el value, el icon y el isactive
 POST http://localhost:3002/api/v1/config/companyInfo
 Accept: application/json
@@ -20,4 +13,35 @@ Content-Type: application/json
     "Value": "urlTikTok",
     "Icon": "Icon",
     "IsActive": "inactive"
+}
+### Obtener el menu
+GET http://localhost:3002/api/v1/config/menuInfo
+
+### Obtener las configuraciones
+GET http://localhost:3002/api/v1/config/configInfo
+
+
+### Crear o actualizar las configuraciones. se envia un array con todas las config
+POST http://localhost:3002/api/v1/config/configInfo
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "config": [
+        {
+            "Id": 1,
+            "Name" : "Cuotas sin interes",
+            "Value": 3
+        },
+        {
+            "Id": 2,
+            "Name" : "Envio gratis a partir de",
+            "Value": 15000
+        },
+        {
+            "Name" : "Zona de envio gratis",
+            "Value": "Anillo de circunvalacion"
+        }
+    ]
 }

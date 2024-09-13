@@ -15,6 +15,8 @@ export enum Errors {
     ProductNotFound = "El producto no existe.",
     ProductsNotFound = "No se encontraron productos.",
     ProductVariants = "Error al cargar el stock, por favor intente nuevamente.",
+    PriceListProducts = "Error al carga la lista de precios, por favor intente nuevamente.",
+    ProductListNotFound = "La lista de precios no existe.",
 
     IdRequired = "El id es requerido.",
     StatusRequired = "El status es requerido.",
@@ -45,5 +47,16 @@ export enum Errors {
     MenuNotFound = "El menu no existe.",
 
     Config = "Error al cargar la configuracion, por favor intente nuevamente.",
-    ConfigNotFound = "La configuracion no existe."
+    ConfigNotFound = "La configuracion no existe.",
+    ConfigSave = "Error al guardar la configuracion, por favor intente nuevamente.",
+    ConfigDuplicatedName = "Tienes una configuracion con el mismo nombre.",
+
+    Orders = "Error al cargar las ordenes, por favor intente nuevamente.",
+    OrdersNotFound = "No se encontraron ordenes.",
+    OrderChangeStatus = "Error al cambiar el estado de la orden, por favor intente nuevamente.",
+    OrderStatus = "Error al obtener los estados de las ordenes",
+    OrderStatusNotFound = "No se encontraron estados de ordenes.",
+
+    StatusNotFound = "El estado no existe.",
+    StatusCahnge = "Error al cambiar el estado, por favor intente nuevamente."
 }

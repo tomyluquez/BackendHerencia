@@ -1,5 +1,6 @@
+import { PaginationDTO } from "../PaginationDTO";
+
 export interface GetAllCategoriesSearchDTO {
     IsActive?: boolean;
-    Page: number;
-    Limit: number;
+    Pagination: PaginationDTO;
 }

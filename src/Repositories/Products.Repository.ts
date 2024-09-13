@@ -9,15 +9,19 @@ import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.
 import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearchDTO";
 import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
 import { Errors } from "../Text/Errors.Messages";
-import { mapProductDBToProductPagedListVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProductsDBToVM";
+import { mapPriceListProductsDBToVM, mapProductDBToProductPagedListVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProductsDBToVM";
 import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Success } from "../Text/Succes.Messages";
 import { IProductVM } from "../Interfaces/Products/IProductVM";
 import sequelize from "../db/connectionDB.sequalize";
+import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
+import { PaginationDTO } from "../DTO/PaginationDTO";
+import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
+import { UpdatePriceProductDTO } from "../DTO/Products/UpdatePriceProduct";
 
 export const getAllProductsRepository = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
-    const offset = (search.Page - 1) * search.Limit;
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
     const productsDB = await Product.findAll({
         where: {
             ...(search.Name && { Name: { [Op.like]: `%${search.Name}%` } }),
@@ -51,7 +55,7 @@ export const getAllProductsRepository = async (search: GetAllProductsSearchDTO):
             }
         ],
         offset,
-        limit: search.Limit
+        limit: search.Pagination.Limit
     });
     const products = new ProductVM();
 
@@ -96,7 +100,7 @@ export const getPromocionalProductsRepository = async (): Promise<PromotionalPro
 };
 
 export const getProductsPagedListRepository = async (search: ProductPagedListSearchDTO): Promise<ProductPagedListVM> => {
-    const offset = (search.Page - 1) * search.Limit;
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
 
     const products = new ProductPagedListVM();
     const productsDB = await Product.findAll({
@@ -127,7 +131,7 @@ export const getProductsPagedListRepository = async (search: ProductPagedListSea
             }
         ],
         offset,
-        limit: search.Limit
+        limit: search.Pagination.Limit
     });
     if (productsDB.length > 0) {
         products.Items = productsDB.map(mapProductDBToProductPagedListVM);
@@ -376,5 +380,43 @@ export const saveProductRepository = async (product: IProductVM): Promise<Respon
         }
     }
     response.setSuccess(Success.SaveProduct);
+    return response;
+};
+
+export const getPriceListProductsRepository = async (search: PriceListProductsSearchDTO): Promise<PriceListProductsVM> => {
+    const response = new PriceListProductsVM();
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
+
+    const productsDB = await Product.findAll({
+        where: { IsActive: true, ...(search.ProductName && { Name: { [Op.like]: `%${search.ProductName}%` } }), ...(search.CategoryId && { CategoryId: search.CategoryId }) },
+        attributes: ["Name", "Price", "Discount"],
+        offset,
+        limit: search.Pagination.Limit
+    });
+
+    if (productsDB.length > 0) {
+        response.Items = productsDB.map(mapPriceListProductsDBToVM);
+        response.TotalItems = await Product.count({ where: { IsActive: true, ...(search.ProductName && { Name: { [Op.like]: `%${search.ProductName}%` } }), ...(search.CategoryId && { CategoryId: search.CategoryId }) } });
+    } else {
+        response.setError(Errors.ProductListNotFound);
+    }
+    return response;
+};
+
+export const updatePriceProductRepository = async (toUpdate: UpdatePriceProductDTO): Promise<ResponseMessages> => {
+    const response = new ResponseMessages();
+    const [affectedRows] = await Product.update(
+        {
+            Price: toUpdate.Price,
+            Discount: toUpdate.Discount
+        },
+        { where: { Id: toUpdate.ProductId } }
+    );
+
+    if (affectedRows > 0) {
+        response.setSuccess(Success.UpdateProduct);
+    } else {
+        response.setError(Errors.ProductSave);
+    }
     return response;
 };

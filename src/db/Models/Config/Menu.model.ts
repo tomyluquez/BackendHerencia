@@ -6,15 +6,17 @@ interface MenuAttributes {
     Name: string;
     Href: string;
     Icon: string;
+    IsAdmin: boolean;
 }
 
-interface MenuCreationAttributes extends Optional<MenuAttributes, "Id"> {}
+interface MenuCreationAttributes extends Optional<MenuAttributes, "Id" | "IsAdmin"> {}
 
 class Menu extends Model<MenuAttributes, MenuCreationAttributes> implements MenuAttributes {
     public Id!: number;
     public Name!: string;
     public Href!: string;
     public Icon!: string;
+    public IsAdmin!: boolean;
 }
 
 Menu.init(
@@ -35,6 +37,11 @@ Menu.init(
         Icon: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        IsAdmin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
         }
     },
     {

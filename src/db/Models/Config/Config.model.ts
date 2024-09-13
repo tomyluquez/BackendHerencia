@@ -4,7 +4,7 @@ import sequelize from "../../../db/connectionDB.sequalize";
 interface ConfigAttributes {
     Id: number;
     Name: string;
-    value: string;
+    Value: string;
 }
 
 interface ConfigCreationAttributes extends Optional<ConfigAttributes, "Id"> {}
@@ -12,7 +12,7 @@ interface ConfigCreationAttributes extends Optional<ConfigAttributes, "Id"> {}
 class Config extends Model<ConfigAttributes, ConfigCreationAttributes> implements ConfigAttributes {
     public Id!: number;
     public Name!: string;
-    public value!: string;
+    public Value!: string;
 }
 
 Config.init(
@@ -26,7 +26,7 @@ Config.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        value: {
+        Value: {
             type: DataTypes.STRING,
             allowNull: false
         }

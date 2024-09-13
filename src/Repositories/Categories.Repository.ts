@@ -13,7 +13,7 @@ import sequelize from "../db/connectionDB.sequalize";
 
 export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchDTO): Promise<CategoryListVM> => {
     const categories = new CategoryListVM();
-    const offset = (search.Page - 1) * search.Limit;
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
     let filters: any = {};
 
     if (search.IsActive !== undefined) {
@@ -23,7 +23,7 @@ export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchD
     const categoriesDB = await Category.findAll({
         where: filters,
         offset,
-        limit: search.Limit
+        limit: search.Pagination.Limit
     });
     if (categoriesDB.length > 0) {
         categories.Items = categoriesDB.map(mapCategoryDBToVM);

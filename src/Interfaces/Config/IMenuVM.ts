@@ -3,4 +3,5 @@ export interface IMenuVM {
     Name: string;
     Icon: string;
     Href: string;
+    IsAdmin: boolean;
 }

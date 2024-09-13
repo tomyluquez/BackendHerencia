@@ -1,10 +1,11 @@
 import { SaveCompanyInfoDTO } from "../DTO/Config/SaveCompanyInfoDTO";
-import { validateIfExistsCompanyInfoWhitName } from "../Helpers/Validators/ConfigValidators";
+import { SaveConfigDTO } from "../DTO/Config/SaveConfigDTO";
+import { validateDuplicateNameConfig, validateIfExistsCompanyInfoWhitName } from "../Helpers/Validators/ConfigValidators";
 import { CompanyInfoVM } from "../Models/Config/CompanyInfoVM";
 import { ConfigVM } from "../Models/Config/ConfigVM";
 import { MenuVM } from "../Models/Config/MenuVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
-import { getCompanyInfoRepository, getConfigRepository, getMenuRepository, saveCompanyInfoRepository } from "../Repositories/Config.Repository";
+import { getCompanyInfoRepository, getConfigRepository, getMenuRepository, saveCompanyInfoRepository, saveConfigRepository } from "../Repositories/Config.Repository";
 import { Errors } from "../Text/Errors.Messages";
 
 export const getCompanyInfoService = async (IsActive: boolean | undefined): Promise<CompanyInfoVM> => {
@@ -27,4 +28,14 @@ export const saveCompanyInfoService = async (bodyParams: SaveCompanyInfoDTO): Pr
         return response;
     }
     return await saveCompanyInfoRepository(bodyParams);
+};
+
+export const saveConfigService = async (bodyParams: SaveConfigDTO[]): Promise<ResponseMessages> => {
+    const duplicatedNames = validateDuplicateNameConfig(bodyParams);
+    if (duplicatedNames) {
+        const response = new ResponseMessages();
+        response.setError(Errors.ConfigDuplicatedName);
+        return response;
+    }
+    return await saveConfigRepository(bodyParams);
 };

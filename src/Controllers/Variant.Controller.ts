@@ -11,7 +11,6 @@ export const getProductVariants = async (req: Request, res: Response): Promise<P
         if (!productId) {
             throw new Error(Errors.IdRequired);
         }
-
         const search = mapQueryProductVariantsSearchToDTO(req.query);
         const response = await getProductVariantsService(search);
         res.status(200).send(response);

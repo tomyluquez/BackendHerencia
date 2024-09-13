@@ -9,6 +9,7 @@ import { RouterVariants } from "./Routes/Variant.routes";
 import { RouterCart } from "./Routes/Cart.routes";
 import { RouterCheckout } from "./Routes/Checkout.routes";
 import { RouterConfig } from "./Routes/Config.routes";
+import { RouterOrders } from "./Routes/Orders.routes";
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -29,6 +30,7 @@ app.use("/api/v1/variants", RouterVariants);
 app.use("/api/v1/cart", RouterCart);
 app.use("/api/v1/checkout", RouterCheckout);
 app.use("/api/v1/config", RouterConfig);
+app.use("/api/v1/orders", RouterOrders);
 
 app.use("/", (req, res) => res.status(404).send("La ruta no fue encontrada"));
 

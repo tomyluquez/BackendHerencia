@@ -5,9 +5,22 @@ import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
 import { ProductVM } from "../Models/Products/ProductVM";
 import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.model";
-import { changeStatusRepsitory, getAllProductsRepository, getProductByIdRepository, getProductsPagedListRepository, getPromocionalProductsRepository, saveProductRepository } from "../Repositories/Products.Repository";
+import {
+    changeStatusRepsitory,
+    getAllProductsRepository,
+    getPriceListProductsRepository,
+    getProductByIdRepository,
+    getProductsPagedListRepository,
+    getPromocionalProductsRepository,
+    saveProductRepository,
+    updatePriceProductRepository
+} from "../Repositories/Products.Repository";
 import { Errors } from "../Text/Errors.Messages";
 import { IProductVM } from "../Interfaces/Products/IProductVM";
+import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
+import { PaginationDTO } from "../DTO/PaginationDTO";
+import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
+import { UpdatePriceProductDTO } from "../DTO/Products/UpdatePriceProduct";
 
 export const getAllProductsService = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     return await getAllProductsRepository(search);
@@ -39,4 +52,12 @@ export const saveProductService = async (product: IProductVM): Promise<ResponseM
     }
 
     return await saveProductRepository(product);
+};
+
+export const getPriceListProductsService = async (search: PriceListProductsSearchDTO): Promise<PriceListProductsVM> => {
+    return await getPriceListProductsRepository(search);
+};
+
+export const updatePriceProductService = async (toUpdate: UpdatePriceProductDTO): Promise<ResponseMessages> => {
+    return await updatePriceProductRepository(toUpdate);
 };

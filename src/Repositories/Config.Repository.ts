@@ -11,6 +11,7 @@ import sequelize from "../db/connectionDB.sequalize";
 import { SaveCompanyInfoDTO } from "../DTO/Config/SaveCompanyInfoDTO";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Success } from "../Text/Succes.Messages";
+import { SaveConfigDTO } from "../DTO/Config/SaveConfigDTO";
 
 export const getCompanyInfoRepository = async (IsActive: boolean | undefined): Promise<CompanyInfoVM> => {
     const response = new CompanyInfoVM();
@@ -78,6 +79,23 @@ export const saveCompanyInfoRepository = async (bodyParams: SaveCompanyInfoDTO):
             response.setError(Errors.CompanySave);
         }
     }
+    return response;
+};
+
+export const saveConfigRepository = async (bodyParams: SaveConfigDTO[]): Promise<ResponseMessages> => {
+    const response = new ResponseMessages();
+    console.log(bodyParams);
+
+    const config = await Config.bulkCreate(bodyParams, {
+        updateOnDuplicate: ["Name", "Value"] // Si hay un duplicado, actualizar estos campos
+    });
+
+    if (config.length > 0) {
+        response.setSuccess(Success.SaveConfig);
+    } else {
+        response.setError(Errors.ConfigSave);
+    }
+
     return response;
 };
 

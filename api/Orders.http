@@ -1,0 +1,18 @@
+### Obtener todas las ordenes, se puede filtrar por userName, orderNumber y statusId.opcional paginacion
+GET http://localhost:3002/api/v1/orders?userName=&orderNumber=&statusId=&page=&limit=
+Accept: application/json
+
+### Cambiar de estado una orden, hay que pasarle el orderId y el statusId en el body
+PUT http://localhost:3002/api/v1/orders/order
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "orderId": 1,
+    "statusId": 2
+}
+
+### Obtener los estados de las ordenes
+GET http://localhost:3002/api/v1/orders/status
+Accept: application/json

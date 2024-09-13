@@ -12,5 +12,10 @@ export enum Success {
     UpdateQuantityCartItem = "La cantidad del producto se actualizó correctamente.",
 
     UpdateCompanyInfo = "La información de la empresa se actualizó correctamente.",
-    SaveCompanyInfo = "La información de la empresa se creo correctamente."
+    SaveCompanyInfo = "La información de la empresa se creo correctamente.",
+
+    UpdateConfig = "La configuración se actualizó correctamente.",
+    SaveConfig = "La configuración se creo correctamente.",
+
+    StatusChanged = "El estado se actualizó correctamente."
 }

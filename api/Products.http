@@ -39,3 +39,19 @@ Content-Type: application/json
     "Description": "Remera manga corta de algodon",
     "CategoryId": 2
 }
+
+### Obtener la lista de precios
+GET http://localhost:3002/api/v1/products/priceList?category=2
+Accept: application/json
+
+### Cambiar el precio y descuento de un producto de manera individual.
+POST http://localhost:3002/api/v1/products/updatePrice
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "productId": 1,
+    "price": 7000,
+    "discount": 15
+}

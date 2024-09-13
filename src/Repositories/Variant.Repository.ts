@@ -11,7 +11,7 @@ import { Success } from "../Text/Succes.Messages";
 
 export const getProductVariantsRepository = async (search: IProductVariantsSearchDTO): Promise<ProductVarinantsVM> => {
     const productVariants = new ProductVarinantsVM();
-    const offset = (search.Page - 1) * search.Limit;
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
 
     const variantsDB = await Variant.findAll({
         where: { ProductId: search.ProductId },
@@ -24,7 +24,7 @@ export const getProductVariantsRepository = async (search: IProductVariantsSearc
             }
         ],
         offset,
-        limit: search.Limit
+        limit: search.Pagination.Limit
     });
 
     if (variantsDB.length > 0) {

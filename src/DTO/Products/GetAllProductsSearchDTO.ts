@@ -1,7 +1,8 @@
+import { PaginationDTO } from "../PaginationDTO";
+
 export interface GetAllProductsSearchDTO {
     Name: string;
     Categories: string[];
     IsActive?: boolean | undefined;
-    Page: number;
-    Limit: number;
+    Pagination: PaginationDTO;
 }

@@ -4,18 +4,14 @@ import { CategoryListVM } from "../Models/Category/CategoryListVM";
 import { CategoryVM } from "../Models/Category/CategoryVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Errors } from "../Text/Errors.Messages";
-import { GetAllCategoriesSearchDTO } from "../DTO/Categories/GetAllCategoriesSearchDTO";
 import { convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
+import { mapCategoriesSearchQueryToDTO } from "../Helpers/Maps/MapCategoryDBToVm";
 
 export const getAllCategories = async (req: Request, res: Response): Promise<CategoryListVM> => {
-    const { status, page, limit } = req.query;
+    const { status } = req.query;
     const IsActive = convertedStatusFilter(status as string);
 
-    const search: GetAllCategoriesSearchDTO = {
-        IsActive,
-        Page: page ? Number(page) : 1,
-        Limit: limit ? Number(limit) : 10000
-    };
+    const search = mapCategoriesSearchQueryToDTO(req.query, IsActive);
 
     try {
         const response = await getAllCategoriesService(search); // Obtener la respuesta directamente del servicio

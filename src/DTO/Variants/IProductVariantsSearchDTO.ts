@@ -1,5 +1,6 @@
+import { PaginationDTO } from "../PaginationDTO";
+
 export interface IProductVariantsSearchDTO {
     ProductId: number;
-    Page: number;
-    Limit: number;
+    Pagination: PaginationDTO;
 }

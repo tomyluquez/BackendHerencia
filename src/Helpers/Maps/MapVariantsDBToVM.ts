@@ -1,6 +1,7 @@
 import Variant from "../../db/Models/Variant.model";
 import { IProductVariantsSearchDTO } from "../../DTO/Variants/IProductVariantsSearchDTO";
 import { IProductVariants } from "../../Interfaces/Products/IProductsVariants";
+import { mapPaginationQueryToDTO } from "./Maps";
 
 export const mapVariantsProductDBToVM = (VariantDB: Variant): IProductVariants => {
     return {
@@ -15,7 +16,6 @@ export const mapVariantsProductDBToVM = (VariantDB: Variant): IProductVariants =
 export const mapQueryProductVariantsSearchToDTO = (query: any): IProductVariantsSearchDTO => {
     return {
         ProductId: +query.productId,
-        Page: +query.page || 1,
-        Limit: +query.limit || 1000
+        Pagination: mapPaginationQueryToDTO(query)
     };
 };
