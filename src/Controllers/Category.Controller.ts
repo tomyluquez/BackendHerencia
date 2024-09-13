@@ -5,7 +5,7 @@ import { CategoryVM } from "../Models/Category/CategoryVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Errors } from "../Text/Errors.Messages";
 import { convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
-import { mapCategoriesSearchQueryToDTO } from "../Helpers/Maps/MapCategoryDBToVm";
+import { mapCategoriesSearchQueryToDTO } from "../Helpers/Maps/MapCategory";
 
 export const getAllCategories = async (req: Request, res: Response): Promise<CategoryListVM> => {
     const { status } = req.query;

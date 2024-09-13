@@ -8,6 +8,7 @@ import {
     getProductsPagedListsService,
     getPromocionalProductsService,
     saveProductService,
+    updateAllProductsPriceService,
     updatePriceProductService
 } from "../Services/Products.Service";
 import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.model";
@@ -17,7 +18,7 @@ import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearc
 import { convertedFilters, convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
 import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
-import { MapBodyToProductDB, mapGetAllProductsQueryToDTO, mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProductsDBToVM";
+import { MapBodyToProductDB, mapGetAllProductsQueryToDTO, mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdateAllPriceProductBodyToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProducts";
 import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
 import { mapPaginationQueryToDTO } from "../Helpers/Maps/Maps";
 import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
@@ -148,6 +149,21 @@ export const updatePriceProduct = async (req: Request, res: Response): Promise<R
     const toUpdate = mapUpdatePriceProductBodyToDTO(req.body);
     try {
         const response = await updatePriceProductService(toUpdate);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        const response = new PriceListProductsVM();
+        response.setError(Errors.PriceListProducts);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
+export const updateAllProductsPrice = async (req: Request, res: Response): Promise<ResponseMessages> => {
+    const toUpdate = mapUpdateAllPriceProductBodyToDTO(req.body);
+    console.log(toUpdate);
+    try {
+        const response = await updateAllProductsPriceService(toUpdate);
         res.status(200).send(response);
         return response;
     } catch (error: any) {

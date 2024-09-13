@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { ProductVM } from "../Models/Products/ProductVM";
 import Product from "../db/Models/Products/Product.model";
 import Category from "../db/Models/Category.model";
@@ -9,7 +9,7 @@ import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.
 import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearchDTO";
 import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
 import { Errors } from "../Text/Errors.Messages";
-import { mapPriceListProductsDBToVM, mapProductDBToProductPagedListVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProductsDBToVM";
+import { mapPriceListProductsDBToVM, mapProductDBToProductPagedListVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProducts";
 import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Success } from "../Text/Succes.Messages";
@@ -18,7 +18,7 @@ import sequelize from "../db/connectionDB.sequalize";
 import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
 import { PaginationDTO } from "../DTO/PaginationDTO";
 import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
-import { UpdatePriceProductDTO } from "../DTO/Products/UpdatePriceProduct";
+import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../DTO/Products/UpdatePriceProduct";
 
 export const getAllProductsRepository = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
@@ -418,5 +418,34 @@ export const updatePriceProductRepository = async (toUpdate: UpdatePriceProductD
     } else {
         response.setError(Errors.ProductSave);
     }
+    return response;
+};
+
+export const updateAllProductsPricetRepository = async (toUpdate: UpdateAllPriceProductDTO): Promise<ResponseMessages> => {
+    const response = new ResponseMessages();
+    const updateFields: any = {};
+
+    if (toUpdate.Percentage !== undefined) {
+        updateFields.Price = Sequelize.literal(`Price * (1 + ${toUpdate.Percentage} / 100)`);
+    }
+
+    if (toUpdate.Discount !== undefined) {
+        updateFields.Discount = toUpdate.Discount;
+    }
+
+    try {
+        await Product.update(updateFields, {
+            where: {
+                IsActive: true,
+                ...(toUpdate.CategoryId && { CategoryId: toUpdate.CategoryId }) // Condición opcional para CategoryId
+            }
+        });
+
+        if (toUpdate.CategoryId) response.setSuccess(Success.UpdateAllCategoryProduct);
+        else response.setSuccess(Success.UpdateAllProduct);
+    } catch (error) {
+        response.setError(Errors.UpdateProducts);
+    }
+
     return response;
 };

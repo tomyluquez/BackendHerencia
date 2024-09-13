@@ -6,7 +6,7 @@ import { MenuVM } from "../Models/Config/MenuVM";
 import { ConfigVM } from "../Models/Config/ConfigVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
-import { mapSaveCompanyInfoBodyToDTO, mapSaveConfigBodyToDTO } from "../Helpers/Maps/MapCompanyInfoDBToVM";
+import { mapSaveCompanyInfoBodyToDTO, mapSaveConfigBodyToDTO } from "../Helpers/Maps/MapCompanyInfo";
 
 export const getCompanyInfo = async (req: Request, res: Response): Promise<CompanyInfoVM> => {
     const { status } = req.query;

@@ -1,7 +1,7 @@
 import CartItems from "../db/Models/Cart/CartItems.model";
 import PaymentMethod from "../db/Models/PaymentMethod.model";
 import ShippingMethod from "../db/Models/Shipping/ShippingMethod.model";
-import { mapPaymentMethodsDBToVM, mapShippingMethodsDBToVM } from "../Helpers/Maps/MapConfigDBToVm";
+import { mapPaymentMethodsDBToVM, mapShippingMethodsDBToVM } from "../Helpers/Maps/MapConfig";
 import { CheckoutInfoVM } from "../Models/Checkout/CheckoutVM";
 
 export const getCheckoutInfoRepository = async (cartId: number): Promise<CheckoutInfoVM> => {

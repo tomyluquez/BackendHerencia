@@ -2,7 +2,7 @@ import { Op } from "sequelize";
 import CompanyInfo from "../db/Models/Config/CompanyInfo.model";
 import Config from "../db/Models/Config/Config.model";
 import Menu from "../db/Models/Config/Menu.model";
-import { mapCompanyInfoDBToVM, mapConfigDBToVM, mapMenuDBToVM } from "../Helpers/Maps/MapCompanyInfoDBToVM";
+import { mapCompanyInfoDBToVM, mapConfigDBToVM, mapMenuDBToVM } from "../Helpers/Maps/MapCompanyInfo";
 import { CompanyInfoVM } from "../Models/Config/CompanyInfoVM";
 import { ConfigVM } from "../Models/Config/ConfigVM";
 import { MenuVM } from "../Models/Config/MenuVM";

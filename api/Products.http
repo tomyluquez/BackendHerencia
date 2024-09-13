@@ -44,7 +44,7 @@ Content-Type: application/json
 GET http://localhost:3002/api/v1/products/priceList?category=2
 Accept: application/json
 
-### Cambiar el precio y descuento de un producto de manera individual.
+### Cambiar el precio y descuento de un producto de manera individual. Se pasa el productId, el price y el discount
 POST http://localhost:3002/api/v1/products/updatePrice
 Accept: application/json
 Authorization: token xxx
@@ -54,4 +54,16 @@ Content-Type: application/json
     "productId": 1,
     "price": 7000,
     "discount": 15
+}
+
+### Cambiar el precio y descuento de todos los productos ya sea de manera global o por categoria. Se puede pasar el Cartegoryid, el percentage y el discount
+POST http://localhost:3002/api/v1/products/updateAllProductsPrice
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "discount": 10,
+    "categoryId": 3,
+    "percentage": 5
 }

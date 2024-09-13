@@ -4,7 +4,7 @@ import Variant from "../../db/Models/Variant.model";
 import { GetAllProductsSearchDTO } from "../../DTO/Products/GetAllProductsSearchDTO";
 import { PriceListProductsSearchDTO } from "../../DTO/Products/PriceListProductsSearchDTO";
 import { ProductPagedListSearchDTO } from "../../DTO/Products/ProductPagedListSearchDTO";
-import { UpdatePriceProductDTO } from "../../DTO/Products/UpdatePriceProduct";
+import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../../DTO/Products/UpdatePriceProduct";
 import { IPriceListProducts } from "../../Interfaces/Products/IPriceListProductsVM";
 import { IProductDB } from "../../Interfaces/Products/IProductDB";
 import { IProductPagedListVM } from "../../Interfaces/Products/IProductPagedList";
@@ -142,5 +142,13 @@ export const mapUpdatePriceProductBodyToDTO = (body: any): UpdatePriceProductDTO
         ProductId: Number(body.productId),
         Price: Number(body.price),
         Discount: Number(body.discount)
+    };
+};
+
+export const mapUpdateAllPriceProductBodyToDTO = (body: any): UpdateAllPriceProductDTO => {
+    return {
+        Percentage: Number(body.percentage) || 0,
+        Discount: Number(body.discount) || 0,
+        CategoryId: Number(body.categoryId) || 0
     };
 };

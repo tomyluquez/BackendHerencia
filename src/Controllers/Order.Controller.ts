@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { OrderVM } from "../Models/Orders/OrderVM";
 import { Errors } from "../Text/Errors.Messages";
-import { mapOrderSearchQueryToDTO } from "../Helpers/Maps/MapOrdersDBToVM";
+import { mapOrderSearchQueryToDTO } from "../Helpers/Maps/MapOrders";
 import { changeStatusOrderService, getOrdersService, getOrderStatusService } from "../Services/Order.Service";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { OrderStatusVM } from "../Models/Orders/OrderStatusVM";

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserCartItemsVM } from "../Models/Cart/UserCartItemsVM";
 import { Errors } from "../Text/Errors.Messages";
 import { addItemCartService, deleteItemToCartService, getCartItemsByUserIdService, updateQuantityCartItemService } from "../Services/Cart.Service";
-import { mapItemCartBodyToDTO, mapUpdateQuantityItemCartBodyToDTO } from "../Helpers/Maps/MapCartDBToVM";
+import { mapItemCartBodyToDTO, mapUpdateQuantityItemCartBodyToDTO } from "../Helpers/Maps/MapCart";
 import { ResponseMessages } from "./../Models/Errors/ResponseMessages.model";
 
 export const getCartItemsByUserId = async (req: Request, res: Response): Promise<UserCartItemsVM> => {

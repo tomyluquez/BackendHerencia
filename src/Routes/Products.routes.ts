@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changeStatuts, getAllProducts, getPriceListProducts, getProductById, getProductsPagedLists, getPromocionalProducts, saveProduct, updatePriceProduct } from "../Controllers/Products.Controller";
+import { changeStatuts, getAllProducts, getPriceListProducts, getProductById, getProductsPagedLists, getPromocionalProducts, saveProduct, updateAllProductsPrice, updatePriceProduct } from "../Controllers/Products.Controller";
 
 const router: Router = Router();
 
@@ -11,6 +11,7 @@ router
     .put("/product", changeStatuts)
     .post("/", saveProduct)
     .get("/priceList", getPriceListProducts)
-    .post("/updatePrice", updatePriceProduct);
+    .post("/updatePrice", updatePriceProduct)
+    .post("/updateAllProductsPrice", updateAllProductsPrice);
 
 export { router as RouterProducts };

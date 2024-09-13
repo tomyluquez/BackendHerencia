@@ -3,6 +3,8 @@ export enum Success {
     SaveCategory = "La categoria se guardó correctamente.",
 
     UpdateProduct = "El producto se actualizó correctamente.",
+    UpdateAllProduct = "Todos los productos se actualizaron correctamente.",
+    UpdateAllCategoryProduct = "Todos los productos de la categoria se actualizaron correctamente.",
     SaveProduct = "El producto se guardó correctamente.",
 
     UpdateStock = "El stock se actualizó correctamente.",
@@ -17,5 +19,8 @@ export enum Success {
     UpdateConfig = "La configuración se actualizó correctamente.",
     SaveConfig = "La configuración se creo correctamente.",
 
-    StatusChanged = "El estado se actualizó correctamente."
+    StatusChanged = "El estado se actualizó correctamente.",
+
+    UpdateSize = "El talle se actualizó correctamente.",
+    SaveSize = "El talle se guardó correctamente."
 }

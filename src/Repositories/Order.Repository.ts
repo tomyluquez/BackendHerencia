@@ -5,7 +5,7 @@ import { OrderSearchDTO } from "../DTO/Orders/OrderSearchDTO";
 import { OrderVM } from "../Models/Orders/OrderVM";
 import OrderStatus from "../db/Models/Order/OrderStatus.model";
 import { Errors } from "../Text/Errors.Messages";
-import { mapOrdersDBToVM, mapOrderStatusDBToVM } from "../Helpers/Maps/MapOrdersDBToVM";
+import { mapOrdersDBToVM, mapOrderStatusDBToVM } from "../Helpers/Maps/MapOrders";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { Success } from "../Text/Succes.Messages";
 import { OrderStatusVM } from "../Models/Orders/OrderStatusVM";

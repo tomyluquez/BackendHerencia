@@ -2,7 +2,7 @@ import Category from "../db/Models/Category.model";
 import Product from "../db/Models/Products/Product.model";
 import { GetAllCategoriesSearchDTO } from "../DTO/Categories/GetAllCategoriesSearchDTO";
 import { Errors } from "../Text/Errors.Messages";
-import { mapCategoryDBToVM } from "../Helpers/Maps/MapCategoryDBToVm";
+import { mapCategoryDBToVM } from "../Helpers/Maps/MapCategory";
 import { ICategoryVM } from "../Interfaces/Category/ICategoryVM";
 import { CategoryListVM } from "../Models/Category/CategoryListVM";
 import { CategoryVM } from "../Models/Category/CategoryVM";

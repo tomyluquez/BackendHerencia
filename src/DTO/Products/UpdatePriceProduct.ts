@@ -3,3 +3,9 @@ export interface UpdatePriceProductDTO {
     Price: number;
     Discount: number;
 }
+
+export interface UpdateAllPriceProductDTO {
+    Percentage?: number;
+    Discount?: number;
+    CategoryId?: number;
+}

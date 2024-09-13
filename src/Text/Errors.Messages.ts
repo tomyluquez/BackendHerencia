@@ -17,6 +17,7 @@ export enum Errors {
     ProductVariants = "Error al cargar el stock, por favor intente nuevamente.",
     PriceListProducts = "Error al carga la lista de precios, por favor intente nuevamente.",
     ProductListNotFound = "La lista de precios no existe.",
+    UpdateProducts = "Error al actualizar los productos, por favor intente nuevamente.",
 
     IdRequired = "El id es requerido.",
     StatusRequired = "El status es requerido.",
@@ -58,5 +59,11 @@ export enum Errors {
     OrderStatusNotFound = "No se encontraron estados de ordenes.",
 
     StatusNotFound = "El estado no existe.",
-    StatusCahnge = "Error al cambiar el estado, por favor intente nuevamente."
+    StatusCahnge = "Error al cambiar el estado, por favor intente nuevamente.",
+
+    Sizes = "Error al cargar los talles, por favor intente nuevamente.",
+    Size = "Error al cargar el talle, por favor intente nuevamente.",
+    SizeChangeStatus = "Error al cambiar el estado del talle, por favor intente nuevamente.",
+    SizeSave = "Error al guardar el talle, por favor intente nuevamente.",
+    SizeNotFound = "Error al cargar el talle, por favor intente nuevamente."
 }

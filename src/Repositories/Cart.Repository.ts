@@ -6,7 +6,7 @@ import Size from "../db/Models/Size.model";
 import Variant from "../db/Models/Variant.model";
 import { AddItemCartDTO } from "../DTO/Cart/AddItemCartDTO";
 import { UpdateQuantityItemCartDTO } from "../DTO/Cart/UpdateQuantityItemCartDTO";
-import { mapCartItemsDBToVM } from "../Helpers/Maps/MapCartDBToVM";
+import { mapCartItemsDBToVM } from "../Helpers/Maps/MapCart";
 import { UserCartItemsVM } from "../Models/Cart/UserCartItemsVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { updateQuantityCartItemService } from "../Services/Cart.Service";

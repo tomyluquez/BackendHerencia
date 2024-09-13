@@ -13,6 +13,7 @@ import {
     getProductsPagedListRepository,
     getPromocionalProductsRepository,
     saveProductRepository,
+    updateAllProductsPricetRepository,
     updatePriceProductRepository
 } from "../Repositories/Products.Repository";
 import { Errors } from "../Text/Errors.Messages";
@@ -20,7 +21,7 @@ import { IProductVM } from "../Interfaces/Products/IProductVM";
 import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
 import { PaginationDTO } from "../DTO/PaginationDTO";
 import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
-import { UpdatePriceProductDTO } from "../DTO/Products/UpdatePriceProduct";
+import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../DTO/Products/UpdatePriceProduct";
 
 export const getAllProductsService = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     return await getAllProductsRepository(search);
@@ -60,4 +61,8 @@ export const getPriceListProductsService = async (search: PriceListProductsSearc
 
 export const updatePriceProductService = async (toUpdate: UpdatePriceProductDTO): Promise<ResponseMessages> => {
     return await updatePriceProductRepository(toUpdate);
+};
+
+export const updateAllProductsPriceService = async (toUpdate: UpdateAllPriceProductDTO): Promise<ResponseMessages> => {
+    return await updateAllProductsPricetRepository(toUpdate);
 };
