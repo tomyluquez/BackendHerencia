@@ -5,6 +5,7 @@ import PaymentMethod from "../PaymentMethod.model";
 import OrderStatus from "./OrderStatus.model";
 import User from "../User.model";
 import ShippingMethod from "../Shipping/ShippingMethod.model";
+import OrderItems from "./OrderItems.model";
 
 interface OrderAttributes {
     Id: number;
@@ -23,6 +24,7 @@ interface OrderAttributes {
     PaymentMethod?: PaymentMethod;
     ShippingMethodId?: number;
     ShippingMethod?: ShippingMethod;
+    OrderItems?: OrderItems[];
 }
 
 interface OrderCreationAttributes extends Optional<OrderAttributes, "Id"> {}
@@ -44,6 +46,7 @@ class Order extends Model<OrderAttributes, OrderCreationAttributes> implements O
     public PaymentMethod?: PaymentMethod;
     public ShippingMethodId!: number;
     public ShippingMethod?: ShippingMethod;
+    public OrderItems?: OrderItems[];
 }
 
 Order.init(

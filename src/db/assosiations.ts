@@ -99,11 +99,17 @@ Product.hasMany(ProductImages, {
     as: "Images"
 });
 Size.hasMany(Variant);
-User.hasMany(Order);
+User.hasMany(Order, {
+    foreignKey: "UserId",
+    as: "Orders"
+});
 Promotion.hasMany(Order);
 PaymentMethod.hasMany(Order);
 ShippingMethod.hasMany(Order);
 OrderStatus.hasMany(Order);
-Order.hasMany(OrderItems);
+Order.hasMany(OrderItems, {
+    foreignKey: "OrderId",
+    as: "OrderItems"
+});
 Variant.hasMany(OrderItems);
 Order.hasOne(Shipping);

@@ -7,6 +7,7 @@ export enum Errors {
     CategoryWhitProducts = "La categoria no puede ser desactivada porque tiene productos asociados.",
 
     ExistingName = "El nombre debe ser único, este nombre ya esta en uso.",
+    ExistingMail = "El email debe ser único, este email ya esta en uso.",
 
     Products = "Error al cargar los prodcutos, por favor intente nuevamente.",
     Product = "Error al cargar el producto , por favor intente nuevamente.",
@@ -65,5 +66,13 @@ export enum Errors {
     Size = "Error al cargar el talle, por favor intente nuevamente.",
     SizeChangeStatus = "Error al cambiar el estado del talle, por favor intente nuevamente.",
     SizeSave = "Error al guardar el talle, por favor intente nuevamente.",
-    SizeNotFound = "Error al cargar el talle, por favor intente nuevamente."
+    SizeNotFound = "Error al cargar el talle, por favor intente nuevamente.",
+
+    UserProfile = "Error al cargar el perfil del usuario, por favor intente nuevamente.",
+    UserRegister = "Error al registrar el usuario, por favor intente nuevamente.",
+    UserLogin = "Error al iniciar sesion, por favor intente nuevamente.",
+    UserEmailAndPassLogin = "El email o la contrasena son incorrectos.",
+    UserNameRequired = "El nombre es requerido.",
+    UserEmailRequired = "El email es requerido.",
+    UserPassRequired = "La contrasena es requerida."
 }

@@ -1,0 +1,26 @@
+### Obtener el userProfile enviando el userId por queryparams
+GET http://localhost:3002/api/v1/users/userProfile?userId=1
+Accept: application/json
+
+### registar un usuario nuevo.
+POST http://localhost:3002/api/v1/users/register
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "userName": "tomasito",
+    "email" : "tomas@tomas.com",
+    "password": "lalala"
+}
+
+### loguearse
+POST http://localhost:3002/api/v1/users/login
+Accept: application/json
+Authorization: token xxx
+Content-Type: application/json
+
+{
+    "email" : "tomas@tomas.com",
+    "password": "lalala"
+}

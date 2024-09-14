@@ -22,5 +22,8 @@ export enum Success {
     StatusChanged = "El estado se actualizó correctamente.",
 
     UpdateSize = "El talle se actualizó correctamente.",
-    SaveSize = "El talle se guardó correctamente."
+    SaveSize = "El talle se guardó correctamente.",
+
+    UserRegister = "Usuario registrado correctamente.",
+    UserLogin = "Inicio de sesión correctamente."
 }
