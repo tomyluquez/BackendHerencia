@@ -122,6 +122,7 @@ export const mapProductPagedListQueryToDTO = (query: any, categories: string[], 
         Name: query.name as string,
         Categories: categories,
         Sizes: sizes.map((s) => Number(s)),
+        Order: query.order as string,
         Pagination: {
             Page: query.page ? Number(query.page) : 1,
             Limit: query.limit ? Number(query.limit) : 10000

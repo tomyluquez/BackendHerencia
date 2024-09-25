@@ -12,8 +12,8 @@ export const getCompanyInfoService = async (IsActive: boolean | undefined): Prom
     return await getCompanyInfoRepository(IsActive);
 };
 
-export const getMenuService = async (): Promise<MenuVM> => {
-    return await getMenuRepository();
+export const getMenuService = async (IsAdmin: boolean | undefined): Promise<MenuVM> => {
+    return await getMenuRepository(IsAdmin);
 };
 
 export const getConfigService = async (): Promise<ConfigVM> => {

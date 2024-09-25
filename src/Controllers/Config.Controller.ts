@@ -24,8 +24,10 @@ export const getCompanyInfo = async (req: Request, res: Response): Promise<Compa
 };
 
 export const getMenu = async (req: Request, res: Response): Promise<MenuVM> => {
+    const { status } = req.query;
+    const IsAdmin = convertedStatusFilter(status as string);
     try {
-        const response = await getMenuService();
+        const response = await getMenuService(IsAdmin);
         res.status(200).json(response);
         return response;
     } catch (error: any) {

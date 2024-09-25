@@ -1,4 +1,4 @@
-import { Op, Sequelize } from "sequelize";
+import { Op, Order, Sequelize } from "sequelize";
 import { ProductVM } from "../Models/Products/ProductVM";
 import Product from "../db/Models/Products/Product.model";
 import Category from "../db/Models/Category.model";
@@ -101,7 +101,22 @@ export const getPromocionalProductsRepository = async (): Promise<PromotionalPro
 
 export const getProductsPagedListRepository = async (search: ProductPagedListSearchDTO): Promise<ProductPagedListVM> => {
     const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
+    let order: Order = [["Name", "ASC"]];
 
+    if (search.Order) {
+        if (search.Order === "desc") {
+            order = [["Name", "DESC"]];
+        }
+
+        if (search.Order === "lower") {
+            order = [["Price", "ASC"]];
+        }
+
+        if (search.Order === "higher") {
+            order = [["Price", "DESC"]];
+        }
+    }
+    console.log(search, order);
     const products = new ProductPagedListVM();
     const productsDB = await Product.findAll({
         where: {
@@ -131,7 +146,8 @@ export const getProductsPagedListRepository = async (search: ProductPagedListSea
             }
         ],
         offset,
-        limit: search.Pagination.Limit
+        limit: search.Pagination.Limit,
+        order
     });
     if (productsDB.length > 0) {
         products.Items = productsDB.map(mapProductDBToProductPagedListVM);

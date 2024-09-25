@@ -5,4 +5,5 @@ export interface ProductPagedListSearchDTO {
     Categories: string[];
     Sizes: number[];
     Pagination: PaginationDTO;
+    Order: string;
 }

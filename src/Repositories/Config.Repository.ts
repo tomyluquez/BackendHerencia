@@ -32,10 +32,17 @@ export const getCompanyInfoRepository = async (IsActive: boolean | undefined): P
     return response;
 };
 
-export const getMenuRepository = async (): Promise<MenuVM> => {
+export const getMenuRepository = async (IsAdmin: boolean | undefined): Promise<MenuVM> => {
     const response = new MenuVM();
+    let filters: any = {};
 
-    const menuDB = await Menu.findAll();
+    if (IsAdmin !== undefined) {
+        filters = { IsAdmin };
+    }
+
+    const menuDB = await Menu.findAll({
+        where: filters
+    });
     if (menuDB.length > 0) {
         response.Items = menuDB.map(mapMenuDBToVM);
     } else {

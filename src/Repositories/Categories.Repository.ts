@@ -17,8 +17,10 @@ export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchD
     let filters: any = {};
 
     if (search.IsActive !== undefined) {
-        filters.where = { IsActive: search.IsActive };
+        filters = { IsActive: search.IsActive };
     }
+
+    console.log(filters);
 
     const categoriesDB = await Category.findAll({
         where: filters,
