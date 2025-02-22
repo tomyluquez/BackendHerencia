@@ -21,15 +21,18 @@ export const mapProductDBToVM = (productDB: Product): IProductVM => {
         Variants: productDB.Variants!.map((variant) => {
             return {
                 Stock: variant.Stock,
-                Name: variant.Size!.Name
+                Name: variant.Size!.Name,
+                SizeId: variant.Size!.Id,
+                Id: variant.Id
             };
         }),
-        Images: productDB.Images || [],
+        Images: productDB.Images?.map((image) => image.Url) || [],
         CategoryName: productDB.Category?.Name || "Sin categoria",
         CategoryId: productDB.CategoryId,
         Discount: productDB.Discount,
         Cost: productDB.Cost,
-        IsActive: productDB.IsActive
+        IsActive: productDB.IsActive,
+        PromotionalPrice: productDB.Price * (1 - productDB.Discount / 100)
     };
     return product;
 };
@@ -39,7 +42,7 @@ export const mapPromotionalDBToVM = (productDB: Product): IPromotionalProduct =>
         Id: productDB.Id!,
         Name: productDB.Name,
         Price: productDB.Price,
-        Image: productDB.Images ? productDB.Images[0] : "",
+        Image: productDB.Images && productDB.Images.length > 0 ? productDB.Images[0].Url : "",
         CategoryName: productDB.Category?.Name || "Sin categoria"
     };
     return product;
@@ -51,7 +54,7 @@ export const mapProductDBToProductPagedListVM = (productDB: Product): IProductPa
         Name: productDB.Name,
         CategoryName: productDB.Category?.Name || "Sin categoria",
         Price: productDB.Price,
-        Image: productDB.Images ? productDB.Images[0] : "",
+        Image: productDB.Images && productDB.Images.length > 0 ? productDB.Images[0].Url : "",
         HasStock: productDB.Variants!.some((v) => v.Stock > 0)
     };
     return product;
@@ -74,7 +77,8 @@ export const MapBodyToProductDB = (body: any): IProductVM => {
         CategoryId: body.CategoryId,
         Discount: body.Discount,
         Cost: body.Cost,
-        IsActive: body.IsActive || true
+        IsActive: body.IsActive || true,
+        PromotionalPrice: body.Price * (1 - body.Discount / 100)
     };
     return product;
 };

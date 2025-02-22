@@ -22,6 +22,7 @@ import { MapBodyToProductDB, mapGetAllProductsQueryToDTO, mapPriceListProductsSe
 import { PriceListProductsVM } from "../Models/Products/PriceListProductsVM";
 import { mapPaginationQueryToDTO } from "../Helpers/Maps/Maps";
 import { PriceListProductsSearchDTO } from "../DTO/Products/PriceListProductsSearchDTO";
+import { mapCategoriesSearchQueryToDTO } from "../Helpers/Maps/MapCategory";
 
 export const getAllProducts = async (req: Request, res: Response): Promise<ProductVM> => {
     const { name, status, page, limit } = req.query;
@@ -43,8 +44,10 @@ export const getAllProducts = async (req: Request, res: Response): Promise<Produ
 };
 
 export const getPromocionalProducts = async (req: Request, res: Response): Promise<PromotionalProductsVM> => {
+
+    const pagination = mapPaginationQueryToDTO(req.query);
     try {
-        const response = await getPromocionalProductsService();
+        const response = await getPromocionalProductsService(pagination);
         res.status(200).send(response);
         return response;
     } catch (error: any) {

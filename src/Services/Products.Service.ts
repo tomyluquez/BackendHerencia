@@ -27,8 +27,8 @@ export const getAllProductsService = async (search: GetAllProductsSearchDTO): Pr
     return await getAllProductsRepository(search);
 };
 
-export const getPromocionalProductsService = async (): Promise<PromotionalProductsVM> => {
-    return await getPromocionalProductsRepository();
+export const getPromocionalProductsService = async (pagination: PaginationDTO): Promise<PromotionalProductsVM> => {
+    return await getPromocionalProductsRepository(pagination);
 };
 
 export const getProductsPagedListsService = async (search: ProductPagedListSearchDTO): Promise<ProductPagedListVM> => {

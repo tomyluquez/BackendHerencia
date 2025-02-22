@@ -2,6 +2,7 @@ import sequelize from "../db/connectionDB.sequalize";
 import Cart from "../db/Models/Cart/Cart.model";
 import CartItems from "../db/Models/Cart/CartItems.model";
 import Product from "../db/Models/Products/Product.model";
+import ProductImages from "../db/Models/Products/ProductsImages.model";
 import Size from "../db/Models/Size.model";
 import Variant from "../db/Models/Variant.model";
 import { AddItemCartDTO } from "../DTO/Cart/AddItemCartDTO";
@@ -17,13 +18,12 @@ import { getVariantByIdRepository } from "./Variant.Repository";
 export const getCartItemsByUserIdRepository = async (userId: number): Promise<UserCartItemsVM> => {
     const response = new UserCartItemsVM();
 
-    const userCart = await Cart.findOne({
+    let userCart = await Cart.findOne({
         where: { UserId: userId, IsFinish: false }
     });
 
     if (!userCart) {
-        response.setError(Errors.CartUserNotFound);
-        return response;
+        userCart = await Cart.create({ UserId: userId });
     }
 
     const cartItemsDB = await CartItems.findAll({
@@ -32,6 +32,7 @@ export const getCartItemsByUserIdRepository = async (userId: number): Promise<Us
             {
                 model: Variant,
                 as: "Variant",
+                attributes: ["Stock"],
                 include: [
                     {
                         model: Size,
@@ -41,7 +42,14 @@ export const getCartItemsByUserIdRepository = async (userId: number): Promise<Us
                     {
                         model: Product,
                         as: "Product",
-                        attributes: ["Name", "Price"]
+                        attributes: ["Name", "Price"],
+                        include: [
+                            {
+                                model: ProductImages,
+                                as: "Images",
+                                attributes: ["Url"]
+                            }
+                        ]
                     }
                 ]
             }
@@ -134,4 +142,15 @@ export const updateQuantityCartItemRepository = async (bodyParams: UpdateQuantit
     }
 
     return response;
+};
+
+export const getCartIdByUserId = async (userId: number): Promise<number> => {
+    let cart = await Cart.findOne({
+        where: { UserId: userId, IsFinish: false }
+    });
+    if (!cart) {
+        cart = await Cart.create({ UserId: userId });
+    }
+
+    return cart.Id;
 };

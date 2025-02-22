@@ -16,7 +16,7 @@ export const registerUserService = async (newUser: UserRegisterDTO): Promise<Res
 
     if (existingUserWhitEmail) {
         const response = new ResponseMessages();
-        response.setError(Errors.ExistingName);
+        response.setError(Errors.ExistingEMail);
         return response;
     }
 

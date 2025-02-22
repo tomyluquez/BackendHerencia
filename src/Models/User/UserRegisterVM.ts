@@ -2,11 +2,11 @@ import { ResponseMessages } from "../Errors/ResponseMessages.model";
 
 export class UserTokenVM extends ResponseMessages {
     Token: string;
-    Role: string;
+    Role: number;
 
     constructor() {
         super();
         this.Token = "";
-        this.Role = "";
+        this.Role = 0;
     }
 }

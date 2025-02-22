@@ -70,7 +70,7 @@ export const getAllProductsRepository = async (search: GetAllProductsSearchDTO):
     return products;
 };
 
-export const getPromocionalProductsRepository = async (): Promise<PromotionalProductsVM> => {
+export const getPromocionalProductsRepository = async (pagination: PaginationDTO): Promise<PromotionalProductsVM> => {
     const filters: any = { IsActive: true, IsPromotional: true };
     const products = new PromotionalProductsVM();
 
@@ -87,11 +87,13 @@ export const getPromocionalProductsRepository = async (): Promise<PromotionalPro
                 as: "Images",
                 attributes: ["Url"]
             }
-        ]
+        ],
+        limit: pagination.Limit
     });
 
     if (productsDB.length > 0) {
         products.Items = productsDB.map(mapPromotionalDBToVM);
+        products.TotalItems = await getTotalCountPromotionalProducts();
     } else {
         products.setWarning("No se encontraron productos");
     }
@@ -232,6 +234,26 @@ export const getTotalCountProducts = async (search: GetAllProductsSearchDTO): Pr
         distinct: true
     });
 };
+export const getTotalCountPromotionalProducts = async (): Promise<number> => {
+    const filters: any = { IsActive: true, IsPromotional: true };
+    // Contar productos basados en las condiciones sin incluir asociaciones
+    return await Product.count({
+        where: filters,
+        include: [
+            {
+                model: Category,
+                as: "Category",
+                attributes: ["Name"]
+            },
+            {
+                model: ProductImages,
+                as: "Images",
+                attributes: ["Url"]
+            }
+        ],
+        distinct: true
+    });
+};
 
 export const getProductByIdRepository = async (id: number): Promise<ProductVM> => {
     const product = new ProductVM();
@@ -249,12 +271,13 @@ export const getProductByIdRepository = async (id: number): Promise<ProductVM> =
             {
                 model: Variant,
                 as: "Variants",
-                attributes: ["Stock"],
+                attributes: ["Id", "Stock"],
                 include: [
                     {
                         model: Size,
                         as: "Size",
-                        attributes: ["Name"]
+                        attributes: ["Name", "Id"],
+                        order: [["SizeId", "ASC"]]
                     }
                 ]
             },

@@ -29,7 +29,7 @@ export const registerUser = async (req: Request, res: Response): Promise<Respons
         if (!userName) throw new Error(Errors.UserNameRequired);
         if (!email) throw new Error(Errors.UserEmailRequired);
         if (!password) throw new Error(Errors.UserPassRequired);
-        const newUser = mapUserRegisterBodyToDTO(userName, email, password, role);
+        const newUser = mapUserRegisterBodyToDTO(userName, email, password, Number(role));
         const response = await registerUserService(newUser);
         res.status(200).send(response);
         return response;

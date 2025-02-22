@@ -7,11 +7,11 @@ GET http://localhost:3002/api/v1/products/promotional
 Accept: application/json
 
 ### Obtener listado de todos los productos activos, se puede filtrar por nombre, categorias o talles. Se tiene que enviar paginación
-GET http://localhost:3002/api/v1/products/pagedList?name=&categories=pantalon&sizes=&page=&limit=
+GET http://localhost:3002/api/v1/products/pagedList?name=remeras&categories=&sizes=&page=&limit=
 Accept: application/json
 
 ### Obtener producto por id, pasar el id por query params
-GET http://localhost:3002/api/v1/products/product?id=3
+GET http://localhost:3002/api/v1/products/product?id=1
 Accept: application/json
 
 

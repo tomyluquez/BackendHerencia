@@ -35,7 +35,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
     public DateCreated!: Date;
     public DateUpdated!: Date;
     public Variants?: Variant[];
-    public Images?: string[];
+    public Images?: ProductImages[];
 }
 
 Product.init(

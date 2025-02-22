@@ -10,7 +10,7 @@ interface CartAttributes {
     UserId?: number;
 }
 
-interface CartCreationAttributes extends Optional<CartAttributes, "Id"> {}
+interface CartCreationAttributes extends Optional<CartAttributes, "Id" | "IsFinish" | "DateCreated" | "DateUpdated"> {}
 
 class Cart extends Model<CartAttributes, CartCreationAttributes> implements CartAttributes {
     public Id!: number;

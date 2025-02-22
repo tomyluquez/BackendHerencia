@@ -32,19 +32,17 @@ export const getCompanyInfoRepository = async (IsActive: boolean | undefined): P
     return response;
 };
 
-export const getMenuRepository = async (IsAdmin: boolean | undefined): Promise<MenuVM> => {
+export const getMenuRepository = async (isAdmin: boolean | undefined): Promise<MenuVM> => {
     const response = new MenuVM();
-    let filters: any = {};
 
-    if (IsAdmin !== undefined) {
-        filters = { IsAdmin };
-    }
+    const menuDB = await Menu.findAll();
 
-    const menuDB = await Menu.findAll({
-        where: filters
-    });
     if (menuDB.length > 0) {
         response.Items = menuDB.map(mapMenuDBToVM);
+
+        if (!isAdmin) {
+            response.Items = response.Items.filter((item) => !item.IsAdmin);
+        }
     } else {
         response.setError(Errors.MenuNotFound);
     }

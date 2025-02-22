@@ -2,6 +2,7 @@ import Order from "../../db/Models/Order/Order.model";
 import User from "../../db/Models/User.model";
 import { UserLoginDTO } from "../../DTO/User/UserLoginDTO";
 import { UserRegisterDTO } from "../../DTO/User/UserRegisterDTO";
+import { RoleEnum } from "../../Enums/role-enum";
 import { IUserProfileVM } from "../../Interfaces/User/IUserProfileVM";
 import OrderStatus from "./../../db/Models/Order/OrderStatus.model";
 
@@ -36,12 +37,12 @@ export const mapUserProfileDBToVM = (userProfileDB: User): IUserProfileVM => {
     };
 };
 
-export const mapUserRegisterBodyToDTO = (userName: string, email: string, pass: string, role: string): UserRegisterDTO => {
+export const mapUserRegisterBodyToDTO = (userName: string, email: string, pass: string, role: number): UserRegisterDTO => {
     return {
         Name: userName,
         Email: email,
         Password: pass,
-        Role: role || "customer"
+        Role: role || RoleEnum.Customer
     };
 };
 

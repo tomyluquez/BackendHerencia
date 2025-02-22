@@ -9,7 +9,7 @@ interface UserAttributes {
     Name: string;
     Email: string;
     Password: string;
-    Role: string;
+    Role: number;
     Phone?: number;
     Addres?: string;
     DateCreated: Date;
@@ -19,7 +19,7 @@ interface UserAttributes {
 }
 
 // Define atributos opcionales para la creación de nuevos usuarios
-interface UserCreationAttributes extends Optional<UserAttributes, "Id" | "Phone" | "Addres" | "Image" | "DateCreated" | "DateUpdated"> {}
+interface UserCreationAttributes extends Optional<UserAttributes, "Id" | "Phone" | "Addres" | "Image" | "DateCreated" | "DateUpdated"> { }
 
 // Crea la clase User que extiende de Model
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
@@ -27,7 +27,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
     public Name!: string;
     public Email!: string;
     public Password!: string;
-    public Role!: string;
+    public Role!: number;
     public Image?: string;
     public Phone?: number;
     public Addres?: string;
@@ -83,8 +83,9 @@ User.init(
             defaultValue: null
         },
         Role: {
-            type: DataTypes.STRING,
-            allowNull: false
+            type: DataTypes.NUMBER,
+            allowNull: false,
+            defaultValue: 2
         }
     },
     {

@@ -7,7 +7,7 @@ export enum Errors {
     CategoryWhitProducts = "La categoria no puede ser desactivada porque tiene productos asociados.",
 
     ExistingName = "El nombre debe ser único, este nombre ya esta en uso.",
-    ExistingMail = "El email debe ser único, este email ya esta en uso.",
+    ExistingEMail = "El email debe ser único, este email ya esta en uso.",
 
     Products = "Error al cargar los prodcutos, por favor intente nuevamente.",
     Product = "Error al cargar el producto , por favor intente nuevamente.",

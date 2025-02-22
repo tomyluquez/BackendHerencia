@@ -5,7 +5,7 @@ import { getCompanyInfoService, getConfigService, getMenuService, saveCompanyInf
 import { MenuVM } from "../Models/Config/MenuVM";
 import { ConfigVM } from "../Models/Config/ConfigVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
-import { convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
+import { convertedStatusFilter, convertedUserRoleFilter } from "../Helpers/Filters/ConvertedFilters";
 import { mapSaveCompanyInfoBodyToDTO, mapSaveConfigBodyToDTO } from "../Helpers/Maps/MapCompanyInfo";
 
 export const getCompanyInfo = async (req: Request, res: Response): Promise<CompanyInfoVM> => {
@@ -24,8 +24,8 @@ export const getCompanyInfo = async (req: Request, res: Response): Promise<Compa
 };
 
 export const getMenu = async (req: Request, res: Response): Promise<MenuVM> => {
-    const { status } = req.query;
-    const IsAdmin = convertedStatusFilter(status as string);
+    const { userRole } = req.query;
+    const IsAdmin = convertedUserRoleFilter(Number(userRole));
     try {
         const response = await getMenuService(IsAdmin);
         res.status(200).json(response);

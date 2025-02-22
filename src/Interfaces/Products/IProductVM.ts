@@ -13,4 +13,5 @@ export interface IProductVM {
     Cost: number;
     IsActive?: boolean;
     IsPromotional?: boolean;
+    PromotionalPrice: number;
 }
