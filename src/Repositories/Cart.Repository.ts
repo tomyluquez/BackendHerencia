@@ -7,6 +7,7 @@ import Size from "../db/Models/Size.model";
 import Variant from "../db/Models/Variant.model";
 import { AddItemCartDTO } from "../DTO/Cart/AddItemCartDTO";
 import { UpdateQuantityItemCartDTO } from "../DTO/Cart/UpdateQuantityItemCartDTO";
+import { ActionCartItemEnum } from "../Enums/action-cart-item";
 import { mapCartItemsDBToVM } from "../Helpers/Maps/MapCart";
 import { UserCartItemsVM } from "../Models/Cart/UserCartItemsVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
@@ -93,7 +94,7 @@ export const addItemCartRepository = async (bodyParams: AddItemCartDTO): Promise
         return await updateQuantityCartItemRepository({
             Quantity: bodyParams.Quantity,
             ItemId: item.Id,
-            Action: "add"
+            Action: ActionCartItemEnum.Add
         });
     }
 
@@ -127,7 +128,7 @@ export const updateQuantityCartItemRepository = async (bodyParams: UpdateQuantit
 
     // Calcular la nueva cantidad en función de la acción
     const newQuantity =
-        bodyParams.Action === "add"
+        bodyParams.Action === ActionCartItemEnum.Add
             ? item!.Quantity + bodyParams.Quantity // Sumar cantidad
             : item!.Quantity - bodyParams.Quantity; // Restar cantidad
 

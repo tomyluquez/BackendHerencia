@@ -13,6 +13,7 @@ import OrderItems from "./Models/Order/OrderItems.model";
 import ProductImages from "./Models/Products/ProductsImages.model";
 import ShippingMethod from "./Models/Shipping/ShippingMethod.model";
 import Shipping from "./Models/Shipping/Shipping.model";
+import DiscountCoupon from "./Models/DiscountCoupon.model";
 
 // Asociación de uno a muchos
 Product.belongsTo(Category, {
@@ -59,6 +60,10 @@ Order.belongsTo(ShippingMethod, {
 Order.belongsTo(OrderStatus, {
     foreignKey: "OrderStatusId",
     as: "OrderStatus"
+});
+Order.belongsTo(DiscountCoupon, {
+    foreignKey: "DiscountCouponId",
+    as: "DiscountCoupon"
 });
 
 Variant.belongsTo(Product, { foreignKey: "ProductId", as: "Product" });
@@ -113,3 +118,7 @@ Order.hasMany(OrderItems, {
 });
 Variant.hasMany(OrderItems);
 Order.hasOne(Shipping);
+DiscountCoupon.hasMany(Order, {
+    foreignKey: "DiscountCouponId",
+    as: "Orders"
+});

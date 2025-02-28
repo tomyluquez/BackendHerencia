@@ -5,4 +5,5 @@ export interface IProductPagedListVM {
     Price: number;
     Image?: string;
     HasStock: boolean;
+    IsActive: boolean;
 }

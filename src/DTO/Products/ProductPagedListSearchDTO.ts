@@ -6,4 +6,5 @@ export interface ProductPagedListSearchDTO {
     Sizes: number[];
     Pagination: PaginationDTO;
     Order: string;
+    Status: boolean | undefined;
 }

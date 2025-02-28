@@ -6,4 +6,5 @@ export interface ICartItemsVM {
     SizeName: string;
     UrlImage?: string;
     Stock: number;
+    VariantId: number;
 }

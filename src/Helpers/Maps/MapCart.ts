@@ -11,6 +11,7 @@ export const mapCartItemsDBToVM = (cartItemDB: CartItems): ICartItemsVM => {
         Price: cartItemDB.Variant.Product.Price,
         SizeName: cartItemDB.Variant.Size!.Name,
         Stock: cartItemDB.Variant.Stock,
+        VariantId: cartItemDB.Variant.Id,
         UrlImage: cartItemDB.Variant.Product.Images && cartItemDB.Variant.Product.Images.length > 0 ? cartItemDB.Variant.Product.Images[0].Url : ""
     };
 };
@@ -23,10 +24,10 @@ export const mapItemCartBodyToDTO = (variantId: number, cartId: number, quantity
     };
 };
 
-export const mapUpdateQuantityItemCartBodyToDTO = (itemId: number, quantity: number, action: "add" | "substract"): UpdateQuantityItemCartDTO => {
+export const mapUpdateQuantityItemCartBodyToDTO = (itemId: number, quantity: number, action: number): UpdateQuantityItemCartDTO => {
     return {
         Quantity: +quantity,
         ItemId: +itemId,
-        Action: action
+        Action: +action
     };
 };

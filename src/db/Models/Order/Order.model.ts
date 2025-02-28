@@ -14,6 +14,8 @@ interface OrderAttributes {
     DateUpdated: Date;
     IsActive: boolean;
     Total: number;
+    Subtotal: number;
+    Discount: number;
     UserId?: number;
     User?: User;
     OrderStatusId?: number;
@@ -27,7 +29,7 @@ interface OrderAttributes {
     OrderItems?: OrderItems[];
 }
 
-interface OrderCreationAttributes extends Optional<OrderAttributes, "Id"> {}
+interface OrderCreationAttributes extends Optional<OrderAttributes, "Id"> { }
 
 class Order extends Model<OrderAttributes, OrderCreationAttributes> implements OrderAttributes {
     public Id!: number;
@@ -36,6 +38,8 @@ class Order extends Model<OrderAttributes, OrderCreationAttributes> implements O
     public DateUpdated!: Date;
     public IsActive!: boolean;
     public Total!: number;
+    public Subtotal!: number;
+    public Discount!: number;
     public UserId!: number;
     public User!: User;
     public OrderStatusId!: number;
@@ -67,6 +71,14 @@ Order.init(
             defaultValue: true
         },
         Total: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        Subtotal: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        Discount: {
             type: DataTypes.FLOAT,
             allowNull: false
         },

@@ -12,6 +12,7 @@ export enum Success {
     AddCartItem = "El producto se ha agregado correctamente.",
     RemoveCartItem = "El producto se ha quitado correctamente.",
     UpdateQuantityCartItem = "La cantidad del producto se actualizó correctamente.",
+    DiscountCouponFound = "El cupon de descuento se aplicó correctamente.",
 
     UpdateCompanyInfo = "La información de la empresa se actualizó correctamente.",
     SaveCompanyInfo = "La información de la empresa se creo correctamente.",

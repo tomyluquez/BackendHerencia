@@ -5,6 +5,8 @@ import { GetAllProductsSearchDTO } from "../../DTO/Products/GetAllProductsSearch
 import { PriceListProductsSearchDTO } from "../../DTO/Products/PriceListProductsSearchDTO";
 import { ProductPagedListSearchDTO } from "../../DTO/Products/ProductPagedListSearchDTO";
 import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../../DTO/Products/UpdatePriceProduct";
+import { PaginationEnum } from "../../Enums/pagination-enum";
+import { StatusEnum } from "../../Enums/status-enum";
 import { IPriceListProducts } from "../../Interfaces/Products/IPriceListProductsVM";
 import { IProductDB } from "../../Interfaces/Products/IProductDB";
 import { IProductPagedListVM } from "../../Interfaces/Products/IProductPagedList";
@@ -55,7 +57,8 @@ export const mapProductDBToProductPagedListVM = (productDB: Product): IProductPa
         CategoryName: productDB.Category?.Name || "Sin categoria",
         Price: productDB.Price,
         Image: productDB.Images && productDB.Images.length > 0 ? productDB.Images[0].Url : "",
-        HasStock: productDB.Variants!.some((v) => v.Stock > 0)
+        HasStock: productDB.Variants!.some((v) => v.Stock > 0),
+        IsActive: productDB.IsActive
     };
     return product;
 };
@@ -121,16 +124,17 @@ export const mapGetAllProductsQueryToDTO = (name: string, IsActive: boolean | un
     };
 };
 
-export const mapProductPagedListQueryToDTO = (query: any, categories: string[], sizes: string[]): ProductPagedListSearchDTO => {
+export const mapProductPagedListQueryToDTO = (query: any, categories: string[], sizes: string[], status: boolean | undefined): ProductPagedListSearchDTO => {
     return {
         Name: query.name as string,
         Categories: categories,
         Sizes: sizes.map((s) => Number(s)),
         Order: query.order as string,
         Pagination: {
-            Page: query.page ? Number(query.page) : 1,
-            Limit: query.limit ? Number(query.limit) : 10000
-        }
+            Page: query.page ? Number(query.page) : PaginationEnum.Page,
+            Limit: query.limit ? Number(query.limit) : PaginationEnum.Limit
+        },
+        Status: status
     };
 };
 

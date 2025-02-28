@@ -24,6 +24,7 @@ export enum Errors {
     StatusRequired = "El status es requerido.",
     QuantityRequired = "La cantidad es requerida.",
     ActionRequired = "La accion es requerida.",
+    NameRequired = "El nombre es requerido.",
 
     UpdateStock = "Error al actualizar el stock, por favor intente nuevamente",
 
@@ -40,6 +41,7 @@ export enum Errors {
     Variant = "Error al cargar el stock",
 
     CheckoutInfo = "Error al cargar la informacion de la compra, por favor intente nuevamente.",
+    DiscountCouponNotFound = "El cupon de descuento no existe o esta caducado.",
 
     CompanyInfo = "Error al cargar la informacion de la empresa, por favor intente nuevamente.",
     CompanyInfoNotFound = "La informacion de la empresa no existe.",

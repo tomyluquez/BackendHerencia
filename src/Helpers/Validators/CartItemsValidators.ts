@@ -15,5 +15,7 @@ export const hasStockValidator = async (VariantId: number, CartId: number, Quant
 
 export const substractQuantityValidator = async (itemId: number, Quantity: number): Promise<number> => {
     const prevStock = await getQuantityItemCartRepository(itemId);
+    console.log(prevStock)
+    console.log(Quantity)
     return prevStock - Quantity;
 };

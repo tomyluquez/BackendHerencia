@@ -5,6 +5,7 @@ import { addItemCartService, deleteItemToCartService, getCartItemsByUserIdServic
 import { mapItemCartBodyToDTO, mapUpdateQuantityItemCartBodyToDTO } from "../Helpers/Maps/MapCart";
 import { ResponseMessages } from "./../Models/Errors/ResponseMessages.model";
 import { getCartIdByUserId } from "../Repositories/Cart.Repository";
+import { ActionCartItemEnum } from "../Enums/action-cart-item";
 
 export const getCartItemsByUserId = async (req: Request, res: Response): Promise<UserCartItemsVM> => {
     const { userId } = req.query;
@@ -37,8 +38,6 @@ export const AddItemToCart = async (req: Request, res: Response): Promise<Respon
         }
 
         const CartId = await getCartIdByUserId(UserId);
-        console.log(VariantId, Quantity, UserId, CartId);
-
         const bodyParams = mapItemCartBodyToDTO(+VariantId, CartId, +Quantity);
 
         const response = await addItemCartService(bodyParams);
@@ -70,18 +69,18 @@ export const deleteItemsToCart = async (req: Request, res: Response): Promise<Re
 };
 
 export const updateQuantityCartItem = async (req: Request, res: Response): Promise<ResponseMessages> => {
-    const { quantity, itemId, action } = req.body;
+    const { Quantity, ItemId, Action } = req.body;
     try {
-        if (!itemId) {
+        if (!ItemId) {
             throw new Error(Errors.IdRequired);
         }
-        if (!quantity) {
+        if (!Quantity) {
             throw new Error(Errors.QuantityRequired);
         }
-        if (!action || !["add", "substract"].includes(action)) {
+        if (!Action || ![ActionCartItemEnum.Add, ActionCartItemEnum.Substract].includes(Action)) {
             throw new Error(Errors.ActionRequired);
         }
-        const bodyParams = mapUpdateQuantityItemCartBodyToDTO(itemId, quantity, action);
+        const bodyParams = mapUpdateQuantityItemCartBodyToDTO(ItemId, Quantity, Action);
         const response = await updateQuantityCartItemService(bodyParams);
         res.status(200).json(response);
         return response;

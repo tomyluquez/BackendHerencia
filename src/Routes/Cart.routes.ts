@@ -7,6 +7,9 @@ const router: Router = Router();
 
 router.use(authenticate).use(authorizeRole([RoleEnum.Admin, RoleEnum.Customer]));
 
-router.get("/cartItems", getCartItemsByUserId).post("/cartItem", AddItemToCart).delete("/cartItem", deleteItemsToCart).post("/cartItems", updateQuantityCartItem);
+router.get("/cartItems", getCartItemsByUserId)
+    .post("/cartItem", AddItemToCart)
+    .delete("/cartItem", deleteItemsToCart)
+    .post("/cartItems", updateQuantityCartItem);
 
 export { router as RouterCart };

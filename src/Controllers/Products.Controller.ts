@@ -15,7 +15,7 @@ import { PromotionalProductsVM } from "../Models/Products/PromotionalProductsVM.
 import { Errors } from "../Text/Errors.Messages";
 import { ProductPagedListVM } from "../Models/Products/ProductPagedListVM";
 import { ProductPagedListSearchDTO } from "../DTO/Products/ProductPagedListSearchDTO";
-import { convertedFilters, convertedStatusFilter } from "../Helpers/Filters/ConvertedFilters";
+import { convertedFilters, convertedStatusFilter, convertedStatusNumberFilter } from "../Helpers/Filters/ConvertedFilters";
 import { GetAllProductsSearchDTO } from "../DTO/Products/GetAllProductsSearchDTO";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
 import { MapBodyToProductDB, mapGetAllProductsQueryToDTO, mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdateAllPriceProductBodyToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProducts";
@@ -61,8 +61,9 @@ export const getPromocionalProducts = async (req: Request, res: Response): Promi
 export const getProductsPagedLists = async (req: Request, res: Response): Promise<ProductPagedListVM> => {
     const categories = convertedFilters(req.query.categories);
     const sizes = convertedFilters(req.query.sizes);
+    const status = convertedStatusNumberFilter(Number(req.query.status));
 
-    const search: ProductPagedListSearchDTO = mapProductPagedListQueryToDTO(req.query, categories, sizes);
+    const search: ProductPagedListSearchDTO = mapProductPagedListQueryToDTO(req.query, categories, sizes, status);
     try {
         const response = await getProductsPagedListsService(search);
         res.status(200).send(response);
@@ -95,18 +96,14 @@ export const getProductById = async (req: Request, res: Response): Promise<Produ
 
 export const changeStatuts = async (req: Request, res: Response): Promise<ResponseMessages> => {
     try {
-        const { status, id } = req.body;
-        let IsActive;
-
-        if (!status || (status !== "active" && status !== "inactive")) {
-            throw new Error(Errors.StatusRequired);
-        } else {
-            IsActive = status === "active" ? true : false;
-        }
-
+        const { status, id } = req.query;
         if (!id) {
             throw new Error(Errors.IdRequired);
         }
+        if (!status) {
+            throw new Error(Errors.StatusRequired);
+        }
+        let IsActive = convertedStatusNumberFilter(Number(status))!;
 
         const response = await changeStatusService(+id, IsActive);
         res.status(200).send(response);

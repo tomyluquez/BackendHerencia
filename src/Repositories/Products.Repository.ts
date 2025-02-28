@@ -118,12 +118,11 @@ export const getProductsPagedListRepository = async (search: ProductPagedListSea
             order = [["Price", "DESC"]];
         }
     }
-    console.log(search, order);
     const products = new ProductPagedListVM();
     const productsDB = await Product.findAll({
         where: {
-            IsActive: true,
-            ...(search.Name && { Name: { [Op.like]: `%${search.Name}%` } })
+            ...(search.Name && { Name: { [Op.like]: `%${search.Name}%` } }),
+            ...(search.Status !== undefined && { IsActive: search.Status }),
         },
         include: [
             {
@@ -259,7 +258,6 @@ export const getProductByIdRepository = async (id: number): Promise<ProductVM> =
     const product = new ProductVM();
     const productDB = await Product.findAll({
         where: {
-            IsActive: true,
             Id: id
         },
         include: [

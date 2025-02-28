@@ -1,5 +1,6 @@
 import { AddItemCartDTO } from "../DTO/Cart/AddItemCartDTO";
 import { UpdateQuantityItemCartDTO } from "../DTO/Cart/UpdateQuantityItemCartDTO";
+import { ActionCartItemEnum } from "../Enums/action-cart-item";
 import { hasStockValidator, substractQuantityValidator } from "../Helpers/Validators/CartItemsValidators";
 import { UserCartItemsVM } from "../Models/Cart/UserCartItemsVM";
 import { ResponseMessages } from "../Models/Errors/ResponseMessages.model";
@@ -34,8 +35,9 @@ export const updateQuantityCartItemService = async (bodyParams: UpdateQuantityIt
         response.setError(Errors.CartItemNotFound);
         return response;
     }
+    console.log(itemCart)
 
-    if (bodyParams.Action === "add") {
+    if (bodyParams.Action === ActionCartItemEnum.Add) {
         const hasStock = await hasStockValidator(itemCart.VariantId, itemCart.CartId, bodyParams.Quantity);
         if (!hasStock) {
             const response = new ResponseMessages();
@@ -44,7 +46,7 @@ export const updateQuantityCartItemService = async (bodyParams: UpdateQuantityIt
         }
     }
 
-    if (bodyParams.Action === "substract") {
+    if (bodyParams.Action === ActionCartItemEnum.Substract) {
         const rest = await substractQuantityValidator(itemCart.Id, bodyParams.Quantity);
         if (rest < 0) {
             const response = new ResponseMessages();

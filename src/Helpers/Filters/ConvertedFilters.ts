@@ -1,4 +1,5 @@
 import { RoleEnum } from "../../Enums/role-enum";
+import { StatusEnum } from "../../Enums/status-enum";
 
 export const convertedFilters = (param: any): string[] => {
     const params = typeof param === "string" ? param : "";
@@ -11,6 +12,14 @@ export const convertedStatusFilter = (status: string | undefined): boolean | und
         return undefined;
     } else {
         return status === "active" ? true : false;
+    }
+};
+
+export const convertedStatusNumberFilter = (status: number | undefined): boolean | undefined => {
+    if (status === undefined || (status !== StatusEnum.Active && status !== StatusEnum.Inactive)) {
+        return undefined;
+    } else {
+        return status === StatusEnum.Active ? true : false;
     }
 };
 

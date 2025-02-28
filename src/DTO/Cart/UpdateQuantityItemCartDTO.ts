@@ -1,7 +1,6 @@
 export interface UpdateQuantityItemCartDTO {
     Quantity: number;
     ItemId: number;
-    Action: ActionUpdateItemCartDTO;
+    Action: number;
 }
 
-export type ActionUpdateItemCartDTO = "add" | "substract";
