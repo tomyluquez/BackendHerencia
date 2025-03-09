@@ -1,0 +1,18 @@
+import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
+import { ICartItemsVM } from "../Interfaces/ICartItemsVM";
+
+export class UserCartItemsVM extends ResponseMessages {
+    Items: ICartItemsVM[];
+    TotalItems: number;
+
+    constructor() {
+        super();
+        this.Items = [];
+        this.TotalItems = 0;
+    }
+
+    addItems(items: ICartItemsVM[]) {
+        this.Items = items;
+        this.TotalItems = items.length;
+    }
+}

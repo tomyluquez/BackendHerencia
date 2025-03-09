@@ -9,6 +9,7 @@ export interface ProductAttributes {
     Id: number | null;
     Name: string;
     Price: number;
+    PromotionalPrice: number;
     Cost: number;
     Discount: number;
     Description: string;
@@ -19,12 +20,13 @@ export interface ProductAttributes {
     CategoryId?: number;
 }
 
-interface ProductCreationAttributes extends Optional<ProductAttributes, "Id" | "Description" | "IsActive" | "IsPromotional" | "DateCreated" | "DateUpdated"> {}
+interface ProductCreationAttributes extends Optional<ProductAttributes, "Id" | "Description" | "IsActive" | "IsPromotional" | "DateCreated" | "DateUpdated"> { }
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
     public Id!: number | null;
     public Name!: string;
     public Price!: number;
+    public PromotionalPrice!: number;
     public Cost!: number;
     public Discount!: number;
     public Description!: string;
@@ -50,6 +52,10 @@ Product.init(
             allowNull: false
         },
         Price: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        PromotionalPrice: {
             type: DataTypes.FLOAT,
             allowNull: false
         },

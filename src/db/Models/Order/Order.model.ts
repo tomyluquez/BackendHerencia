@@ -6,6 +6,7 @@ import OrderStatus from "./OrderStatus.model";
 import User from "../User.model";
 import ShippingMethod from "../Shipping/ShippingMethod.model";
 import OrderItems from "./OrderItems.model";
+import DiscountCoupon from './../DiscountCoupon.model';
 
 interface OrderAttributes {
     Id: number;
@@ -16,6 +17,8 @@ interface OrderAttributes {
     Total: number;
     Subtotal: number;
     Discount: number;
+    DiscountCouponId?: number;
+    DiscountCoupon?: DiscountCoupon;
     UserId?: number;
     User?: User;
     OrderStatusId?: number;
@@ -40,6 +43,8 @@ class Order extends Model<OrderAttributes, OrderCreationAttributes> implements O
     public Total!: number;
     public Subtotal!: number;
     public Discount!: number;
+    public DiscountCouponId!: number;
+    public DiscountCoupon!: DiscountCoupon;
     public UserId!: number;
     public User!: User;
     public OrderStatusId!: number;
@@ -81,6 +86,10 @@ Order.init(
         Discount: {
             type: DataTypes.FLOAT,
             allowNull: false
+        },
+        DiscountCouponId: {
+            type: DataTypes.FLOAT,
+            allowNull: true
         },
         DateCreated: {
             type: DataTypes.DATE,

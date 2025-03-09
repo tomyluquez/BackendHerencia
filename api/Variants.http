@@ -1,9 +1,13 @@
 ### Obtener todas las variantes de un producto, pasar el productId por query params, opcional paginacion
-GET http://localhost:3002/api/v1/variants?productId=8&page=2&limit=1
+GET http://localhost:3002/api/v1/variants/getProductVariants?productId=8&page=1&limit=1000
+Accept: application/json
+
+### Obtener todas las variantes, opcional paginacion
+GET http://localhost:3002/api/v1/variants/getProductsStock?&productName=&sizeId=&page=1&limit=3
 Accept: application/json
 
 ### Editar el stock, se debe pasar el variantId y la cantidad en el body.
-PUT http://localhost:3002/api/v1/variants/variant
+PUT http://localhost:3002/api/v1/variants/updateStock
 Accept: application/json
 Authorization: token xxx
 Content-Type: application/json

@@ -2,16 +2,16 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import sequelize from "./db/connectionDB.sequalize";
-import { RouterProducts } from "./Routes/Products.routes";
 import { syncDatabase } from "./db/syncdb";
-import { RouterCategories } from "./Routes/Category.routes";
-import { RouterVariants } from "./Routes/Variant.routes";
-import { RouterCart } from "./Routes/Cart.routes";
-import { RouterCheckout } from "./Routes/Checkout.routes";
-import { RouterConfig } from "./Routes/Config.routes";
-import { RouterOrders } from "./Routes/Orders.routes";
-import { RouterSizes } from "./Routes/Size.routes";
-import { RouterUser } from "./Routes/User.routes";
+import { RouterCategories } from "./Modules/Category/Routes/Category.routes";
+import { RouterVariants } from "./Modules/Variant/Routes/Variant.routes";
+import { RouterCart } from "./Modules/Cart/Routes/Cart.routes";
+import { RouterCheckout } from "./Modules/Checkout/Routes/Checkout.routes";
+import { RouterOrders } from "./Modules/Order/Routes/Orders.routes";
+import { RouterSizes } from "./Modules/Size/Routes/Size.routes";
+import { RouterUser } from "./Modules/User/Routes/User.routes";
+import { RouterProducts } from "./Modules/Product/Routes/Products.routes";
+import { RouterConfig } from "./Modules/Config/Routes/Config.routes";
 
 const PORT = process.env.SERVER_PORT || 3000;
 
