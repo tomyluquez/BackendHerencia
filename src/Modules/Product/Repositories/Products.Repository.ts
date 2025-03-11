@@ -19,6 +19,7 @@ import sequelize from "../../../db/connectionDB.sequalize";
 import { PriceListProductsSearchDTO } from "../Dtos/PriceListProductsSearchDTO";
 import { PriceListProductsVM } from "../Models/PriceListProductsVM";
 import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../Dtos/UpdatePriceProduct";
+import { ActionTypePriceListEnum } from "../Enums/Action-type-price-list.enum";
 
 export const getAllProductsRepository = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
@@ -426,7 +427,7 @@ export const getPriceListProductsRepository = async (search: PriceListProductsSe
 
     const productsDB = await Product.findAll({
         where: { IsActive: true, ...(search.ProductName && { Name: { [Op.like]: `%${search.ProductName}%` } }), ...(search.CategoryId && { CategoryId: search.CategoryId }) },
-        attributes: ["Name", "Price", "Discount"],
+        attributes: ["Id", "Name", "Price", "Discount", "PromotionalPrice"],
         offset,
         limit: search.Pagination.Limit
     });
@@ -435,7 +436,7 @@ export const getPriceListProductsRepository = async (search: PriceListProductsSe
         response.Items = productsDB.map(mapPriceListProductsDBToVM);
         response.TotalItems = await Product.count({ where: { IsActive: true, ...(search.ProductName && { Name: { [Op.like]: `%${search.ProductName}%` } }), ...(search.CategoryId && { CategoryId: search.CategoryId }) } });
     } else {
-        response.setError(Errors.ProductListNotFound);
+        response.setWarning(Errors.ProductListNotFound);
     }
     return response;
 };
@@ -445,7 +446,9 @@ export const updatePriceProductRepository = async (toUpdate: UpdatePriceProductD
     const [affectedRows] = await Product.update(
         {
             Price: toUpdate.Price,
-            Discount: toUpdate.Discount
+            Discount: toUpdate.Discount,
+            PromotionalPrice: toUpdate.PromotionalPrice,
+            IsPromotional: toUpdate.Discount > 0
         },
         { where: { Id: toUpdate.ProductId } }
     );
@@ -462,13 +465,18 @@ export const updateAllProductsPricetRepository = async (toUpdate: UpdateAllPrice
     const response = new ResponseMessages();
     const updateFields: any = {};
 
-    if (toUpdate.Percentage !== undefined) {
+    if (toUpdate.ActionType === ActionTypePriceListEnum.ChangePrice) {
         updateFields.Price = Sequelize.literal(`Price * (1 + ${toUpdate.Percentage} / 100)`);
+        updateFields.Discount = Sequelize.literal(`Discount`);
+        updateFields.PromotionalPrice = Sequelize.literal(`Price - (Price * (Discount / 100))`);
     }
 
-    if (toUpdate.Discount !== undefined) {
-        updateFields.Discount = toUpdate.Discount;
+    if (toUpdate.ActionType === ActionTypePriceListEnum.ChangeDiscount) {
+        updateFields.Discount = toUpdate.Discount || 0;
+        updateFields.PromotionalPrice = Sequelize.literal(`Price - (Price * (${toUpdate.Discount} / 100))`);
+        updateFields.IsPromotional = toUpdate.Discount && toUpdate.Discount > 0;
     }
+
 
     try {
         await Product.update(updateFields, {

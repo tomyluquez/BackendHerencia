@@ -69,6 +69,8 @@ export enum Errors {
     SizeChangeStatus = "Error al cambiar el estado del talle, por favor intente nuevamente.",
     SizeSave = "Error al guardar el talle, por favor intente nuevamente.",
     SizeNotFound = "Error al cargar el talle, por favor intente nuevamente.",
+    SizeWhitProducts = "El talle no puede ser desactivado porque tiene productos asociados.",
+
 
     UserProfile = "Error al cargar el perfil del usuario, por favor intente nuevamente.",
     UserRegister = "Error al registrar el usuario, por favor intente nuevamente.",

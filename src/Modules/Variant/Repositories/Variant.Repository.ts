@@ -3,7 +3,7 @@ import { IProductVariantsSearchDTO } from "../Dtos/IProductVariantsSearchDTO";
 import { ProductVarinantsVM } from "../Models/ProductVariantsVM";
 import Variant from "../../../db/Models/Variant.model";
 import Size from "../../../db/Models/Size.model";
-import { mapProductsStockDBToVM, mapVariantsProductDBToVM } from "../Helpers/Maps/MapVariantsDBToVM";
+import { mapProductsStockDBToVM, mapVariantDBToSize, mapVariantsProductDBToVM } from "../Helpers/Maps/MapVariantsDBToVM";
 import { SearchProductsStockPagedListDTO } from "../Interfaces/Variants.interfaces";
 import { ProductStockVM } from "../Models/ProductStock.VM";
 import Product from "../../../db/Models/Products/Product.model";
@@ -11,6 +11,7 @@ import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { Errors } from "../../Text/Errors.Messages";
 import { Success } from "../../Text/Succes.Messages";
 import { IProductVariants } from "../../Product/Interfaces/IProductsVariants";
+import { ISizeListVM } from "../../Size/Interfaces/ISizeListVM";
 
 export const getProductVariantsRepository = async (search: IProductVariantsSearchDTO): Promise<ProductVarinantsVM> => {
     const productVariants = new ProductVarinantsVM();
@@ -135,4 +136,19 @@ export const getVariantByIdRepository = async (id: number): Promise<IProductVari
     if (!variantDB) return null;
     const variant = mapVariantsProductDBToVM(variantDB);
     return variant;
+};
+
+export const getVariantBySizeIdRepository = async (sizeId: number): Promise<ISizeListVM | null> => {
+    const variantDB = await Variant.findOne({
+        include: [
+            {
+                model: Size,
+                as: "Size",
+                where: { Id: sizeId, IsActive: true }
+            }
+        ]
+    });
+    if (!variantDB) return null;
+    const size = mapVariantDBToSize(variantDB);
+    return size;
 };

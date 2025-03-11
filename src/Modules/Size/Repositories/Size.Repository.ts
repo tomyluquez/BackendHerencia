@@ -42,14 +42,8 @@ export const changeStatusRepository = async (toUpdate: SizeChangeStatusDTO): Pro
     const response = new ResponseMessages();
 
     const [affectedRow] = await Size.update(
-        {
-            IsActive: toUpdate.IsActive
-        },
-        {
-            where: {
-                Id: toUpdate.Id
-            }
-        }
+        { IsActive: sequelize.literal('NOT IsActive') }, // Valores a actualizar
+        { where: { Id: toUpdate.Id } } // Condición de búsqueda
     );
 
     if (affectedRow > 0) {
@@ -79,7 +73,7 @@ export const saveSizeRepository = async (toSave: SaveSizeDTO): Promise<ResponseM
     if (toSave.Id) {
         const [affectedRow] = await Size.update(
             {
-                Name: toSave.Name
+                Name: toSave.Name,
             },
             {
                 where: {

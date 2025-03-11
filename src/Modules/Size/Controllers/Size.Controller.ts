@@ -6,6 +6,7 @@ import { changeStatusService, getSizeByIdService, getSizesListService, saveSizeS
 import { convertedStatusFilter, convertedStatusNumberFilter } from "../../Other/Helpers/ConvertedFilters";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { SizeVM } from "../Models/SizeVM";
+import { FilteringOptionsCategoryListVM } from "../Models/FilteringOptionsSizeList";
 
 export const getSizesList = async (req: Request, res: Response): Promise<SizeLlistVM> => {
     const IsActive = convertedStatusNumberFilter(Number(req.query.status));
@@ -24,13 +25,12 @@ export const getSizesList = async (req: Request, res: Response): Promise<SizeLli
 };
 
 export const changeStatus = async (req: Request, res: Response): Promise<ResponseMessages> => {
-    const { id, status } = req.body;
-    const IsActive = convertedStatusNumberFilter(Number(status));
+    const { id } = req.query;
     try {
         if (!id) {
             throw new Error(Errors.IdRequired);
         }
-        const toUpdate = mapSizeChangeStatusBodyToDTO(id, IsActive);
+        const toUpdate = mapSizeChangeStatusBodyToDTO(+id);
         const response = await changeStatusService(toUpdate);
         res.status(200).send(response);
         return response;
@@ -44,6 +44,7 @@ export const changeStatus = async (req: Request, res: Response): Promise<Respons
 
 export const saveSize = async (req: Request, res: Response): Promise<ResponseMessages> => {
     const saveParams = mapSaveSizeBodyToDTO(req.body);
+    console.log(saveParams)
     try {
         const response = await saveSizeService(saveParams);
         res.status(200).send(response);
@@ -68,6 +69,18 @@ export const getSizeById = async (req: Request, res: Response): Promise<SizeVM> 
     } catch (error: any) {
         const response = new SizeVM();
         response.setError(error.message || Errors.Size);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
+export const getFilteringOptionsSizeList = async (req: Request, res: Response): Promise<FilteringOptionsCategoryListVM> => {
+    const response = new FilteringOptionsCategoryListVM();
+    try {
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        response.setError(error.message);
         res.status(500).send(response);
         return response;
     }

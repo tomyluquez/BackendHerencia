@@ -24,6 +24,7 @@ import { mapDataToNameAndId } from "../../Variant/Helpers/Maps/MapVariantsDBToVM
 import { mapPaginationQueryToDTO } from "../../Other/Helpers/Maps/Maps";
 import { getAllCategoriesService } from "../../Category/Services/Categories.Service";
 import { mapGetAllProductsQueryToDTO, mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdateAllPriceProductBodyToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProducts";
+import { FilteringOptionsPriceListVM } from "../Models/FilteringOptionsPriceListVM";
 
 export const getAllProducts = async (req: Request, res: Response): Promise<ProductVM> => {
     const { name, status, page, limit } = req.query;
@@ -147,7 +148,7 @@ export const getPriceListProducts = async (req: Request, res: Response): Promise
 };
 
 export const updatePriceProduct = async (req: Request, res: Response): Promise<ResponseMessages> => {
-    const toUpdate = mapUpdatePriceProductBodyToDTO(req.body);
+    const toUpdate = mapUpdatePriceProductBodyToDTO(req.query);
     try {
         const response = await updatePriceProductService(toUpdate);
         res.status(200).send(response);
@@ -161,7 +162,7 @@ export const updatePriceProduct = async (req: Request, res: Response): Promise<R
 };
 
 export const updateAllProductsPrice = async (req: Request, res: Response): Promise<ResponseMessages> => {
-    const toUpdate = mapUpdateAllPriceProductBodyToDTO(req.body);
+    const toUpdate = mapUpdateAllPriceProductBodyToDTO(req.query);
     console.log(toUpdate);
     try {
         const response = await updateAllProductsPriceService(toUpdate);
@@ -179,6 +180,20 @@ export const getFilteringOptionsPagedListProduct = async (req: Request, res: Res
     const response = new FilteringOptionsPagedListProductVM();
     try {
         const categories = await getAllCategoriesService({ IsActive: undefined, Pagination: { Page: 1, Limit: 1000 }, Name: "" })
+        response.addCategories(mapDataToNameAndId(categories.Items))
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        response.setError(error.message || Errors.ProductVariants);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
+export const getFilteringOptionsPriceList = async (req: Request, res: Response): Promise<FilteringOptionsPriceListVM> => {
+    const response = new FilteringOptionsPriceListVM();
+    try {
+        const categories = await getAllCategoriesService({ IsActive: true, Pagination: { Page: 1, Limit: 1000 }, Name: "" })
         response.addCategories(mapDataToNameAndId(categories.Items))
         res.status(200).send(response);
         return response;

@@ -1,7 +1,7 @@
 import { IProductVariants } from "./IProductsVariants";
 
 export interface IProductDB {
-    Id?: number | null;
+    Id?: number;
     Name: string;
     Price: number;
     PromotionalPrice: number;

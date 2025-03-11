@@ -6,7 +6,7 @@ import ProductImages from "./ProductsImages.model";
 import Variant from "../Variant.model";
 
 export interface ProductAttributes {
-    Id: number | null;
+    Id: number;
     Name: string;
     Price: number;
     PromotionalPrice: number;
@@ -23,7 +23,7 @@ export interface ProductAttributes {
 interface ProductCreationAttributes extends Optional<ProductAttributes, "Id" | "Description" | "IsActive" | "IsPromotional" | "DateCreated" | "DateUpdated"> { }
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
-    public Id!: number | null;
+    public Id!: number;
     public Name!: string;
     public Price!: number;
     public PromotionalPrice!: number;

@@ -1,4 +1,5 @@
 import Size from "../../../../db/Models/Size.model";
+import { ActivationStatusEnum } from "../../../Other/Enums/activation-status-enum";
 import { mapPaginationQueryToDTO } from "../../../Other/Helpers/Maps/Maps";
 import { SaveSizeDTO } from "../../Dtos/SaveSizeDTO";
 import { SizeChangeStatusDTO } from "../../Dtos/SizeChangeStatusDTO";
@@ -21,16 +22,15 @@ export const mapSizesDBToVM = (size: Size): ISizeListVM => {
     };
 };
 
-export const mapSizeChangeStatusBodyToDTO = (id: number, IsActive: boolean | undefined): SizeChangeStatusDTO => {
+export const mapSizeChangeStatusBodyToDTO = (id: number): SizeChangeStatusDTO => {
     return {
         Id: Number(id),
-        IsActive: IsActive
     };
 };
 
 export const mapSaveSizeBodyToDTO = (body: any): SaveSizeDTO => {
     return {
-        Id: Number(body.id) || 0,
-        Name: body.name
+        Id: Number(body.Id) || 0,
+        Name: body.Name,
     };
 };

@@ -5,6 +5,8 @@ import { convertedStatusNumberFilter } from "../../../Other/Helpers/ConvertedFil
 import { IProductsStock, SearchProductsStockPagedListDTO } from "../../Interfaces/Variants.interfaces";
 import { IProductVariantsSearchDTO } from "../../Dtos/IProductVariantsSearchDTO";
 import { mapPaginationQueryToDTO } from "../../../Other/Helpers/Maps/Maps";
+import { SizeVM } from "../../../Size/Models/SizeVM";
+import { ISizeListVM } from "../../../Size/Interfaces/ISizeListVM";
 
 export const mapVariantsProductDBToVM = (VariantDB: Variant): IProductVariants => {
     return {
@@ -48,5 +50,13 @@ export const mapQueryProductsStockSearchToDTO = (query: any): SearchProductsStoc
 
 export const mapDataToNameAndId = (categories: any): NameAndId[] => {
     return categories.map((item: any) => ({ Name: item.Name, Id: item.Id }));
+}
+
+export const mapVariantDBToSize = (variant: Variant): ISizeListVM => {
+    return {
+        Id: variant.SizeId,
+        Name: variant.Size?.Name || "",
+        IsActive: variant.Size?.IsActive || false
+    }
 }
 

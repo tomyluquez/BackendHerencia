@@ -91,7 +91,7 @@ export const MapBodyToProductDB = (body: any): IProductVM => {
 // ver como se guardan los productos con FK
 export const MapProductVMToProductDB = (productVM: IProductVM): IProductDB => {
     const productDB: IProductDB = {
-        Id: productVM.Id || null,
+        Id: productVM.Id || 0,
         Name: productVM.Name,
         Price: productVM.Price,
         PromotionalPrice: productVM.PromotionalPrice,
@@ -109,9 +109,11 @@ export const MapProductVMToProductDB = (productVM: IProductVM): IProductDB => {
 
 export const mapPriceListProductsDBToVM = (productDB: Product): IPriceListProducts => {
     return {
+        Id: productDB.Id,
         ProductName: productDB.Name,
         Price: productDB.Price,
-        Discount: productDB.Discount
+        Discount: productDB.Discount,
+        PromotionalPrice: productDB.PromotionalPrice
     };
 };
 
@@ -149,18 +151,20 @@ export const mapPriceListProductsSearchQueryToDTO = (query: any): PriceListProdu
     };
 };
 
-export const mapUpdatePriceProductBodyToDTO = (body: any): UpdatePriceProductDTO => {
+export const mapUpdatePriceProductBodyToDTO = (query: any): UpdatePriceProductDTO => {
     return {
-        ProductId: Number(body.productId),
-        Price: Number(body.price),
-        Discount: Number(body.discount)
+        ProductId: Number(query.productId),
+        Price: Number(query.price),
+        Discount: Number(query.discount),
+        PromotionalPrice: Number(query.promotionalPrice)
     };
 };
 
-export const mapUpdateAllPriceProductBodyToDTO = (body: any): UpdateAllPriceProductDTO => {
+export const mapUpdateAllPriceProductBodyToDTO = (query: any): UpdateAllPriceProductDTO => {
     return {
-        Percentage: Number(body.percentage) || 0,
-        Discount: Number(body.discount) || 0,
-        CategoryId: Number(body.categoryId) || 0
+        ActionType: Number(query.actionType),
+        Percentage: Number(query.percentage) || 0,
+        Discount: Number(query.discount) || 0,
+        CategoryId: Number(query.categoryId) || 0
     };
 };

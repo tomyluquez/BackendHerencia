@@ -44,8 +44,8 @@ export const getProductsStock = async (req: Request, res: Response): Promise<Pro
 export const getFilteringOptionsProductStock = async (req: Request, res: Response): Promise<FilteringOptionsProductStockVM> => {
     const response = new FilteringOptionsProductStockVM();
     try {
-        const categories = await getAllCategoriesService({ IsActive: undefined, Pagination: { Page: 1, Limit: 1000 }, Name: "" })
-        const sizes = await getSizesListService({ Name: "", IsActive: undefined, Pagination: { Page: 1, Limit: 1000 } })
+        const categories = await getAllCategoriesService({ IsActive: true, Pagination: { Page: 1, Limit: 1000 }, Name: "" })
+        const sizes = await getSizesListService({ Name: "", IsActive: true, Pagination: { Page: 1, Limit: 1000 } })
         response.addCategories(mapDataToNameAndId(categories.Items))
         response.addSizes(mapDataToNameAndId(sizes.Items))
         res.status(200).send(response);
