@@ -18,6 +18,7 @@ export interface ProductAttributes {
     DateCreated: Date;
     DateUpdated: Date;
     CategoryId?: number;
+    Rentability: number;
 }
 
 interface ProductCreationAttributes extends Optional<ProductAttributes, "Id" | "Description" | "IsActive" | "IsPromotional" | "DateCreated" | "DateUpdated"> { }
@@ -38,6 +39,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
     public DateUpdated!: Date;
     public Variants?: Variant[];
     public Images?: ProductImages[];
+    public Rentability!: number;
 }
 
 Product.init(
@@ -56,6 +58,10 @@ Product.init(
             allowNull: false
         },
         PromotionalPrice: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        Rentability: {
             type: DataTypes.FLOAT,
             allowNull: false
         },

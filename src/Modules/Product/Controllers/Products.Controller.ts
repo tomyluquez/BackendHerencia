@@ -6,6 +6,7 @@ import {
     getPriceListProductsService,
     getProductByIdService,
     getProductsPagedListsService,
+    getProductsService,
     getPromocionalProductsService,
     saveProductService,
     updateAllProductsPriceService,
@@ -23,22 +24,22 @@ import { FilteringOptionsPagedListProductVM } from "../Models/FilteringOptionsPa
 import { mapDataToNameAndId } from "../../Variant/Helpers/Maps/MapVariantsDBToVM";
 import { mapPaginationQueryToDTO } from "../../Other/Helpers/Maps/Maps";
 import { getAllCategoriesService } from "../../Category/Services/Categories.Service";
-import { mapGetAllProductsQueryToDTO, mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdateAllPriceProductBodyToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProducts";
+import { mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdateAllPriceProductBodyToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProducts";
 import { FilteringOptionsPriceListVM } from "../Models/FilteringOptionsPriceListVM";
+import { Products } from "../Models/Product";
 
-export const getAllProducts = async (req: Request, res: Response): Promise<ProductVM> => {
-    const { name, status, page, limit } = req.query;
+export const getProductsToSale = async (req: Request, res: Response): Promise<Products> => {
     const categories = convertedFilters(req.query.categories);
-    const IsActive = convertedStatusFilter(status as string);
+    const sizes = convertedFilters(req.query.sizes);
+    const status = convertedStatusNumberFilter(Number(req.query.status));
 
-    const search: GetAllProductsSearchDTO = mapGetAllProductsQueryToDTO(name as string, IsActive, categories, page as string, limit as string);
-
+    const search: ProductPagedListSearchDTO = mapProductPagedListQueryToDTO(req.query, categories, sizes, status);
     try {
-        const response = await getAllProductsService(search);
+        const response = await getProductsService(search);
         res.status(200).send(response);
         return response;
     } catch (error: any) {
-        const response = new ProductVM();
+        const response = new Products();
         response.setError(Errors.Products);
         res.status(500).send(response);
         return response;

@@ -5,10 +5,10 @@ import { UserRoleEnum } from "../../User/Enums/user-role-enum";
 
 const router = Router();
 
-router.get("/companyInfo", getCompanyInfo).get("/menuInfo", getMenu).get("/configInfo", getConfig);
+router.get("/companyInfo", getCompanyInfo).get("/menuInfo", getMenu);
 
 router.use(authenticate).use(authorizeRole([UserRoleEnum.Admin]));
 
-router.post("/companyInfo", saveCompanyInfo).post("/configInfo", saveConfigInfo);
+router.post("/companyInfo", saveCompanyInfo).post("/configInfo", saveConfigInfo).get("/getConfig", getConfig);
 
 export { router as RouterConfig };

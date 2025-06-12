@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, ValidationError } from "sequelize";
 import Order from "../../../db/Models/Order/Order.model";
 import User from "../../../db/Models/User.model";
 import { OrderVM } from "../Models/OrderVM";
@@ -14,10 +14,14 @@ import { OrderDetailVM } from "../Models/OrderDetailVM";
 import DiscountCoupon from "../../../db/Models/DiscountCoupon.model";
 import PaymentMethod from "../../../db/Models/PaymentMethod.model";
 import ShippingMethod from "../../../db/Models/Shipping/ShippingMethod.model";
-import OrderItems from "../../../db/Models/Order/OrderItems.model";
 import Product from "../../../db/Models/Products/Product.model";
 import Variant from "../../../db/Models/Variant.model";
 import Size from "../../../db/Models/Size.model";
+import { OrderDB } from "../Interfaces/OrderDB";
+import { SaveOrderResponse } from "../Models/SaveOrderResponse.model";
+import sequelize from "../../../db/connectionDB.sequalize";
+import OrderItems from './../../../db/Models/Order/OrderItems.model';
+import { finishCartByCartIdRepository } from "../../Cart/Repositories/Cart.Repository";
 
 export const getOrdersRepository = async (search: OrderSearchDTO): Promise<OrderVM> => {
     const response = new OrderVM();
@@ -180,3 +184,43 @@ export const getOrderStatusRepository = async (): Promise<OrderStatusVM> => {
 
     return response;
 };
+
+export const saveOrderRepository = async (newOrder: OrderDB, cartId: number): Promise<SaveOrderResponse> => {
+    const transaction = await sequelize.transaction();
+    const response = new SaveOrderResponse();
+
+    try {
+        // Crear la orden sin los items primero
+        const { Details, ...orderData } = newOrder;
+        const order = await Order.create(orderData, { transaction });
+
+        // Si hay items, crearlos asociados a la orden
+        if (Details && Details.length > 0) {
+            await OrderItems.bulkCreate( // <-- Usar el modelo OrderItems, no el array
+                Details.map(item => ({
+                    ...item,
+                    OrderId: order.Id // Asignar la relación
+                })),
+                { transaction }
+            );
+        }
+
+        await transaction.commit();
+        await finishCartByCartIdRepository(cartId);
+        response.setSuccess(Success.SaveOrder);
+        response.OrderNumber = order.OrderNumber;
+        return response;
+    } catch (error) {
+        await transaction.rollback();
+        // Mostrar el error completo en consola
+        console.error('Error al guardar orden:', error);
+
+        // Si es un error de validación de Sequelize, mostrar detalles
+        if (error instanceof ValidationError) {
+            console.error('Errores de validación:', error.errors);
+        }
+
+        response.setError(Errors.ProductSave);
+        return response;
+    }
+}

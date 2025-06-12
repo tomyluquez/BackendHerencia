@@ -5,6 +5,7 @@ export interface IProductVM {
     Name: string;
     Price: number;
     PromotionalPrice: number;
+    Rentability: number;
     Description: string;
     Variants?: IProductVariants[];
     Images: string[];

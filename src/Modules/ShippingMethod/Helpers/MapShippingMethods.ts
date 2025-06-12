@@ -5,6 +5,7 @@ export const mapShippingMethodsDBToVM = (shiiping: ShippingMethod): IShippingMet
     return {
         Id: shiiping.Id,
         Name: shiiping.Name,
-        Value: shiiping.value
+        Value: shiiping.value,
+        Price: shiiping.Price
     };
 };

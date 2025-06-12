@@ -26,5 +26,7 @@ export enum Success {
     SaveSize = "El talle se guardó correctamente.",
 
     UserRegister = "Usuario registrado correctamente.",
-    UserLogin = "Inicio de sesión correctamente."
+    UserLogin = "Inicio de sesión correctamente.",
+
+    SaveOrder = "La orden se guardó correctamente.",
 }

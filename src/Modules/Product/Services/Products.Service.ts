@@ -11,6 +11,7 @@ import {
     getPriceListProductsRepository,
     getProductByIdRepository,
     getProductsPagedListRepository,
+    getProductsRepository,
     getPromocionalProductsRepository,
     saveProductRepository,
     updateAllProductsPricetRepository,
@@ -22,6 +23,7 @@ import { PriceListProductsVM } from "../Models/PriceListProductsVM";
 import { PaginationDTO } from "../../Other/Dtos/PaginationDTO";
 import { PriceListProductsSearchDTO } from "../Dtos/PriceListProductsSearchDTO";
 import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../Dtos/UpdatePriceProduct";
+import { Products } from "../Models/Product";
 
 export const getAllProductsService = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     return await getAllProductsRepository(search);
@@ -33,6 +35,10 @@ export const getPromocionalProductsService = async (pagination: PaginationDTO): 
 
 export const getProductsPagedListsService = async (search: ProductPagedListSearchDTO): Promise<ProductPagedListVM> => {
     return await getProductsPagedListRepository(search);
+};
+
+export const getProductsService = async (search: ProductPagedListSearchDTO): Promise<Products> => {
+    return await getProductsRepository(search);
 };
 
 export const getProductByIdService = async (id: number): Promise<ProductVM> => {

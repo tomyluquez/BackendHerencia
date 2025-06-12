@@ -1,13 +1,16 @@
 import { Request, Response } from "express";
 import { OrderVM } from "../Models/OrderVM";
 import { mapOrderSearchQueryToDTO } from "../Helpers/Maps/MapOrders";
-import { changeStatusOrderService, getOrderDetailByIdService, getOrdersService, getOrderStatusService } from "../Services/Order.Service";
+import { changeStatusOrderService, getOrderDetailByIdService, getOrdersService, getOrderStatusService, saveOrderService } from "../Services/Order.Service";
 import { Errors } from "../../Text/Errors.Messages";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { OrderStatusVM } from "../Models/OrderStatusVM";
 import { FilteringOptionsOrderPagedListVM } from "../Models/FilteringOptionsOrderPagedListVM";
 import { convertedStringToBoolean } from "../../Other/Helpers/ConvertedFilters";
 import { OrderDetailVM } from "../Models/OrderDetailVM";
+import { SaveOrderResponse } from "../Models/SaveOrderResponse.model";
+import { IOrderDetailVM } from "../Interfaces/IOrderDetailVM";
+import { OrderDTO } from "../Interfaces/OrderDTO";
 
 export const getOrders = async (req: Request, res: Response): Promise<OrderVM> => {
     const search = mapOrderSearchQueryToDTO(req.query);
@@ -83,3 +86,18 @@ export const getFilteringOptionsOrderList = async (req: Request, res: Response):
         return response;
     }
 };
+
+export const saveOrder = async (req: Request, res: Response): Promise<SaveOrderResponse> => {
+    const newOrder: OrderDTO = req.body;
+    let response = new SaveOrderResponse();
+    try {
+        response = await saveOrderService(newOrder);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        response.setError(error.message || Errors.SaveOrder);
+        res.status(500).send(response);
+        return response;
+    }
+};
+

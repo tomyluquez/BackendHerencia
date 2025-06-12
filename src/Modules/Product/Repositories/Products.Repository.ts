@@ -6,7 +6,7 @@ import Category from "../../../db/Models/Category.model";
 import Variant from "../../../db/Models/Variant.model";
 import Size from "../../../db/Models/Size.model";
 import ProductImages from "../../../db/Models/Products/ProductsImages.model";
-import { mapPriceListProductsDBToVM, mapProductDBToProductPagedListVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProducts";
+import { mapPriceListProductsDBToVM, mapProductDBToProductPagedListVM, mapProductDBToProductVM, mapProductDBToVM, MapProductVMToProductDB, mapPromotionalDBToVM } from "../Helpers/Maps/MapProducts";
 import { PaginationDTO } from "../../Other/Dtos/PaginationDTO";
 import { PromotionalProductsVM } from "../Models/PromotionalProductsVM.model";
 import { ProductPagedListSearchDTO } from "../Dtos/ProductPagedListSearchDTO";
@@ -20,6 +20,7 @@ import { PriceListProductsSearchDTO } from "../Dtos/PriceListProductsSearchDTO";
 import { PriceListProductsVM } from "../Models/PriceListProductsVM";
 import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../Dtos/UpdatePriceProduct";
 import { ActionTypePriceListEnum } from "../Enums/Action-type-price-list.enum";
+import { Products } from "../Models/Product";
 
 export const getAllProductsRepository = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
@@ -153,6 +154,62 @@ export const getProductsPagedListRepository = async (search: ProductPagedListSea
     });
     if (productsDB.length > 0) {
         products.Items = productsDB.map(mapProductDBToProductPagedListVM);
+        products.TotalItems = await getTotalCountProductsPagedList(search);
+    } else products.setWarning(Errors.ProductsNotFound);
+
+    return products;
+};
+export const getProductsRepository = async (search: ProductPagedListSearchDTO): Promise<Products> => {
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
+    let order: Order = [["Name", "ASC"]];
+
+    if (search.Order) {
+        if (search.Order === "desc") {
+            order = [["Name", "DESC"]];
+        }
+
+        if (search.Order === "lower") {
+            order = [["Price", "ASC"]];
+        }
+
+        if (search.Order === "higher") {
+            order = [["Price", "DESC"]];
+        }
+    }
+    const products = new Products();
+    const productsDB = await Product.findAll({
+        where: {
+            ...(search.Name && { Name: { [Op.like]: `%${search.Name}%` } }),
+            ...(search.Status !== undefined && { IsActive: search.Status }),
+        },
+        include: [
+            {
+                model: Category,
+                as: "Category",
+                attributes: ["Name"],
+                ...(search.Categories.length > 0 && {
+                    where: { Name: { [Op.in]: search.Categories } }
+                })
+            },
+            {
+                model: Variant,
+                as: "Variants",
+                attributes: ["Stock"],
+                ...(search.Sizes.length > 0 && { where: { SizeId: { [Op.in]: search.Sizes } } })
+            },
+            {
+                model: ProductImages,
+                as: "Images",
+                order: [["Id", "ASC"]],
+                attributes: ["Url"]
+            }
+        ],
+        offset,
+        limit: search.Pagination.Limit,
+        order
+    });
+    if (productsDB.length > 0) {
+        products.Items = productsDB.map(mapProductDBToProductVM);
         products.TotalItems = await getTotalCountProductsPagedList(search);
     } else products.setWarning(Errors.ProductsNotFound);
 

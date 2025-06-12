@@ -92,6 +92,20 @@ export const getUserIdByEmailRepository = async (Email: string): Promise<number>
     }
 };
 
+export const getUserIdByNameRepository = async (name: string): Promise<number> => {
+    const userBM = await User.findOne({
+        where: {
+            [Op.and]: [sequelize.where(sequelize.fn("LOWER", sequelize.col("Name")), name)]
+        },
+        attributes: ["Id"]
+    });
+    if (userBM) {
+        return userBM.Id!;
+    } else {
+        return 0;
+    }
+};
+
 export const registerUserRepository = async (newUser: UserRegisterDTO): Promise<ResponseMessages> => {
     const response = new ResponseMessages();
 
@@ -123,6 +137,7 @@ export const loginUserRepository = async (loginUser: UserLoginDTO): Promise<User
     const token = jwt.sign({ id: userDB.Id, username: userDB.Name, role: userDB.Role }, secretKey!, { expiresIn: "15d" });
     response.Token = token;
     response.Role = userDB.Role;
+    response.CustomerName = userDB.Name;
     response.setSuccess(Success.UserLogin);
 
     return response;

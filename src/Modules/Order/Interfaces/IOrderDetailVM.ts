@@ -16,8 +16,10 @@ export interface IOrderDetailVM {
 interface OrderItem {
     Id: number;
     Name: string;
-    Size: string;
+    SizeName: string;
+    SizeId: number;
     UnitPrice: number;
     TotalPrice: number;
     Quantity: number;
+    VariantId: number;
 }

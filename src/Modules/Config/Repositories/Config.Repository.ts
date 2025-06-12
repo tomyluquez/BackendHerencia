@@ -12,6 +12,7 @@ import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { Success } from "../../Text/Succes.Messages";
 import { SaveConfigDTO } from "../Dtos/SaveConfigDTO";
 import sequelize from "../../../db/connectionDB.sequalize";
+import { SearchConfigDTO } from "../Interfaces/Config-list.interface";
 
 export const getCompanyInfoRepository = async (IsActive: boolean | undefined): Promise<CompanyInfoVM> => {
     const response = new CompanyInfoVM();
@@ -50,18 +51,21 @@ export const getMenuRepository = async (isAdmin: boolean | undefined): Promise<M
     return response;
 };
 
-export const getConfigRepository = async (): Promise<ConfigVM> => {
+export const getConfigRepository = async (search: SearchConfigDTO): Promise<ConfigVM> => {
     const response = new ConfigVM();
+    const offset = (search.Pagination.Page - 1) * search.Pagination.Limit;
 
-    const configDB = await Config.findAll();
+    const configDB = await Config.findAll({ offset, limit: search.Pagination.Limit });
     if (configDB.length > 0) {
         response.Items = configDB.map(mapConfigDBToVM);
+        response.TotalItems = await Config.count();
     } else {
         response.setError(Errors.ConfigNotFound);
     }
 
     return response;
 };
+
 
 export const saveCompanyInfoRepository = async (bodyParams: SaveCompanyInfoDTO): Promise<ResponseMessages> => {
     const response = new ResponseMessages();

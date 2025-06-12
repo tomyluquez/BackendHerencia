@@ -60,6 +60,7 @@ export enum Errors {
     OrderChangeStatus = "Error al cambiar el estado de la orden, por favor intente nuevamente.",
     OrderStatus = "Error al obtener los estados de las ordenes",
     OrderStatusNotFound = "No se encontraron estados de ordenes.",
+    SaveOrder = "Error al guardar la orden, por favor intentte nuevamente.",
 
     StatusNotFound = "El estado no existe.",
     StatusCahnge = "Error al cambiar el estado, por favor intente nuevamente.",

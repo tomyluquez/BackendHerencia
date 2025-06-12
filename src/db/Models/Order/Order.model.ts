@@ -8,7 +8,7 @@ import ShippingMethod from "../Shipping/ShippingMethod.model";
 import OrderItems from "./OrderItems.model";
 import DiscountCoupon from './../DiscountCoupon.model';
 
-interface OrderAttributes {
+export interface OrderAttributes {
     Id: number;
     OrderNumber: number;
     DateCreated: Date;
@@ -16,9 +16,12 @@ interface OrderAttributes {
     IsActive: boolean;
     Total: number;
     Subtotal: number;
-    Discount: number;
+    DiscountCouponTotal?: number;
+    DiscountCouponPercentage?: number;
     DiscountCouponId?: number;
     DiscountCoupon?: DiscountCoupon;
+    DiscountPaymentTotal?: number;
+    DiscountPaymentPercentage?: number;
     UserId?: number;
     User?: User;
     OrderStatusId?: number;
@@ -29,6 +32,7 @@ interface OrderAttributes {
     PaymentMethod?: PaymentMethod;
     ShippingMethodId?: number;
     ShippingMethod?: ShippingMethod;
+    ShippingCost: number;
     OrderItems?: OrderItems[];
 }
 
@@ -42,19 +46,23 @@ class Order extends Model<OrderAttributes, OrderCreationAttributes> implements O
     public IsActive!: boolean;
     public Total!: number;
     public Subtotal!: number;
-    public Discount!: number;
+    public DiscountCouponTotal!: number;
+    public DiscountCouponPercentage!: number;
     public DiscountCouponId!: number;
-    public DiscountCoupon!: DiscountCoupon;
+    public DiscountCoupon?: DiscountCoupon;
+    public DiscountPaymentTotal!: number;
+    public DiscountPaymentPercentage!: number;
     public UserId!: number;
-    public User!: User;
+    public User?: User;
     public OrderStatusId!: number;
-    public OrderStatus!: OrderStatus;
+    public OrderStatus?: OrderStatus;
     public PromotionId!: number;
     public Promotion?: Promotion;
     public PaymentMethodId!: number;
     public PaymentMethod?: PaymentMethod;
     public ShippingMethodId!: number;
     public ShippingMethod?: ShippingMethod;
+    public ShippingCost!: number;
     public OrderItems?: OrderItems[];
 }
 
@@ -66,7 +74,7 @@ Order.init(
             primaryKey: true
         },
         OrderNumber: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.BIGINT,
             allowNull: false,
             unique: true
         },
@@ -83,13 +91,25 @@ Order.init(
             type: DataTypes.FLOAT,
             allowNull: false
         },
-        Discount: {
+        DiscountCouponTotal: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        DiscountCouponPercentage: {
             type: DataTypes.FLOAT,
             allowNull: false
         },
         DiscountCouponId: {
             type: DataTypes.FLOAT,
             allowNull: true
+        },
+        DiscountPaymentTotal: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        DiscountPaymentPercentage: {
+            type: DataTypes.FLOAT,
+            allowNull: false
         },
         DateCreated: {
             type: DataTypes.DATE,
@@ -100,7 +120,32 @@ Order.init(
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
-        }
+        },
+        UserId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        PromotionId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            defaultValue: null
+        },
+        PaymentMethodId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        ShippingMethodId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        ShippingCost: {
+            type: DataTypes.FLOAT,
+            allowNull: false
+        },
+        OrderStatusId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     },
     {
         sequelize,

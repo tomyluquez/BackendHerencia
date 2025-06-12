@@ -11,6 +11,7 @@ import { IProductDB } from "../../Interfaces/IProductDB";
 import { IProductPagedListVM } from "../../Interfaces/IProductPagedList";
 import { IProductVM } from "../../Interfaces/IProductVM";
 import { IPromotionalProduct } from "../../Interfaces/IPromotionalProducts";
+import { IProduct } from "../../Interfaces/ProductVM";
 
 export const mapProductDBToVM = (productDB: Product): IProductVM => {
     const product = {
@@ -34,7 +35,8 @@ export const mapProductDBToVM = (productDB: Product): IProductVM => {
         Cost: productDB.Cost,
         IsActive: productDB.IsActive,
         IsPromotional: productDB.IsPromotional,
-        PromotionalPrice: productDB.PromotionalPrice
+        PromotionalPrice: productDB.PromotionalPrice,
+        Rentability: productDB.Rentability
     };
     return product;
 };
@@ -59,7 +61,21 @@ export const mapProductDBToProductPagedListVM = (productDB: Product): IProductPa
         Image: productDB.Images && productDB.Images.length > 0 ? productDB.Images[0].Url : "",
         HasStock: productDB.Variants!.some((v) => v.Stock > 0),
         IsActive: productDB.IsActive,
-        PromotionalPrice: productDB.PromotionalPrice
+        PromotionalPrice: productDB.PromotionalPrice,
+        Rentability: productDB.Rentability,
+        Cost: productDB.Cost
+    };
+    return product;
+};
+
+export const mapProductDBToProductVM = (productDB: Product): IProduct => {
+    const product = {
+        Id: productDB.Id!,
+        Name: productDB.Name,
+        CategoryName: productDB.Category?.Name || "Sin categoria",
+        Price: productDB.Price,
+        Image: productDB.Images && productDB.Images.length > 0 ? productDB.Images[0].Url : "",
+        PromotionalPrice: productDB.PromotionalPrice,
     };
     return product;
 };
@@ -83,7 +99,8 @@ export const MapBodyToProductDB = (body: any): IProductVM => {
         Cost: body.Cost,
         IsActive: body.IsActive || true,
         IsPromotional: body.IsPromotional || false,
-        PromotionalPrice: body.PromotionalPrice
+        PromotionalPrice: body.PromotionalPrice,
+        Rentability: body.Rentability
     };
     return product;
 };
@@ -101,7 +118,8 @@ export const MapProductVMToProductDB = (productVM: IProductVM): IProductDB => {
         IsActive: productVM.IsActive,
         IsPromotional: productVM.IsPromotional || false,
         CategoryId: productVM.CategoryId,
-        Variants: productVM.Variants || []
+        Variants: productVM.Variants || [],
+        Rentability: productVM.Rentability
     };
 
     return productDB;

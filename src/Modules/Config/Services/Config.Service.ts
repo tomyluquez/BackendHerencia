@@ -3,6 +3,7 @@ import { Errors } from "../../Text/Errors.Messages";
 import { SaveCompanyInfoDTO } from "../Dtos/SaveCompanyInfoDTO";
 import { SaveConfigDTO } from "../Dtos/SaveConfigDTO";
 import { validateDuplicateNameConfig, validateIfExistsCompanyInfoWhitName } from "../Helpers/ConfigValidators";
+import { SearchConfigDTO } from "../Interfaces/Config-list.interface";
 import { CompanyInfoVM } from "../Models/CompanyInfoVM";
 import { ConfigVM } from "../Models/ConfigVM";
 import { MenuVM } from "../Models/MenuVM";
@@ -16,8 +17,8 @@ export const getMenuService = async (IsAdmin: boolean | undefined): Promise<Menu
     return await getMenuRepository(IsAdmin);
 };
 
-export const getConfigService = async (): Promise<ConfigVM> => {
-    return await getConfigRepository();
+export const getConfigService = async (search: SearchConfigDTO): Promise<ConfigVM> => {
+    return await getConfigRepository(search);
 };
 
 export const saveCompanyInfoService = async (bodyParams: SaveCompanyInfoDTO): Promise<ResponseMessages> => {

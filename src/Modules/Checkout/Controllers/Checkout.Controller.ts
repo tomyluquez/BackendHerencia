@@ -5,12 +5,9 @@ import { findDiscountCouponService, getCheckoutInfoService } from "../Services/C
 import { DiscountCouponVM } from "../Models/DiscountCouponVM";
 
 export const getCheckoutInfo = async (req: Request, res: Response): Promise<CheckoutInfoVM> => {
-    const { cartId } = req.query;
     try {
-        if (!cartId) {
-            throw new Error(Errors.IdRequired);
-        }
-        const response = await getCheckoutInfoService(+cartId);
+
+        const response = await getCheckoutInfoService();
         res.status(200).json(response);
         return response;
     } catch (error: any) {

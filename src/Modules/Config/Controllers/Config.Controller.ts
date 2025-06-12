@@ -7,6 +7,7 @@ import { ConfigVM } from "../Models/ConfigVM";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { convertedStatusFilter, convertedUserRoleFilter } from "../../Other/Helpers/ConvertedFilters";
 import { mapSaveCompanyInfoBodyToDTO, mapSaveConfigBodyToDTO } from "../../Other/Helpers/Maps/MapCompanyInfo";
+import { mapQueryConfigSearchToDTO } from "../Helpers/MapConfig";
 
 export const getCompanyInfo = async (req: Request, res: Response): Promise<CompanyInfoVM> => {
     const { status } = req.query;
@@ -39,8 +40,9 @@ export const getMenu = async (req: Request, res: Response): Promise<MenuVM> => {
 };
 
 export const getConfig = async (req: Request, res: Response): Promise<ConfigVM> => {
+    const search = mapQueryConfigSearchToDTO(req.query)
     try {
-        const response = await getConfigService();
+        const response = await getConfigService(search);
         res.status(200).json(response);
         return response;
     } catch (error: any) {

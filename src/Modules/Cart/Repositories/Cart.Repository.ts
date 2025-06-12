@@ -33,12 +33,12 @@ export const getCartItemsByUserIdRepository = async (userId: number): Promise<Us
             {
                 model: Variant,
                 as: "Variant",
-                attributes: ["Stock"],
+                attributes: ["Id", "Stock"],
                 include: [
                     {
                         model: Size,
                         as: "Size",
-                        attributes: ["Name"]
+                        attributes: ["Name", "Id"]
                     },
                     {
                         model: Product,
@@ -59,8 +59,9 @@ export const getCartItemsByUserIdRepository = async (userId: number): Promise<Us
 
     if (cartItemsDB.length > 0) {
         response.Items = cartItemsDB.map(mapCartItemsDBToVM);
+        response.CartId = userCart.Id;
     } else {
-        response.setError(Errors.CartEmpty);
+        response.setWarning(Errors.CartEmpty);
     }
     return response;
 };
@@ -155,3 +156,17 @@ export const getCartIdByUserId = async (userId: number): Promise<number> => {
 
     return cart.Id;
 };
+
+export const finishCartByCartIdRepository = async (cartId: number): Promise<ResponseMessages> => {
+    let response = new ResponseMessages();
+    try {
+        const [affectedRows] = await Cart.update({ IsFinish: true }, { where: { Id: cartId } });
+
+        if (!affectedRows) {
+            response.setError(Errors.CartItem);
+        }
+    } catch (error) {
+        response.setError(Errors.CartItem);
+    }
+    return response;
+}

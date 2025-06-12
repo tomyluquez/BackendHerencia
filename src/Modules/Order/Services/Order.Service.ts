@@ -1,11 +1,15 @@
 import { OrderStatusVM } from "../Models/OrderStatusVM";
 import { OrderVM } from "../Models/OrderVM";
-import { changeStatusOrderRepository, getOrderDetailByIdRepository, getOrdersRepository, getOrderStatusRepository } from "../Repositories/Order.Repository";
+import { changeStatusOrderRepository, getOrderDetailByIdRepository, getOrdersRepository, getOrderStatusRepository, saveOrderRepository } from "../Repositories/Order.Repository";
 import { Errors } from "../../Text/Errors.Messages";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { OrderSearchDTO } from "../Dtos/OrderSearchDTO";
 import { isValidSatusOrder } from "../Helpers/Validators/OrderValidator";
 import { OrderDetailVM } from "../Models/OrderDetailVM";
+import { OrderDTO } from "../Interfaces/OrderDTO";
+import { SaveOrderResponse } from "../Models/SaveOrderResponse.model";
+import { mapOrderDTOToDB } from "../Helpers/Maps/MapOrders";
+import { getUserIdByNameRepository } from "../../User/Repositories/User.Repository";
 
 export const getOrdersService = async (search: OrderSearchDTO): Promise<OrderVM> => {
     return await getOrdersRepository(search);
@@ -28,3 +32,10 @@ export const changeStatusOrderService = async (orderStatusId: number, orderId: n
 export const getOrderStatusService = async (): Promise<OrderStatusVM> => {
     return await getOrderStatusRepository();
 };
+
+export const saveOrderService = async (order: OrderDTO): Promise<SaveOrderResponse> => {
+    console.log(order)
+    const userId = await getUserIdByNameRepository(order.CustomerName)
+    const newOrder = mapOrderDTOToDB(order, userId);
+    return await saveOrderRepository(newOrder, order.CartId)
+}

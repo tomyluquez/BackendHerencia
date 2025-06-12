@@ -5,18 +5,19 @@ interface ShippingMethodAttributes {
   Id: number;
   Name: string;
   value: string;
+  Price: number;
 }
 
 interface ShippingMethodCreationAttributes
-  extends Optional<ShippingMethodAttributes, "Id"> {}
+  extends Optional<ShippingMethodAttributes, "Id"> { }
 
 class ShippingMethod
   extends Model<ShippingMethodAttributes, ShippingMethodCreationAttributes>
-  implements ShippingMethodAttributes
-{
+  implements ShippingMethodAttributes {
   public Id!: number;
   public Name!: string;
   public value!: string;
+  public Price!: number;
 }
 
 ShippingMethod.init(
@@ -33,6 +34,11 @@ ShippingMethod.init(
     value: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    Price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     },
   },
   {

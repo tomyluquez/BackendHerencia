@@ -5,6 +5,7 @@ export interface IProductDB {
     Name: string;
     Price: number;
     PromotionalPrice: number;
+    Rentability: number;
     Cost: number;
     Discount: number;
     Description?: string;

@@ -6,5 +6,5 @@ export interface IUserProfileVM {
     Image?: string | null;
     Mail: string;
     DateCreated: Date;
-    Oders: IOrderDetailVM[];
+    Orders: IOrderDetailVM[];
 }
