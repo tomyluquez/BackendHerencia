@@ -40,6 +40,5 @@ export const getOrderStatusService = async (): Promise<OrderStatusVM> => {
 export const saveOrderService = async (order: OrderDTO): Promise<SaveOrderResponse> => {
     const userId = await getUserIdByNameRepository(order.CustomerName)
     const newOrder = mapOrderDTOToDB(order, userId);
-    console.log(newOrder)
     return await saveOrderRepository(newOrder, order.CartId)
 }
