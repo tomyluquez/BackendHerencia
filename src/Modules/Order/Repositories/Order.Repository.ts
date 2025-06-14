@@ -274,6 +274,16 @@ export const saveOrderRepository = async (newOrder: OrderDB, cartId: number): Pr
                 })),
                 { transaction }
             );
+            // Descontar stock de cada variante
+            for (const item of Details) {
+                await Variant.decrement(
+                    { Stock: item.Quantity },
+                    {
+                        where: { Id: item.VariantId },
+                        transaction
+                    }
+                );
+            }
         }
 
         await transaction.commit();
