@@ -83,7 +83,7 @@ export const mapOrderDTOToDB = (order: OrderDTO, userId: number): OrderDB => {
         DateCreated: order.DateCreated,
         DateUpdated: new Date(),
         UserId: userId,
-        PromotionId: PromotionsEnum.Regular,
+        PromotionId: order.PromotionId,
         PaymentMethodId: order.PaymentMethodId,
         ShippingMethodId: order.ShippingMethodId,
         ShippingCost: order.ShippingCost,
