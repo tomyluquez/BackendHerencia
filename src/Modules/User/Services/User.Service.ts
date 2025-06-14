@@ -3,11 +3,16 @@ import { UserRegisterDTO } from "../Dtos/UserRegisterDTO";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { UserProfileVM } from "../Models/UserProfileVM";
 import { UserTokenVM } from "../Models/UserRegisterVM";
-import { getUserProfileRepository, loginUserRepository, registerUserRepository } from "../Repositories/User.Repository";
+import { getUserIdByNameRepository, getUserProfileRepository, loginUserRepository, registerUserRepository } from "../Repositories/User.Repository";
 import { Errors } from "../../Text/Errors.Messages";
 import { validateIfExistsUserWhitEmail } from "../Helpers/Validators/UserValidators";
 
 export const getUserProfileService = async (userId: number): Promise<UserProfileVM> => {
+    return await getUserProfileRepository(userId);
+};
+
+export const getUserProfileByUserNameService = async (userName: string): Promise<UserProfileVM> => {
+    const userId = await getUserIdByNameRepository(userName);
     return await getUserProfileRepository(userId);
 };
 

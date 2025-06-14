@@ -1,6 +1,6 @@
 import { OrderStatusVM } from "../Models/OrderStatusVM";
 import { OrderVM } from "../Models/OrderVM";
-import { changeStatusOrderRepository, getOrderDetailByIdRepository, getOrdersRepository, getOrderStatusRepository, saveOrderRepository } from "../Repositories/Order.Repository";
+import { changeStatusOrderRepository, getOrderDetailByIdRepository, getOrderDetailByOrderNumberRepository, getOrdersRepository, getOrderStatusRepository, saveOrderRepository } from "../Repositories/Order.Repository";
 import { Errors } from "../../Text/Errors.Messages";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { OrderSearchDTO } from "../Dtos/OrderSearchDTO";
@@ -19,6 +19,10 @@ export const getOrderDetailByIdService = async (orderId: number): Promise<OrderD
     return await getOrderDetailByIdRepository(orderId);
 }
 
+export const getOrderDetailByOrderNumberService = async (orderNumber: number): Promise<OrderDetailVM> => {
+    return await getOrderDetailByOrderNumberRepository(orderNumber);
+}
+
 export const changeStatusOrderService = async (orderStatusId: number, orderId: number): Promise<ResponseMessages> => {
     const isValidStatusId = isValidSatusOrder(orderStatusId);
     if (!isValidStatusId) {
@@ -34,8 +38,8 @@ export const getOrderStatusService = async (): Promise<OrderStatusVM> => {
 };
 
 export const saveOrderService = async (order: OrderDTO): Promise<SaveOrderResponse> => {
-    console.log(order)
     const userId = await getUserIdByNameRepository(order.CustomerName)
     const newOrder = mapOrderDTOToDB(order, userId);
+    console.log(newOrder)
     return await saveOrderRepository(newOrder, order.CartId)
 }

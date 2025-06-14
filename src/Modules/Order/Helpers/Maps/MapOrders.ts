@@ -15,8 +15,8 @@ export const mapOrderSearchQueryToDTO = (params: any): OrderSearchDTO => {
         orderNumber: +params.orderNumber,
         orderStatus: +params.orderStatus,
         Pagination: mapPaginationQueryToDTO(params),
-        StartDate: new Date(params.startDate),
-        EndDate: new Date(params.endDate)
+        StartDate: params.startDate ? new Date(params.startDate) : null,
+        EndDate: params.endDate ? new Date(params.endDate) : null
     };
 };
 
@@ -44,10 +44,12 @@ export const mapOrderDetailDBToVm = (order: Order): IOrderDetailVM => {
         OrderNumber: order.OrderNumber,
         Total: order.Total,
         Subtotal: order.Subtotal,
-        Discount: order.DiscountCouponTotal,
+        DiscountCouponTotal: order.DiscountCouponTotal,
         DiscountCoupon: order.DiscountCoupon?.Name || "Sin cupon de descuento",
+        DiscountPaymentTotal: order.DiscountPaymentTotal,
         DateCreated: order.DateCreated,
         OrderStatus: order.OrderStatus?.Name || "Estado no encontrado",
+        OrderStatusId: order.OrderStatusId,
         PaymentMethod: order.PaymentMethod?.Name || "Sin método de pago",
         ShippingMethod: order.ShippingMethod?.Name || "Sin método de envío",
         CustomerName: order.User?.Name || "",
@@ -73,10 +75,10 @@ export const mapOrderDTOToDB = (order: OrderDTO, userId: number): OrderDB => {
         IsActive: true,
         Total: order.Total,
         Subtotal: order.Subtotal,
-        DiscountCouponTotal: order.DiscountCoupon,
+        DiscountCouponTotal: order.DiscountCouponTotal,
         DiscountCouponPercentage: order.DiscountCouponPercentage,
         DiscountCouponId: order.DiscountCouponId,
-        DiscountPaymentTotal: order.DiscountPayment,
+        DiscountPaymentTotal: order.DiscountPaymentTotal,
         DiscountPaymentPercentage: order.DiscountPaymentPercentage,
         DateCreated: order.DateCreated,
         DateUpdated: new Date(),

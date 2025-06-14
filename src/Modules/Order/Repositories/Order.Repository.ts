@@ -131,6 +131,77 @@ export const getOrderDetailByIdRepository = async (orderId: number): Promise<Ord
     return response;
 };
 
+export const getOrderDetailByOrderNumberRepository = async (orderNumber: number): Promise<OrderDetailVM> => {
+    const response = new OrderDetailVM();
+
+    const order = await Order.findOne({
+        where: {
+            ...(orderNumber && { OrderNumber: orderNumber })
+        },
+        include: [
+            {
+                model: DiscountCoupon,
+                as: "DiscountCoupon",
+                attributes: ["Name"],
+                required: false
+            },
+            {
+                model: PaymentMethod,
+                as: "PaymentMethod",
+                attributes: ["Name"],
+                required: false
+            },
+            {
+                model: ShippingMethod,
+                as: "ShippingMethod",
+                attributes: ["Name"],
+                required: false
+            },
+            {
+                model: OrderStatus,
+                as: "OrderStatus",
+                attributes: ["Name"],
+            },
+            {
+                model: User,
+                as: "User",
+                attributes: ["Name"],
+            },
+            {
+                model: OrderItems,
+                as: "OrderItems",
+                attributes: ["Id", "Quantity", "UnitPrice", "TotalPrice"],
+                include: [
+                    {
+                        model: Variant,
+                        as: 'Variant',
+                        include: [
+                            {
+                                model: Product,
+                                as: 'Product',
+                                attributes: ['Name']
+                            },
+                            {
+                                model: Size,
+                                as: 'Size',
+                                attributes: ['Name']
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+    });
+
+    if (order) {
+        response.Items = mapOrderDetailDBToVm(order);
+    } else {
+        response.setWarning(Errors.OrdersNotFound);
+    }
+
+    return response;
+};
+
 export const getQuantityOders = async (search: OrderSearchDTO): Promise<number> => {
     return await Order.count({
         where: {

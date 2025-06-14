@@ -3,10 +3,10 @@ export interface OrderDTO {
     OrderNumber: number;
     Total: number;
     Subtotal: number;
-    DiscountCoupon: number;
+    DiscountCouponTotal: number;
     DiscountCouponPercentage: number,
     DiscountCouponId: number,
-    DiscountPayment: number;
+    DiscountPaymentTotal: number;
     DiscountPaymentPercentage: number,
     DateCreated: Date;
     OrderStatusId: number;

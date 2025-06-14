@@ -3,10 +3,12 @@ export interface IOrderDetailVM {
     OrderNumber: number;
     Total: number;
     Subtotal: number;
-    Discount: number;
+    DiscountCouponTotal: number;
     DiscountCoupon?: string,
+    DiscountPaymentTotal: number;
     DateCreated: Date;
     OrderStatus: string;
+    OrderStatusId: number;
     PaymentMethod?: string;
     ShippingMethod?: string;
     CustomerName: string;
@@ -22,4 +24,13 @@ interface OrderItem {
     TotalPrice: number;
     Quantity: number;
     VariantId: number;
+}
+
+export interface IOrderUser {
+    Id: number;
+    OrderNumber: number;
+    DateCreated: Date;
+    OrderStatusId: number;
+    QuantityItems: number;
+    Total: number;
 }

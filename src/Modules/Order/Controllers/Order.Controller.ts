@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { OrderVM } from "../Models/OrderVM";
 import { mapOrderSearchQueryToDTO } from "../Helpers/Maps/MapOrders";
-import { changeStatusOrderService, getOrderDetailByIdService, getOrdersService, getOrderStatusService, saveOrderService } from "../Services/Order.Service";
+import { changeStatusOrderService, getOrderDetailByIdService, getOrderDetailByOrderNumberService, getOrdersService, getOrderStatusService, saveOrderService } from "../Services/Order.Service";
 import { Errors } from "../../Text/Errors.Messages";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { OrderStatusVM } from "../Models/OrderStatusVM";
@@ -33,6 +33,23 @@ export const getOrderDetailById = async (req: Request, res: Response): Promise<O
             throw new Error(Errors.IdRequired);
         }
         const response = await getOrderDetailByIdService(+orderId);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        const response = new OrderDetailVM();
+        response.setError(error.message || Errors.OrderChangeStatus);
+        res.status(error.message ? 400 : 500).send(response);
+        return response;
+    }
+};
+
+export const getOrderDetailByOrderNumber = async (req: Request, res: Response): Promise<OrderDetailVM> => {
+    const { orderNumber } = req.query;
+    try {
+        if (!orderNumber) {
+            throw new Error(Errors.IdRequired);
+        }
+        const response = await getOrderDetailByOrderNumberService(+orderNumber);
         res.status(200).send(response);
         return response;
     } catch (error: any) {

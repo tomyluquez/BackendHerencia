@@ -5,9 +5,10 @@ import Product from "./Product.model";
 export interface ProductImagesAttributes {
     Id: number;
     Url: string;
+    ProductId: number;
 }
 
-interface ProductImagesCreationAttributes extends Optional<ProductImagesAttributes, "Id"> {}
+interface ProductImagesCreationAttributes extends Optional<ProductImagesAttributes, "Id"> { }
 
 class ProductImages extends Model<ProductImagesAttributes, ProductImagesCreationAttributes> implements ProductImagesAttributes {
     public Id!: number;
@@ -26,7 +27,11 @@ ProductImages.init(
         Url: {
             type: DataTypes.STRING,
             allowNull: false
-        }
+        },
+        ProductId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
     },
     {
         sequelize,

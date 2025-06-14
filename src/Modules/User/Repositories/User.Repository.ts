@@ -24,7 +24,7 @@ export const getUserProfileRepository = async (UserId: number): Promise<UserProf
 
     const userProfileDB = await User.findOne({
         where: { Id: UserId },
-        attributes: ["Id", "Name", "Image", "Email", "DateCreated"],
+        attributes: ["Id", "Name", "Image", "Email", "DateCreated", "Phone", "Addres"],
         include: [
             {
                 model: Order,
@@ -44,31 +44,11 @@ export const getUserProfileRepository = async (UserId: number): Promise<UserProf
                     {
                         model: OrderStatus,
                         as: "OrderStatus"
-                    },
-                    {
-                        model: OrderItems,
-                        as: "OrderItems",
-                        attributes: ["Quantity"],
-                        include: [
-                            {
-                                model: Variant,
-                                as: "Variant",
-                                attributes: ["SizeId", "ProductId"],
-                                include: [
-                                    {
-                                        model: Product,
-                                        as: "Product",
-                                        attributes: ["Name", "Price"]
-                                    }
-                                ]
-                            }
-                        ]
                     }
                 ]
             }
         ]
     });
-
     if (userProfileDB) {
         response.Item = mapUserProfileDBToVM(userProfileDB);
     } else {

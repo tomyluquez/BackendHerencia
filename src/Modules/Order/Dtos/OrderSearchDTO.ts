@@ -5,6 +5,6 @@ export interface OrderSearchDTO {
     orderNumber?: number;
     orderStatus?: number;
     Pagination: PaginationDTO;
-    StartDate: Date;
-    EndDate: Date
+    StartDate: Date | null;
+    EndDate: Date | null
 }

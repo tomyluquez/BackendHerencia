@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserProfileVM } from "../Models/UserProfileVM";
 import { Errors } from "../../Text/Errors.Messages";
-import { getUserProfileService, loginUserService, registerUserService } from "../Services/User.Service";
+import { getUserProfileByUserNameService, getUserProfileService, loginUserService, registerUserService } from "../Services/User.Service";
 import { ResponseMessages } from "../../Other/Models/ResponseMessages.model";
 import { mapUserLoginBodyToDTO, mapUserRegisterBodyToDTO } from "../Helpers/Maps/MapUser";
 import { UserTokenVM } from "../Models/UserRegisterVM";
@@ -13,6 +13,23 @@ export const getUserProfile = async (req: Request, res: Response): Promise<UserP
             throw new Error(Errors.IdRequired);
         }
         const response = await getUserProfileService(+userId);
+        res.status(200).send(response);
+        return response;
+    } catch (error: any) {
+        const response = new UserProfileVM();
+        response.setError(error.message || Errors.UserProfile);
+        res.status(error.message ? 400 : 500).send(response);
+        return response;
+    }
+};
+
+export const getUserProfileByUserName = async (req: Request, res: Response): Promise<UserProfileVM> => {
+    const { userName } = req.query;
+    try {
+        if (!userName) {
+            throw new Error(Errors.IdRequired);
+        }
+        const response = await getUserProfileByUserNameService(userName as string);
         res.status(200).send(response);
         return response;
     } catch (error: any) {

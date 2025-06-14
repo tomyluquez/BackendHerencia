@@ -9,7 +9,7 @@ interface CategoryAttributes {
     IsActive: boolean;
 }
 
-interface CategoryCreationAttributes extends Optional<CategoryAttributes, "Id" | "Image" | "IsActive"> {}
+interface CategoryCreationAttributes extends Optional<CategoryAttributes, "Id" | "Image" | "IsActive"> { }
 
 class Category extends Model<CategoryAttributes, CategoryCreationAttributes> implements CategoryAttributes {
     public Id?: number;
@@ -36,7 +36,7 @@ Category.init(
             defaultValue: true
         },
         Image: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: true,
             defaultValue: null
         }

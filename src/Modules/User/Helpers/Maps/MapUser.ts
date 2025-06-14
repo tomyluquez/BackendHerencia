@@ -11,34 +11,18 @@ export const mapUserProfileDBToVM = (userProfileDB: User): IUserProfileVM => {
         Image: userProfileDB.Image,
         Mail: userProfileDB.Email,
         DateCreated: userProfileDB.DateCreated,
-        Orders:
-            userProfileDB.Orders?.map((order) => {
-                return {
-                    Id: order.Id,
-                    OrderNumber: order.OrderNumber,
-                    Total: order.Total,
-                    Subtotal: order.Subtotal,
-                    Discount: order.DiscountCouponTotal,
-                    DiscountCoupon: order.DiscountCoupon?.Name,
-                    DateCreated: order.DateCreated,
-                    OrderStatus: order.OrderStatus?.Name || "",
-                    PaymentMethod: order.PaymentMethod?.Name,
-                    ShippingMethod: order.ShippingMethod?.Name,
-                    CustomerName: order.User?.Name || "",
-                    Details: order.OrderItems!.map((orderItem) => {
-                        return {
-                            Id: orderItem.Id,
-                            Name: orderItem.Variant!.Product.Name,
-                            UnitPrice: orderItem.UnitPrice,
-                            TotalPrice: orderItem.TotalPrice,
-                            Quantity: orderItem.Quantity,
-                            SizeName: orderItem.Variant!.Size!.Name,
-                            SizeId: orderItem.Variant!.Size!.Id,
-                            VariantId: orderItem.Variant!.Id
-                        };
-                    })
-                };
-            }) || []
+        Phone: userProfileDB.Phone || 0,
+        Addres: userProfileDB.Addres || "",
+        Orders: userProfileDB.Orders?.map((order) => {
+            return {
+                Id: order.Id,
+                OrderNumber: order.OrderNumber,
+                Total: order.Total,
+                DateCreated: order.DateCreated,
+                OrderStatusId: order.OrderStatusId || 0,
+                QuantityItems: order.OrderItems?.length || 0
+            };
+        }) || []
     };
 };
 

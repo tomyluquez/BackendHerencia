@@ -450,6 +450,22 @@ export const saveProductRepository = async (product: IProductVM): Promise<Respon
                 });
             }
 
+            // Eliminar imágenes anteriores
+            await ProductImages.destroy({
+                where: { ProductId: product.Id },
+                transaction
+            });
+
+            // Insertar nuevas imágenes
+            if (product.Images && product.Images.length > 0) {
+                const imagesToInsert = product.Images.map(url => ({
+                    ProductId: product.Id!,
+                    Url: url
+                }));
+
+                await ProductImages.bulkCreate(imagesToInsert, { transaction });
+            }
+
             await transaction.commit(); // Confirmar la transacción
         }
 
@@ -468,6 +484,16 @@ export const saveProductRepository = async (product: IProductVM): Promise<Respon
 
             await Variant.bulkCreate(variantsToCreate, { transaction });
         }
+
+        if (product.Images && product.Images.length > 0) {
+            const imagesToInsert = product.Images.map(url => ({
+                ProductId: newproduct.Id!,
+                Url: url
+            }));
+
+            await ProductImages.bulkCreate(imagesToInsert, { transaction });
+        }
+
         await transaction.commit();
         if (!newproduct) {
             response.setError(Errors.ProductSave);
