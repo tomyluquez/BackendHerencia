@@ -16,7 +16,7 @@ interface CartItemsAttributes {
     Url?: string;
 }
 
-interface CartItemsCreationAttributes extends Optional<CartItemsAttributes, "Id" | "DateCreated" | "DateUpdated"> {}
+interface CartItemsCreationAttributes extends Optional<CartItemsAttributes, "Id" | "DateCreated" | "DateUpdated"> { }
 
 class CartItems extends Model<CartItemsAttributes, CartItemsCreationAttributes> implements CartItemsAttributes {
     public Id!: number;
@@ -60,6 +60,18 @@ CartItems.init(
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
+        },
+        CartId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        VariantId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        Url: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     },
     {

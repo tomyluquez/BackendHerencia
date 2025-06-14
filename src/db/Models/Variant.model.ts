@@ -10,7 +10,7 @@ interface VariantAttributes {
     SizeId?: number;
 }
 
-interface VariantCreationAttributes extends Optional<VariantAttributes, "Id"> {}
+interface VariantCreationAttributes extends Optional<VariantAttributes, "Id"> { }
 
 class Variant extends Model<VariantAttributes, VariantCreationAttributes> implements VariantAttributes {
     public Id!: number;
@@ -32,6 +32,14 @@ Variant.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
+        },
+        ProductId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        SizeId: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {
