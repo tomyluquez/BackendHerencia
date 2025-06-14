@@ -12,7 +12,7 @@ export async function syncDatabase() {
     await sequelize.authenticate();
     console.log("Conexión establecida correctamente.");
 
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
 
     console.log(`Tablas sincronizadas correctamente.`);
   } catch (error) {

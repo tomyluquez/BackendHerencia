@@ -100,7 +100,7 @@ Order.init(
             allowNull: false
         },
         DiscountCouponId: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         DiscountPaymentTotal: {

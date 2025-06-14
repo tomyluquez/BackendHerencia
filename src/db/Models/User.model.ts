@@ -40,7 +40,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
 User.init(
     {
         Id: {
-            type: DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
@@ -83,7 +83,7 @@ User.init(
             defaultValue: null
         },
         Role: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 2
         }
