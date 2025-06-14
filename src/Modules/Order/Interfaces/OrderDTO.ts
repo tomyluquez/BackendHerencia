@@ -11,6 +11,7 @@ export interface OrderDTO {
     DateCreated: Date;
     OrderStatusId: number;
     PaymentMethodId: number;
+    PromotionId: number;
     ShippingMethodId: number;
     CustomerName: string;
     ShippingCost: number;
