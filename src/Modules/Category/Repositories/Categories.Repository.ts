@@ -25,6 +25,7 @@ export const getAllCategoriesRepository = async (search: GetAllCategoriesSearchD
 
     const categoriesDB = await Category.findAll({
         where: filters,
+        order: [["Name", "ASC"]],
         offset,
         limit: search.Pagination.Limit
     });
