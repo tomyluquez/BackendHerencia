@@ -2,7 +2,6 @@ import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../../connectionDB.sequalize";
 import Cart from "./Cart.model";
 import Variant from "./../Variant.model";
-import ProductImages from "../Products/ProductsImages.model";
 
 interface CartItemsAttributes {
     Id: number;
@@ -13,7 +12,6 @@ interface CartItemsAttributes {
     DateUpdated: Date;
     CartId?: number;
     VariantId?: number;
-    Url?: string;
 }
 
 interface CartItemsCreationAttributes extends Optional<CartItemsAttributes, "Id" | "DateCreated" | "DateUpdated"> { }
@@ -29,7 +27,6 @@ class CartItems extends Model<CartItemsAttributes, CartItemsCreationAttributes> 
     public Cart!: Cart;
     public VariantId!: number;
     public Variant!: Variant;
-    public Url!: string;
 }
 
 CartItems.init(
@@ -67,10 +64,6 @@ CartItems.init(
         },
         VariantId: {
             type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        Url: {
-            type: DataTypes.STRING,
             allowNull: false
         }
     },
