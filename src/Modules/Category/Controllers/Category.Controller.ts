@@ -13,7 +13,7 @@ export const getAllCategories = async (req: Request, res: Response): Promise<Cat
     const IsActive = convertedStatusNumberFilter(Number(status));
 
     const search = mapCategoriesSearchQueryToDTO(req.query, IsActive);
-    console.log(search)
+
     try {
         const response = await getAllCategoriesService(search); // Obtener la respuesta directamente del servicio
         res.status(200).send(response);

@@ -3,6 +3,7 @@ import { ProductVM } from "../Models/ProductVM";
 import {
     changeStatusService,
     getAllProductsService,
+    getHomeInfoService,
     getPriceListProductsService,
     getProductByIdService,
     getProductsPagedListsService,
@@ -27,6 +28,8 @@ import { getAllCategoriesService } from "../../Category/Services/Categories.Serv
 import { mapPriceListProductsSearchQueryToDTO, mapProductPagedListQueryToDTO, mapUpdateAllPriceProductBodyToDTO, mapUpdatePriceProductBodyToDTO } from "../Helpers/Maps/MapProducts";
 import { FilteringOptionsPriceListVM } from "../Models/FilteringOptionsPriceListVM";
 import { Products } from "../Models/Product";
+import { HomeInfoResponse } from "../../Other/Models/HomeInfo.model";
+import { mapCategoriesSearchQueryToDTO } from "../../Category/Helpers/Maps/MapCategory";
 
 export const getProductsToSale = async (req: Request, res: Response): Promise<Products> => {
     const categories = convertedFilters(req.query.categories);
@@ -204,3 +207,22 @@ export const getFilteringOptionsPriceList = async (req: Request, res: Response):
         return response;
     }
 };
+
+export const getHomeInfo = async (req: Request, res: Response): Promise<HomeInfoResponse> => {
+    const { status } = req.query;
+    const IsActive = convertedStatusNumberFilter(Number(status));
+
+    const search = mapCategoriesSearchQueryToDTO(req.query, IsActive);
+
+    try {
+        const response = await getHomeInfoService(search); // Obtener la respuesta directamente del servicio
+        res.status(200).send(response);
+        return response;
+    } catch (error) {
+        const response = new HomeInfoResponse(); // Crear una instancia solo en caso de error
+        response.setError(Errors.Categories);
+        res.status(500).send(response);
+        return response;
+    }
+};
+
