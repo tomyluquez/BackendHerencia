@@ -24,6 +24,9 @@ import { PaginationDTO } from "../../Other/Dtos/PaginationDTO";
 import { PriceListProductsSearchDTO } from "../Dtos/PriceListProductsSearchDTO";
 import { UpdateAllPriceProductDTO, UpdatePriceProductDTO } from "../Dtos/UpdatePriceProduct";
 import { Products } from "../Models/Product";
+import { GetAllCategoriesSearchDTO } from "../../Category/Dtos/GetAllCategoriesSearchDTO";
+import { HomeInfoResponse } from "../../Other/Models/HomeInfo.model";
+import { getAllCategoriesService } from "../../Category/Services/Categories.Service";
 
 export const getAllProductsService = async (search: GetAllProductsSearchDTO): Promise<ProductVM> => {
     return await getAllProductsRepository(search);
@@ -72,3 +75,15 @@ export const updatePriceProductService = async (toUpdate: UpdatePriceProductDTO)
 export const updateAllProductsPriceService = async (toUpdate: UpdateAllPriceProductDTO): Promise<ResponseMessages> => {
     return await updateAllProductsPricetRepository(toUpdate);
 };
+
+export const getHomeInfoService = async (search: GetAllCategoriesSearchDTO): Promise<HomeInfoResponse> => {
+    let response = new HomeInfoResponse();
+    try {
+        [response.Categories, response.PromotionalProducts] = await Promise.all([getAllCategoriesService(search), getPromocionalProductsService(search.Pagination)]);
+    } catch (error: any) {
+        response.setError(error.message || 'Error');
+        return response;
+    }
+
+    return response;
+}

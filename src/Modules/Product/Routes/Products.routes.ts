@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { changeStatuts, getProductsToSale, getFilteringOptionsPagedListProduct, getFilteringOptionsPriceList, getPriceListProducts, getProductById, getProductsPagedLists, getPromocionalProducts, saveProduct, updateAllProductsPrice, updatePriceProduct } from "../Controllers/Products.Controller";
+import { changeStatuts, getProductsToSale, getFilteringOptionsPagedListProduct, getFilteringOptionsPriceList, getPriceListProducts, getProductById, getProductsPagedLists, getPromocionalProducts, saveProduct, updateAllProductsPrice, updatePriceProduct, getHomeInfo } from "../Controllers/Products.Controller";
 import { authenticate, authorizeRole } from "../../Auth/Middlewares/Auth.Middleware";
 import { UserRoleEnum } from "../../User/Enums/user-role-enum";
 
@@ -9,7 +9,8 @@ router.get("/getProductsToSale", getProductsToSale)
     .get("/promotional", getPromocionalProducts)
     .get("/product", getProductById)
     .get("/getFilteringOptionsPagedListProduct", getFilteringOptionsPagedListProduct)
-    .get("/getFilteringOptionsPriceList", getFilteringOptionsPriceList);
+    .get("/getFilteringOptionsPriceList", getFilteringOptionsPriceList)
+    .get("/getHomeInfo", getHomeInfo);
 
 router.use(authenticate).use(authorizeRole([UserRoleEnum.Admin]));
 
