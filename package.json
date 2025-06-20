@@ -7,8 +7,9 @@
     "scripts": {
         "dev": "nodemon ./src/app.ts",
         "syncdb": "ts-node src/db/syncdb.ts",
-        "build": "tsc --outDir dist",
-        "start": "node dist/app.js"
+        "build": "tsc --outDir dist --noEmitOnError",
+        "start": "node dist/app.js",
+        "vercel-build": "npm run build"
     },
     "keywords": [],
     "author": "",
