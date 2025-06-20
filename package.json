@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "nodemon ./src/app.ts",
         "syncdb": "ts-node src/db/syncdb.ts",
-        "build": "tsc",
+        "build": "tsc --outDir dist",
         "start": "node dist/app.js"
     },
     "keywords": [],
