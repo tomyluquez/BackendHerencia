@@ -36,7 +36,7 @@ export const getOrdersRepository = async (search: OrderSearchDTO): Promise<Order
             {
                 model: User,
                 as: "User",
-                attributes: ["Name"],
+                attributes: ["Name", "Email"],
                 ...(search.customerName && { where: { Name: { [Op.like]: `%${search.customerName}%` } } })
             },
             {
@@ -46,6 +46,7 @@ export const getOrdersRepository = async (search: OrderSearchDTO): Promise<Order
                 ...(search.orderStatus && search.orderStatus !== OrderStatusEnum.All && { where: { Id: search.orderStatus } })
             }
         ],
+        order: [["DateCreated", "DESC"]],
         offset,
         limit: search.Pagination.Limit
     });
@@ -256,10 +257,10 @@ export const getOrderStatusRepository = async (): Promise<OrderStatusVM> => {
     return response;
 };
 
-export const saveOrderRepository = async (newOrder: OrderDB, cartId: number): Promise<SaveOrderResponse> => {
+export const saveOrderRepository = async (newOrder: OrderDB, cartId: number, user: User): Promise<SaveOrderResponse> => {
     const transaction = await sequelize.transaction();
     const response = new SaveOrderResponse();
-
+    console.log(user)
     try {
         // Crear la orden sin los items primero
         const { Details, ...orderData } = newOrder;
@@ -290,6 +291,8 @@ export const saveOrderRepository = async (newOrder: OrderDB, cartId: number): Pr
         await finishCartByCartIdRepository(cartId);
         response.setSuccess(Success.SaveOrder);
         response.OrderNumber = order.OrderNumber;
+        response.CustomerEmail = user.Email;
+        response.CustomerName = user.Name;
         return response;
     } catch (error) {
         await transaction.rollback();

@@ -9,7 +9,7 @@ import { OrderDetailVM } from "../Models/OrderDetailVM";
 import { OrderDTO } from "../Interfaces/OrderDTO";
 import { SaveOrderResponse } from "../Models/SaveOrderResponse.model";
 import { mapOrderDTOToDB } from "../Helpers/Maps/MapOrders";
-import { getUserIdByNameRepository } from "../../User/Repositories/User.Repository";
+import { getUserByNameRepository, getUserIdByNameRepository } from "../../User/Repositories/User.Repository";
 
 export const getOrdersService = async (search: OrderSearchDTO): Promise<OrderVM> => {
     return await getOrdersRepository(search);
@@ -38,7 +38,7 @@ export const getOrderStatusService = async (): Promise<OrderStatusVM> => {
 };
 
 export const saveOrderService = async (order: OrderDTO): Promise<SaveOrderResponse> => {
-    const userId = await getUserIdByNameRepository(order.CustomerName)
-    const newOrder = mapOrderDTOToDB(order, userId);
-    return await saveOrderRepository(newOrder, order.CartId)
+    const user = await getUserByNameRepository(order.CustomerName)
+    const newOrder = mapOrderDTOToDB(order, user.Id);
+    return await saveOrderRepository(newOrder, order.CartId, user)
 }

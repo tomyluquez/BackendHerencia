@@ -86,6 +86,20 @@ export const getUserIdByNameRepository = async (name: string): Promise<number> =
     }
 };
 
+export const getUserByNameRepository = async (name: string): Promise<User> => {
+    const userBM = await User.findOne({
+        where: {
+            [Op.and]: [sequelize.where(sequelize.fn("LOWER", sequelize.col("Name")), name)]
+        },
+        attributes: ["Id", "Name", "Email"]
+    });
+    if (userBM) {
+        return userBM;
+    } else {
+        return new User();
+    }
+};
+
 export const registerUserRepository = async (newUser: UserRegisterDTO): Promise<ResponseMessages> => {
     const response = new ResponseMessages();
 

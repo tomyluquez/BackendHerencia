@@ -6,4 +6,5 @@ export interface IOrderVM {
     DateCreated: Date;
     CustomerName: string;
     OrderStatusId: number;
+    CustomerEmail?: string
 }

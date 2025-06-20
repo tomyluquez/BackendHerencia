@@ -26,7 +26,8 @@ export const mapOrdersDBToVM = (order: Order): IOrderVM => {
         OrderNumber: order.OrderNumber,
         DateCreated: order.DateCreated,
         CustomerName: order.User?.Name || "",
-        OrderStatusId: order.OrderStatusId
+        OrderStatusId: order.OrderStatusId,
+        CustomerEmail: order.User?.Email || ""
     };
 };
 
