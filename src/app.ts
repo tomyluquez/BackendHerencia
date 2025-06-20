@@ -17,6 +17,9 @@ const PORT = process.env.SERVER_PORT || 3000;
 
 const app = express();
 
+app.get('/keepalive', (req, res) => {
+    res.status(204).end(); // Respuesta sin cuerpo (óptima para ping)
+});
 app.use(cors());
 
 sequelize
@@ -25,6 +28,7 @@ sequelize
     .catch((error) => console.error("No se pudo conectar a la base de datos:", error));
 
 app.use(express.json());
+
 
 app.use("/api/v1/products", RouterProducts);
 app.use("/api/v1/categories", RouterCategories);
